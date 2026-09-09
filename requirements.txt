@@ -1,0 +1,15 @@
+PyQt6
+google-genai
+openai
+anthropic
+pypdf
+keyring
+PyYAML
+beautifulsoup4
+youtube-transcript-api
+watchdog
+matplotlib
+keyboard
+fastembed
+numpy
+pywin32; sys_platform == "win32"

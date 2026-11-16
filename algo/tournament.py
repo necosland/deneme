@@ -178,6 +178,7 @@ def main():
                             day_b = (1 + held_bh.loc[m, col]).resample("1D").prod() - 1
                             tot += 1
                             win += sharpe(day_s) > sharpe(day_b)
+                    series[(name, itv, "expo")] = expo
                     rows.append({"sistem": name, "aralik": itv, "genislik": f"{win}/{tot}" if tot else "-",
                                  "genislik_oran": win / tot if tot else np.nan,
                                  "son_param": dict(picks[-1][1]), "_turn": turn, "_expo": expo})
@@ -226,6 +227,10 @@ def main():
     T["holdout_getiri_2x"] = [round(((1 + hold(series[(a, b, "2x")])).prod() - 1) * 100, 1) for a, b in zip(T.sistem, T.aralik)]
     T["holdout_dd_2x"] = [hstats((a, b, "2x"))["maxDD_%"] for a, b in zip(T.sistem, T.aralik)]
 
+    # maruziyet etkisini ayir: ayni ortalama maruziyetle al-tut ne yapardi?
+    T["holdout_piyasada_%"] = [round(hold(series[(a, b, "expo")]).mean() * 100, 1) for a, b in zip(T.sistem, T.aralik)]
+    bh_h = {i: ((1 + hold(series[("BH_esit", i)])).prod() - 1) * 100 for i in BPD}
+    T["holdout_alfa"] = (T.holdout_getiri_2x - T["holdout_piyasada_%"] / 100 * T.aralik.map(bh_h)).round(1)
     finalists = T[T.gecti].head(5)  # secim: sadece dev kolonlarina gore siralanmis T
     ens = None
     if len(finalists):
@@ -234,7 +239,7 @@ def main():
 
     T.drop(columns=["genislik_oran"]).to_csv(OUT / "tournament.csv", index=False)
     eq = pd.DataFrame({"|".join(k): (1 + v.loc[WF_START:]).cumprod() for k, v in series.items()
-                       if k[-1] in ("2x",) or k[0].startswith("BH")})
+                       if k[-1] == "2x" or k[0].startswith("BH")})
     eq.to_csv(OUT / "equity_curves.csv")
 
     # ---------------- rapor
@@ -247,7 +252,8 @@ def main():
     print("\n=== DEV SIRALAMA (2021-01 -> 2025-11, walk-forward OOS, 2x maliyet) ===")
     print(T[cols].to_string())
     print("\n=== FINALISTLER (kural: Sharpe2x > iki al-tut, DD < BTC DD, >=%50 pozitif 6 ay, genislik >=%50) ===")
-    hc = ["sistem", "aralik", "sharpe_2x", "DSR", "holdout_sharpe_2x", "holdout_getiri_2x", "holdout_dd_2x", "son_param"]
+    hc = ["sistem", "aralik", "sharpe_2x", "DSR", "holdout_sharpe_2x", "holdout_getiri_2x", "holdout_dd_2x",
+          "holdout_piyasada_%", "holdout_alfa", "son_param"]
     print(finalists[hc].to_string())
     for itv in BPD:
         for b in ["BH_esit", "BH_btc"]:
@@ -257,7 +263,13 @@ def main():
         print("ENSEMBLE dev:", stats(dev(ens)), " holdout:", stats(hold(ens)),
               "holdout getiri %", round(((1 + hold(ens)).prod() - 1) * 100, 1))
     print("\nHoldout'ta TUM sistemler (secim kuralinin bilgi tasiyip tasimadigini gormek icin):")
-    print(T[["sistem", "aralik", "sharpe_2x", "gecti", "holdout_sharpe_2x", "holdout_getiri_2x", "holdout_dd_2x"]].to_string())
+    print(T[["sistem", "aralik", "sharpe_2x", "gecti", "holdout_sharpe_2x", "holdout_getiri_2x", "holdout_dd_2x",
+             "holdout_piyasada_%", "holdout_alfa"]].to_string())
+    print("\nDev Sharpe ile holdout Sharpe sira korelasyonu (Spearman):",
+          round(T.sharpe_2x.rank().corr(T.holdout_sharpe_2x.rank()), 2))
+    print("Dev Sharpe ile holdout ALFA sira korelasyonu:", round(T.sharpe_2x.rank().corr(T.holdout_alfa.rank()), 2))
+    print("Holdout ortalama alfa: gecenler", round(T[T.gecti].holdout_alfa.mean(), 1),
+          "| gecmeyenler", round(T[~T.gecti].holdout_alfa.mean(), 1))
 
 
 if __name__ == "__main__":

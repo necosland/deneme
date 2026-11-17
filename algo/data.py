@@ -41,3 +41,23 @@ def fetch_ohlcv(symbol="BTCUSDT", interval="4h", start="2019-01-01", refresh=Fal
     df = df.iloc[:-1]  # son mum henuz kapanmamis olabilir
     df.to_csv(f)
     return df
+
+
+# 2019 basindaki top-20'ye yakin evren (survivorship bias'i azaltmak icin sonradan coken/delist olanlar DAHIL).
+UNIVERSE_2019 = ["BTCUSDT", "ETHUSDT", "XRPUSDT", "BCHUSDT", "EOSUSDT", "XLMUSDT", "LTCUSDT",
+                 "TRXUSDT", "ADAUSDT", "BNBUSDT", "XMRUSDT", "IOTAUSDT", "DASHUSDT", "ETCUSDT",
+                 "NEOUSDT", "ZECUSDT", "DOGEUSDT", "WAVESUSDT"]
+
+
+def fetch_symbol(symbol, interval):
+    if symbol == "BCHUSDT":  # 2019-11'de BCHABC -> BCH ticker degisimi: birlestir
+        a, b = fetch_ohlcv("BCHABCUSDT", interval), fetch_ohlcv("BCHUSDT", interval)
+        return pd.concat([a[a.index < b.index[0]], b])
+    return fetch_ohlcv(symbol, interval)
+
+
+def load_panel(interval, symbols=UNIVERSE_2019):
+    """dict: open/high/low/close/volume -> DataFrame (zaman x sembol). Veri yoksa NaN."""
+    dfs = {s.replace("USDT", ""): fetch_symbol(s, interval) for s in symbols}
+    return {f: pd.DataFrame({s: d[f] for s, d in dfs.items()}).sort_index()
+            for f in ["open", "high", "low", "close", "volume"]}

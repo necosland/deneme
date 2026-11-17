@@ -3,7 +3,12 @@ Her pozisyon degisiminde komisyon + slippage kesilir."""
 import numpy as np
 import pandas as pd
 
-PER_YEAR = 6 * 365  # 4 saatlik mum
+BARS_PER_DAY = {"1h": 24, "4h": 6, "1d": 1}
+PER_YEAR = 6 * 365  # varsayilan: 4 saatlik mum
+
+
+def per_year(interval):
+    return BARS_PER_DAY[interval] * 365
 FEE = 0.001         # taraf basi %0.1 (borsana gore degistir)
 SLIP = 0.0005       # taraf basi %0.05 slippage varsayimi
 

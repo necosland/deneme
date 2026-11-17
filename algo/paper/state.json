@@ -1,0 +1,199 @@
+{
+ "systems": {
+  "donchian_4h": {
+   "baslangic": "2026-11-17 09:41",
+   "son_mum": "2026-11-17 04:00",
+   "tepe": 1000.0,
+   "baslangic_fiyat": {
+    "BTCUSDT": 64468.46,
+    "ETHUSDT": 1815.31,
+    "BNBUSDT": 590.83,
+    "SOLUSDT": 72.53,
+    "XRPUSDT": 0.9564,
+    "ADAUSDT": 0.1528
+   },
+   "kova": {
+    "BTCUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "ETHUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "BNBUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "SOLUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "XRPUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "ADAUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    }
+   },
+   "golge": {
+    "BTCUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "ETHUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "BNBUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "SOLUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "XRPUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "ADAUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    }
+   }
+  },
+  "btc_filter_ema_4h": {
+   "baslangic": "2026-11-17 09:41",
+   "son_mum": "2026-11-17 04:00",
+   "tepe": 1000.0,
+   "baslangic_fiyat": {
+    "BTCUSDT": 64468.46,
+    "ETHUSDT": 1815.31,
+    "BNBUSDT": 590.83,
+    "SOLUSDT": 72.53,
+    "XRPUSDT": 0.9564,
+    "ADAUSDT": 0.1528
+   },
+   "kova": {
+    "BTCUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "ETHUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "BNBUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "SOLUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "XRPUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "ADAUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    }
+   },
+   "golge": {
+    "BTCUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "ETHUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "BNBUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "SOLUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "XRPUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "ADAUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    }
+   }
+  },
+  "ema_btcf_1d": {
+   "baslangic": "2026-11-17 09:41",
+   "son_mum": "2026-11-16 00:00",
+   "tepe": 1000.0,
+   "baslangic_fiyat": {
+    "BTCUSDT": 64468.46,
+    "ETHUSDT": 1815.31,
+    "BNBUSDT": 590.83,
+    "SOLUSDT": 72.53,
+    "XRPUSDT": 0.9564,
+    "ADAUSDT": 0.1528
+   },
+   "kova": {
+    "BTCUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "ETHUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "BNBUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "SOLUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "XRPUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    },
+    "ADAUSDT": {
+     "nakit": 166.66666666666666,
+     "adet": 0.0
+    }
+   },
+   "golge": {
+    "BTCUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "ETHUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "BNBUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "SOLUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "XRPUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    },
+    "ADAUSDT": {
+     "deger": 166.66666666666666,
+     "poz": 0.0
+    }
+   }
+  }
+ }
+}

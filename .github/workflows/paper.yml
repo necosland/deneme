@@ -1,10 +1,10 @@
-# Paper trading (sahte para): her 4 saatlik mum kapanisindan ~10 dk sonra calisir.
+# Paper trading (sahte para): her 4 saatlik mum kapanisindan ~17 dk sonra calisir.
 # Gercek emir yok, anahtar yok. Sonuclar algo/paper/ altina commit edilir.
 # Not: GitHub zamanli calistirmayi yalnizca varsayilan branch'teki dosyadan yapar.
 name: paper-trading
 on:
   schedule:
-    - cron: "10 0,4,8,12,16,20 * * *"
+    - cron: "17 0,4,8,12,16,20 * * *"
   workflow_dispatch:
 permissions:
   contents: write

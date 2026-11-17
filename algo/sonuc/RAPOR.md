@@ -1,5 +1,11 @@
 # Strateji turnuvası — 17 Kasım 2026
 
+> **Düzeltme (aynı gün):** Bu testteki 6 coin bugün hâlâ büyük olan coinler. Bu, sonuçları olduğundan iyi gösterir: sonradan çöken coinler testte yok. Aynı branch'teki diğer turnuva (`results/REPORT.md`) 2019'un ilk 20 coiniyle, çöken ve borsadan çıkanlar dahil yapıldı. O testte hiçbir sistem şans düzeltmesini geçemedi. donchian 4h orada al-tutu yenemedi. En iyi aday ema_btcf 1d çıktı: trend takibi, yalnızca BTC 200 günlük ortalamasının üstündeyken.
+>
+> İki testin ortak sonucu: Tek sağlam tema trend takibi ve BTC filtresi. Dip alma sistemleri ölü. Kanıtlanmış bir avantaj yok.
+>
+> Sahte para testi bu yüzden üç sistemle kuruldu: donchian_4h, btc_filter_ema_4h, ema_btcf_1d.
+
 ## Kısa sonuç
 
 - **31 sistem test edildi.** Kuralları baştan yazdığım 5 elemeyi 7'si geçti. Bunlardan 5'i, hiç görmediği 2025-2026 verisinde de piyasadan iyi çıktı.

@@ -1,0 +1,34 @@
+# Paper trading (sahte para): her 4 saatlik mum kapanisindan ~10 dk sonra calisir.
+# Gercek emir yok, anahtar yok. Sonuclar algo/paper/ altina commit edilir.
+# Not: GitHub zamanli calistirmayi yalnizca varsayilan branch'teki dosyadan yapar.
+name: paper-trading
+on:
+  schedule:
+    - cron: "10 0,4,8,12,16,20 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: paper-trading
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy requests
+      - run: python paper.py
+        working-directory: algo
+      - name: Sonuclari kaydet
+        run: |
+          git config user.name "paper-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add algo/paper
+          git diff --cached --quiet && exit 0
+          git commit -m "paper: $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git pull --rebase
+          git push

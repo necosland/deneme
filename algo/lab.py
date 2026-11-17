@@ -135,14 +135,16 @@ def stitch(frames_by_key, segs):
     return pd.concat([frames_by_key[k].loc[idx] for idx, k in segs])
 
 
-def run_strategy(name, dfs, iv, costs, btc):
-    """Walk-forward OOS sonuclari: cost -> dict(port, assets, held, segs)."""
+def run_strategy(name, dfs, iv, costs, btc, reg=None, extra=None):
+    """Walk-forward OOS sonuclari: cost -> dict(port, assets, held, segs).
+    reg=(SINGLE, PORTFOLIO) baska strateji kutuphanesi icin (tur 2); extra: ctx'e ek veri."""
+    single, portfolio = reg or (SINGLE, PORTFOLIO)
     ppd = PPD[iv]
     ppy = 365 * ppd
-    ctx = {"ppy": ppy, "ppd": ppd, "btc": btc}
+    ctx = {"ppy": ppy, "ppd": ppd, "btc": btc, **(extra or {})}
     U = pd.DatetimeIndex(sorted(set().union(*[d.index for d in dfs.values()])))
-    is_port = name in PORTFOLIO
-    fn, space = (PORTFOLIO if is_port else SINGLE)[name]
+    is_port = name in portfolio
+    fn, space = (portfolio if is_port else single)[name]
     nets, helds = {c: {} for c in costs}, {}
     for p in combos(space):
         key = tuple(sorted(p.items()))

@@ -163,6 +163,7 @@ def main():
         paper = sum(k["nakit"] + k["adet"] * px[c] for c, k in st["kova"].items())
         golge = sum(g["deger"] for g in st["golge"].values())
         bh = CAPITAL * np.mean([px[c] / st["baslangic_fiyat"][c] for c in COINS])
+        bh_btc = CAPITAL * px["BTCUSDT"] / st["baslangic_fiyat"]["BTCUSDT"]
         st["tepe"] = max(st["tepe"], paper)
         dd = (paper / st["tepe"] - 1) * 100
         st["son_mum"] = iso(last_bar)
@@ -170,24 +171,26 @@ def main():
         dead = dd < KILL_MULT * ref_dd
         append_csv(eq_f, {
             "zaman_utc": iso(now), "sistem": name, "paper": round(paper, 2), "golge": round(golge, 2),
-            "al_tut": round(bh, 2), "dusus_%": round(dd, 2), "acik": " ".join(open_pos) or "-",
+            "al_tut_6coin": round(bh, 2), "al_tut_btc": round(bh_btc, 2),
+            "dusus_%": round(dd, 2), "acik": " ".join(open_pos) or "-",
         })
-        status.append((name, desc, st, paper, golge, bh, dd, ref_dd, open_pos, dead))
+        status.append((name, desc, st, paper, golge, bh, bh_btc, dd, ref_dd, open_pos, dead))
 
     state_f.write_text(json.dumps(state, indent=1, ensure_ascii=False))
     write_status(now, status)
     for s in status:
-        print(f"{s[0]:20s} paper={s[3]:8.2f} golge={s[4]:8.2f} al_tut={s[5]:8.2f} dd={s[6]:6.2f}% acik={s[8]}")
+        print(f"{s[0]:20s} paper={s[3]:8.2f} golge={s[4]:8.2f} al_tut6={s[5]:8.2f} al_tut_btc={s[6]:8.2f} "
+              f"dd={s[7]:6.2f}% acik={s[9]}")
 
 
 def write_status(now, status):
     L = [f"# Paper trading durumu", "",
          f"Son guncelleme: {iso(now)} UTC. Her sistem {CAPITAL:.0f} sahte USDT ile basladi. Gercek para yok.", "",
-         "| Sistem | Basladi | Paper | Golge (backtest) | Al-tut | Tepeden dusus | Olum siniri | Acik pozisyon |",
-         "|---|---|---|---|---|---|---|---|"]
-    for name, desc, st, paper, golge, bh, dd, ref_dd, open_pos, dead in status:
+         "| Sistem | Basladi | Paper | Golge (backtest) | Al-tut 6 coin | Al-tut BTC | Tepeden dusus | Olum siniri | Acik pozisyon |",
+         "|---|---|---|---|---|---|---|---|---|"]
+    for name, desc, st, paper, golge, bh, bh_btc, dd, ref_dd, open_pos, dead in status:
         flag = " **OLDU**" if dead else ""
-        L.append(f"| {name} | {st['baslangic'][:10]} | {paper:.0f} | {golge:.0f} | {bh:.0f} | %{dd:.1f}{flag} | "
+        L.append(f"| {name} | {st['baslangic'][:10]} | {paper:.0f} | {golge:.0f} | {bh:.0f} | {bh_btc:.0f} | %{dd:.1f}{flag} | "
                  f"%{KILL_MULT * ref_dd:.0f} | {' '.join(open_pos) or '-'} |")
     L += ["", "Sistemler:"] + [f"- **{s[0]}**: {s[1]}" for s in status]
     L += ["", "Paper ile golge arasindaki fark gercek hayattaki gecikme ve kaymayi gosterir. "

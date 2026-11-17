@@ -1,0 +1,155 @@
+veri mark BTCUSDT   2019-12-23 -> 2026-11-17 14:00 satir=60508 kaynak={'vision': 82, 'rest': 8}
+veri mark ETHUSDT   2019-12-23 -> 2026-11-17 14:00 satir=60508 kaynak={'vision': 82, 'rest': 5}
+veri mark SOLUSDT   2020-09-13 -> 2026-11-17 14:00 satir=54148 kaynak={'vision': 74, 'rest': 6}
+veri mark BNBUSDT   2019-12-23 -> 2026-11-17 14:00 satir=60508 kaynak={'vision': 81, 'rest': 9}
+veri mark XRPUSDT   2020-01-06 -> 2026-11-17 14:00 satir=60180 kaynak={'vision': 82, 'rest': 6}
+veri mark DOGEUSDT  2020-07-10 -> 2026-11-17 14:00 satir=55716 kaynak={'vision': 76, 'rest': 4}
+veri mark ADAUSDT   2020-01-19 -> 2026-11-17 14:00 satir=59862 kaynak={'vision': 82, 'rest': 4}
+veri mark LTCUSDT   2020-01-09 -> 2026-11-17 14:00 satir=60107 kaynak={'vision': 82, 'rest': 4}
+panel: 2019-09-08 17:00:00+00:00 -> 2026-11-17 13:00:00+00:00 (63045 saat)
+  BTC: baslangic 2019-09-08, eksik saat spot/perp=(35, 0), |perp/spot-1|>%2 saat=8, max=3.5%
+  ETH: baslangic 2019-11-27, eksik saat spot/perp=(31, 0), |perp/spot-1|>%2 saat=4, max=8.3%
+  SOL: baslangic 2020-09-14, eksik saat spot/perp=(19, 0), |perp/spot-1|>%2 saat=73, max=23.9%
+  BNB: baslangic 2020-02-10, eksik saat spot/perp=(30, 0), |perp/spot-1|>%2 saat=1, max=2.4%
+  XRP: baslangic 2020-01-06, eksik saat spot/perp=(31, 0), |perp/spot-1|>%2 saat=14, max=6.7%
+  DOGE: baslangic 2020-07-10, eksik saat spot/perp=(19, 0), |perp/spot-1|>%2 saat=9, max=11.5%
+  ADA: baslangic 2020-01-31, eksik saat spot/perp=(31, 0), |perp/spot-1|>%2 saat=6, max=5.7%
+  LTC: baslangic 2020-01-09, eksik saat spot/perp=(31, 0), |perp/spot-1|>%2 saat=4, max=3.9%
+T-bill (FRED DTB3) yillik ort %: {2019: 2.06, 2020: 0.36, 2021: 0.05, 2022: 2.02, 2023: 5.06, 2024: 4.97, 2025: 4.06, 2026: 3.73}
+Vision vs REST fonlama (BTC, 7876 ortak olay): max fark 0.00e+00
+  fonlama araligi BTC: hep 8 saat (Vision dosyalarinda)
+  fonlama araligi ETH: hep 8 saat (Vision dosyalarinda)
+  fonlama araligi SOL: 8 saat disi 101 olay, 2022-11-09 -> 2022-11-18, degerler [np.float64(2.0), np.float64(4.0)]
+  fonlama araligi BNB: hep 8 saat (Vision dosyalarinda)
+  fonlama araligi XRP: hep 8 saat (Vision dosyalarinda)
+  fonlama araligi DOGE: hep 8 saat (Vision dosyalarinda)
+  fonlama araligi ADA: hep 8 saat (Vision dosyalarinda)
+  fonlama araligi LTC: hep 8 saat (Vision dosyalarinda)
+  kesme 2024-10-26 22:00 BTC {'N': 1, 'X': 8.0, 'Xexit': 2.0, 'L': 3, 'fee': 'taker', 'rebalance': 'saat'} fark=0.00e+00
+  kesme 2024-10-26 22:00 ETH {'N': 1, 'X': -inf, 'Xexit': -inf, 'L': 2, 'fee': 'maker', 'rebalance': 'yok'} fark=0.00e+00
+  kesme 2024-10-26 22:00 8coin {'N': 2, 'X': 5.0, 'Xexit': 2.0, 'L': 3, 'fee': 'taker', 'rebalance': 'gun'} fark=0.00e+00
+  kesme 2024-10-26 22:00 riskoff pozisyon farki (son gun haric)=0.00e+00 (son gun dahil=0.00e+00, filtresiz=0.00e+00)
+  kesme 2025-02-19 02:00 BTC {'N': 1, 'X': 8.0, 'Xexit': 2.0, 'L': 3, 'fee': 'taker', 'rebalance': 'saat'} fark=0.00e+00
+  kesme 2025-02-19 02:00 ETH {'N': 1, 'X': -inf, 'Xexit': -inf, 'L': 2, 'fee': 'maker', 'rebalance': 'yok'} fark=0.00e+00
+  kesme 2025-02-19 02:00 8coin {'N': 2, 'X': 5.0, 'Xexit': 2.0, 'L': 3, 'fee': 'taker', 'rebalance': 'gun'} fark=0.00e+00
+  kesme 2025-02-19 02:00 riskoff pozisyon farki (son gun haric)=0.00e+00 (son gun dahil=1.67e-01, filtresiz=1.67e-01)
+  kesme 2026-07-12 08:00 BTC {'N': 1, 'X': 8.0, 'Xexit': 2.0, 'L': 3, 'fee': 'taker', 'rebalance': 'saat'} fark=0.00e+00
+  kesme 2026-07-12 08:00 ETH {'N': 1, 'X': -inf, 'Xexit': -inf, 'L': 2, 'fee': 'maker', 'rebalance': 'yok'} fark=0.00e+00
+  kesme 2026-07-12 08:00 8coin {'N': 2, 'X': 5.0, 'Xexit': 2.0, 'L': 3, 'fee': 'taker', 'rebalance': 'gun'} fark=0.00e+00
+  kesme 2026-07-12 08:00 riskoff pozisyon farki (son gun haric)=0.00e+00 (son gun dahil=0.00e+00, filtresiz=0.00e+00)
+LOOKAHEAD TESTI: GECTI
+grid: 684 calisma, 85 sn
+
+=== SECIM (yalniz <2025, taker, secimde tasfiye yok) ===
+BTC    en_iyi_kural     hep_acik       L=3 reb=gun   (tasfiyesiz) | secim yillik  10.44% DD  -3.50% tbill/yil  2.47% | sinav net   5.61% yillik   2.95% DD  -0.47% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2019:1.26, 2020:12.79, 2021:25.21, 2022:2.63, 2023:5.79, 2024:8.93, 2025:3.67, 2026:1.87
+    stres (son fiyat fitili ile tasfiye): tasfiye 1, secim yillik 6.80%, sinav yillik 2.95%, maxDD -17.04%
+BTC    en_iyi_hep_acik  hep_acik       L=3 reb=gun   (tasfiyesiz) | secim yillik  10.44% DD  -3.50% tbill/yil  2.47% | sinav net   5.61% yillik   2.95% DD  -0.47% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2019:1.26, 2020:12.79, 2021:25.21, 2022:2.63, 2023:5.79, 2024:8.93, 2025:3.67, 2026:1.87
+    stres (son fiyat fitili ile tasfiye): tasfiye 1, secim yillik 6.80%, sinav yillik 2.95%, maxDD -17.04%
+ETH    en_iyi_kural     hep_acik       L=3 reb=saat  (tasfiyesiz) | secim yillik  12.26% DD  -1.96% tbill/yil  2.51% | sinav net   3.48% yillik   1.84% DD  -0.68% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2019:0.38, 2020:20.79, 2021:29.21, 2022:-0.88, 2023:5.89, 2024:9.41, 2025:2.61, 2026:0.85
+    stres (son fiyat fitili ile tasfiye): tasfiye 1, secim yillik 9.20%, sinav yillik 1.84%, maxDD -14.24%
+ETH    en_iyi_hep_acik  hep_acik       L=3 reb=saat  (tasfiyesiz) | secim yillik  12.26% DD  -1.96% tbill/yil  2.51% | sinav net   3.48% yillik   1.84% DD  -0.68% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2019:0.38, 2020:20.79, 2021:29.21, 2022:-0.88, 2023:5.89, 2024:9.41, 2025:2.61, 2026:0.85
+    stres (son fiyat fitili ile tasfiye): tasfiye 1, secim yillik 9.20%, sinav yillik 1.84%, maxDD -14.24%
+8coin  en_iyi_kural     esik8_top1     L=3 reb=saat  (tasfiyesiz) | secim yillik  11.41% DD  -2.71% tbill/yil  2.47% | sinav net   1.13% yillik   0.60% DD  -1.49% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2019:0.99, 2020:19.96, 2021:29.77, 2022:-0.52, 2023:4.82, 2024:8.09, 2025:1.02, 2026:0.11
+    stres (son fiyat fitili ile tasfiye): tasfiye 1, secim yillik 8.57%, sinav yillik 0.60%, maxDD -14.52%
+SOL    en_iyi_kural     esik5          L=3 reb=gun   (tasfiyesiz) | secim yillik   8.16% DD  -5.90% tbill/yil  2.88% | sinav net  -2.00% yillik  -1.07% DD  -2.14% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:-0.49, 2021:25.91, 2022:0.15, 2023:2.05, 2024:9.26, 2025:-0.99, 2026:-1.02
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 8.16%, sinav yillik -1.07%, maxDD -5.90%
+SOL    en_iyi_hep_acik  hep_acik       L=1 reb=gun   (tasfiyesiz) | secim yillik  -1.75% DD -26.77% tbill/yil  2.88% | sinav net  -0.74% yillik  -0.39% DD  -2.13% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:-2.60, 2021:13.50, 2022:-21.18, 2023:-0.16, 2024:6.59, 2025:-0.31, 2026:-0.43
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik -1.75%, sinav yillik -0.39%, maxDD -26.77%
+BNB    en_iyi_kural     esik8          L=3 reb=saat  (tasfiyesiz) | secim yillik   5.12% DD  -3.56% tbill/yil  2.55% | sinav net  -0.17% yillik  -0.09% DD  -0.39% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:5.75, 2021:17.48, 2022:0.00, 2023:0.88, 2024:1.75, 2025:0.00, 2026:-0.17
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 5.12%, sinav yillik -0.09%, maxDD -3.56%
+BNB    en_iyi_hep_acik  hep_acik       L=1 reb=gun   (tasfiyesiz) | secim yillik  -0.71% DD -15.11% tbill/yil  2.55% | sinav net  -0.16% yillik  -0.09% DD  -1.58% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:-0.70, 2021:10.75, 2022:-6.45, 2023:-4.20, 2024:-1.99, 2025:-1.29, 2026:1.14
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik -0.71%, sinav yillik -0.09%, maxDD -15.47%
+XRP    en_iyi_kural     hep_acik       L=2 reb=saat  (tasfiyesiz) | secim yillik  11.12% DD  -5.32% tbill/yil  2.53% | sinav net   1.06% yillik   0.56% DD  -1.27% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:13.92, 2021:31.77, 2022:-1.27, 2023:4.85, 2024:8.68, 2025:1.38, 2026:-0.32
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 11.12%, sinav yillik 0.56%, maxDD -5.32%
+XRP    en_iyi_hep_acik  hep_acik       L=2 reb=saat  (tasfiyesiz) | secim yillik  11.12% DD  -5.32% tbill/yil  2.53% | sinav net   1.06% yillik   0.56% DD  -1.27% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:13.92, 2021:31.77, 2022:-1.27, 2023:4.85, 2024:8.68, 2025:1.38, 2026:-0.32
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 11.12%, sinav yillik 0.56%, maxDD -5.32%
+DOGE   en_iyi_kural     hep_acik       L=1 reb=saat  (tasfiyesiz) | secim yillik   7.00% DD  -5.62% tbill/yil  2.76% | sinav net   2.51% yillik   1.33% DD  -0.37% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:2.11, 2021:18.48, 2022:0.76, 2023:4.60, 2024:6.02, 2025:1.41, 2026:1.09
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 7.00%, sinav yillik 1.33%, maxDD -5.62%
+DOGE   en_iyi_hep_acik  hep_acik       L=1 reb=saat  (tasfiyesiz) | secim yillik   7.00% DD  -5.62% tbill/yil  2.76% | sinav net   2.51% yillik   1.33% DD  -0.37% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:2.11, 2021:18.48, 2022:0.76, 2023:4.60, 2024:6.02, 2025:1.41, 2026:1.09
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 7.00%, sinav yillik 1.33%, maxDD -5.62%
+ADA    en_iyi_kural     esik8          L=3 reb=saat  (tasfiyesiz) | secim yillik  11.16% DD  -5.58% tbill/yil  2.54% | sinav net  -0.72% yillik  -0.39% DD  -2.06% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:16.96, 2021:28.26, 2022:-0.07, 2023:3.17, 2024:8.59, 2025:0.72, 2026:-1.43
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 11.16%, sinav yillik -0.39%, maxDD -5.58%
+ADA    en_iyi_hep_acik  hep_acik       L=2 reb=gun   (tasfiyesiz) | secim yillik  10.97% DD  -4.13% tbill/yil  2.54% | sinav net   3.52% yillik   1.86% DD  -0.66% tasfiye 1 tbill/yil  3.99%
+    yil yil net %: 2020:15.14, 2021:28.80, 2022:-1.35, 2023:4.37, 2024:9.05, 2025:3.09, 2026:0.41
+    stres (son fiyat fitili ile tasfiye): tasfiye 1, secim yillik 10.97%, sinav yillik 1.86%, maxDD -4.13%
+LTC    en_iyi_kural     hep_acik       L=2 reb=gun   (tasfiyesiz) | secim yillik  12.19% DD  -2.32% tbill/yil  2.53% | sinav net   4.80% yillik   2.53% DD  -0.16% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:16.64, 2021:29.59, 2022:1.05, 2023:5.87, 2024:9.42, 2025:3.11, 2026:1.64
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 12.19%, sinav yillik 2.53%, maxDD -2.32%
+LTC    en_iyi_hep_acik  hep_acik       L=2 reb=gun   (tasfiyesiz) | secim yillik  12.19% DD  -2.32% tbill/yil  2.53% | sinav net   4.80% yillik   2.53% DD  -0.16% tasfiye 0 tbill/yil  3.99%
+    yil yil net %: 2020:16.64, 2021:29.59, 2022:1.05, 2023:5.87, 2024:9.42, 2025:3.11, 2026:1.64
+    stres (son fiyat fitili ile tasfiye): tasfiye 0, secim yillik 12.19%, sinav yillik 2.53%, maxDD -2.32%
+
+=== tasfiyeler (grid toplam) ===
+coin   L  rebalans
+8coin  1  yok         120
+       2  gun           8
+          yok         244
+       3  gun          76
+          yok         402
+ADA    1  yok          52
+       2  gun           2
+          yok          96
+       3  gun          19
+          saat          2
+          yok         158
+BNB    1  yok          22
+       2  gun           8
+          yok          52
+       3  gun          28
+          yok          86
+BTC    1  yok          18
+       2  yok          46
+       3  yok          72
+DOGE   1  gun          28
+          yok          70
+       2  gun          62
+          saat         12
+          yok         120
+       3  gun         136
+          saat         30
+          yok         198
+ETH    1  yok          42
+       2  yok          84
+       3  gun           8
+          yok         140
+LTC    1  yok          20
+       2  yok          60
+       3  gun          16
+          saat          8
+          yok          98
+SOL    1  yok          60
+       2  gun           4
+          yok         117
+       3  gun          12
+          yok         176
+XRP    1  gun           4
+          yok          38
+       2  gun          24
+          yok         100
+       3  gun          86
+          saat         14
+          yok         132
+
+=== risk azaltma filtresi ===
+     tablo  donem   baslangic       bitis  filtre_acik_gun_pct  ema_btcf_gun  ema_btcf_yillik_pct  ema_btcf_sharpe  ema_btcf_maxDD_pct  ema_btcf_net_getiri_pct  filtreli_gun  filtreli_yillik_pct  filtreli_sharpe  filtreli_maxDD_pct  filtreli_net_getiri_pct
+0  riskoff  secim  2020-10-05  2024-12-31                 15.0          1549               107.93            1.924              -38.72                  2134.73          1549                85.78            1.873              -33.17                  1285.37
+1  riskoff  sinav  2025-01-01  2026-11-17                  6.3           686                -3.34           -0.002              -28.21                    -6.19           686                -4.12           -0.049              -28.21                    -7.61
+            tablo  donem          bayrak   gun  btc_sonraki30g_getiri_ort_pct  btc_sonraki30g_en_derin_dusus_ort_pct  sonraki30g_dusus_10pct_ustu_olasilik
+0  fonlama_tahmin  secim  yuksek_fonlama   232                          11.57                                  -7.09                                  30.6
+1  fonlama_tahmin  secim          normal  1287                           5.25                                  -9.08                                  39.0
+2  fonlama_tahmin  sinav  yuksek_fonlama    34                           5.46                                  -2.82                                   0.0
+3  fonlama_tahmin  sinav          normal   622                          -0.83                                  -8.09                                  27.3

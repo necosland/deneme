@@ -99,7 +99,8 @@
       "lang": "tr",
       "max_items": 1,
       "max_photos": 3,
-      "enabled": true,
+      "enabled": false,
+      "disabled_note": "Neco 2026-11-21: posts rarely lately; disabled for now, may re-enable.",
       "who": "X @TeknikciHoca (account since 2013, ~208k followers), bio 'Crypto & macro researcher | Trader & technical analyst since 2013 | Turkiye / Europe'. Real name not public in sources checked (site teknikcihoca.com is a placeholder, linktr.ee lists X/YouTube/Telegram/LinkedIn only). Link to Efe Bulduk's circle NOT verified (Neco's note). Many off-topic posts (football, real estate).",
       "method": "api.fxtwitter.com/2/profile/<handle>/statuses (public mirror, no login)"
     }

@@ -162,6 +162,7 @@ def zigzag(df, k):
 def structure(df, iv, keep):
     piv, prov = zigzag(df, ZZ_K[iv])
     h, l, c, idx = df.high.to_numpy(), df.low.to_numpy(), df.close.to_numpy(), df.index
+    rs = rsi(df.close).to_numpy()   # pivot anindaki RSI14 (Elliott kursu: dalga 3 en uc RSI, 3-5 uyumsuzlugu)
     out, last = [], {"H": None, "L": None}
     for i, p, t in piv:
         if last[t] is None:
@@ -181,7 +182,7 @@ def structure(df, iv, keep):
         swept = int(wk[0]) if len(wk) and (broke is None or wk[0] < broke) else None
         res.append([ts(idx[i], iv == "1d"), r5(p), lab,
                     None if broke is None else ts(idx[i + 1 + broke], iv == "1d"),
-                    None if swept is None else ts(idx[i + 1 + swept], iv == "1d")])
+                    None if swept is None else ts(idx[i + 1 + swept], iv == "1d"), r5(round(rs[i], 1))])
     pv = None if prov is None else [ts(idx[prov[0]], iv == "1d"), r5(prov[1]), prov[2]]
     return {"pivots": res, "current_leg_extreme": pv}
 
@@ -251,6 +252,39 @@ def vprofile(df, bins=50):
     return {"range": [r5(lo), r5(hi)], "poc": r5(mid[poc]), "vah": r5(edges[hi_i + 1]), "val": r5(edges[lo_i]),
             "hvn": sorted(r5(mid[i]) for i in sorted(peaks, key=lambda i: -sm[i])[:4]),
             "lvn": sorted(r5(mid[i]) for i in sorted(troughs, key=lambda i: sm[i])[:4])}
+
+
+def avwap(d1, h4):
+    """Capali VWAP + 1/2 sigma bantlari (Efe Bulduk ekibinin seviye kaynagi; trader-senaryo). Hacim: spot quote hacmi,
+    taban hacim ~ qvol / tipik fiyat. Capalar: 400 gunun zirvesi ve dibi, 365 gun once (yillik rolling),
+    son onayli 1d pivotu."""
+    tp_all = (d1.high + d1.low + d1.close) / 3
+    piv, _ = zigzag(d1, ZZ_K["1d"])
+    anchors = {"ath_400d": int(np.argmax(d1.high.to_numpy())), "low_400d": int(np.argmin(d1.low.to_numpy())),
+               "rolling_365d": max(0, len(d1) - 365)}
+    if piv:
+        anchors["last_1d_pivot_" + piv[-1][2]] = piv[-1][0]
+    out = {}
+    for name, i0 in anchors.items():
+        tp, q = tp_all.iloc[i0:], d1.qvol.iloc[i0:]
+        w = q / tp
+        if w.sum() <= 0:
+            continue
+        vw = float((tp * w).sum() / w.sum())
+        sd = float(np.sqrt((w * (tp - vw) ** 2).sum() / w.sum()))
+        out[name] = {"anchor": ts(d1.index[i0], True), "vwap": r5(vw), "b1": [r5(vw - sd), r5(vw + sd)],
+                     "b2": [r5(vw - 2 * sd), r5(vw + 2 * sd)],
+                     "last_4h_close_vs": "above" if h4.close.iloc[-1] > vw else "below"}
+    return out
+
+
+def weekly_rows(d1, n=12):
+    w = d1.resample("W-MON", label="left", closed="left").agg(
+        {"open": "first", "high": "max", "low": "min", "close": "last", "qvol": "sum"}).dropna().tail(n)
+    return {"cols": ["week_open_utc", "o", "h", "l", "c", "qvol_musd"],
+            "rows": [[ts(t, True), r5(o), r5(h), r5(l), r5(c), r5(v / 1e6)]
+                     for t, (o, h, l, c, v) in zip(w.index, w[["open", "high", "low", "close", "qvol"]].to_numpy())],
+            "note": "built from closed daily candles; last row = current week, incomplete"}
 
 
 def key_levels(d1, asof):
@@ -568,7 +602,11 @@ def harmonics(fr, keep=6):
                     status = "overshot"
                 else:
                     status = "at_prz"
-                dist = max(0.0, -d * (Dn - near)) / a
+                over = d * (Dn - far) / a
+                if status == "overshot" and over > 3:      # PRZ'den 3 ATR'den fazla gecilmis: bayat aday
+                    continue
+                # dist_prz_atr: + = PRZ'ye daha var, 0 = PRZ icinde, - = uzak kenarin otesinde
+                dist = -over if status == "overshot" else max(0.0, -d * (Dn - near)) / a
                 if status == "forming" and dist > 3:
                     continue
                 dq = [q for q in ("cd", "xd", "dxc") if q in P]
@@ -722,7 +760,7 @@ def main():
         frames[s] = fr
     snap = {"asof_utc": ts(asof), "generated_utc": ts(pd.Timestamp.now(tz="UTC")),
             "mode": "replay" if replay else "live",
-            "legend": {"structure.pivots": "[time, price, HH/HL/LH/LL, first_close_beyond_time, first_wick_sweep_time(before any close beyond)]; confirmed by k*ATR14 reversal (1d k=3, 4h/1h k=2)",
+            "legend": {"structure.pivots": "[time, price, HH/HL/LH/LL, first_close_beyond_time, first_wick_sweep_time(before any close beyond), rsi14_at_pivot]; confirmed by k*ATR14 reversal (1d k=3, 4h/1h k=2)",
                        "current_leg_extreme": "unconfirmed extreme of the running leg (H?/L?)",
                        "fvg": "[middle_candle_time, bull/bear, low, high, open/partial]; filled ones dropped",
                        "equal_hl": "untaken equal highs/lows (tolerance 0.25*ATR14 of that tf)",
@@ -746,7 +784,8 @@ def main():
             "equal_hl": {"4h": equal_levels(fr["4h"], a4, "4h"), "1h": equal_levels(fr["1h"], a1, "1h")},
             "vp": {"4h_all": vprofile(fr["4h"]), "1h_30d": vprofile(fr["1h"]), "1d_180d": vprofile(fr["1d"].tail(180))},
             "harmonics": harmonics(fr),
-            "candles": {iv: rows(fr[iv], iv) for iv in ("1d", "4h", "1h", "15m")},
+            "avwap_1d": avwap(fr["1d"], fr["4h"]),
+            "candles": {"1w": weekly_rows(fr["1d"]), **{iv: rows(fr[iv], iv) for iv in ("1d", "4h", "1h", "15m")}},
             "derivs": None if replay else derivs(s, fr["4h"]),
         }
         x = snap["assets"][s]

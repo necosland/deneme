@@ -312,7 +312,9 @@ def main():
         (rundir / f"prompt_{ex}.txt").write_text(prompt, encoding="utf-8")
         tools, allowed = ("Read", ("Read",))
         if ex == "trader-makro":
-            tools, allowed = "Read,WebFetch", ("Read", "WebFetch(domain:farside.co.uk)")
+            tools, allowed = "Read,WebFetch", ("Read", "WebFetch(domain:farside.co.uk)",   # ETF akisi yedegi
+                                               "WebFetch(domain:www.coindesk.com)",       # manset kontrolu (beklenmeyen sok)
+                                               "WebFetch(domain:feeds.bbci.co.uk)")       # manset yedegi
         jobs[ex] = (prompt, tools, allowed)
     results = {}
     with cf.ThreadPoolExecutor(max_workers=max(1, len(jobs))) as pool:

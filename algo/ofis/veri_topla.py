@@ -300,6 +300,12 @@ def key_levels(d1, asof):
            "prev_month_hl": [r5(pm.high.max()), r5(pm.low.min())] if len(pm) else None,
            "week_open": r5(cw.open.iloc[0]) if len(cw) else None,
            "month_open": r5(cm.open.iloc[0]) if len(cm) else None}
+    def floor_piv(h, l, c):   # klasik taban pivotlari (TA kursu L207; test edilmedi)
+        pp = (h + l + c) / 3
+        return {"P": r5(pp), "R1": r5(2 * pp - l), "S1": r5(2 * pp - h), "R2": r5(pp + h - l), "S2": r5(pp - (h - l))}
+    out["floor_pivots_day"] = floor_piv(last.high, last.low, last.close)
+    if len(pw):
+        out["floor_pivots_week"] = floor_piv(pw.high.max(), pw.low.min(), pw.close.iloc[-1])
     p = last.close
     step = 5 * 10 ** (math.floor(math.log10(p)) - 1)
     base = math.floor(p / step) * step

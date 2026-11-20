@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trader-ofis/sema.json",
+  "description": "Trader ofisi cikti semasi (TEK KAYNAK). Uzman: expert_output (varlik basina bir blok). Bas trader: decision_output. Sayi sinirlari ofis-ayar.json ile ayni tutulur.",
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["type", "price"],
+      "properties": {
+        "type": {"enum": ["market", "limit", "stop"], "description": "market = next 1m open after decision; limit = better price; stop = breakout trigger"},
+        "price": {"type": ["number", "null"], "description": "null only for market"}
+      },
+      "additionalProperties": false
+    },
+    "expert_block": {
+      "type": "object",
+      "required": ["expert", "asof_utc", "asset", "action", "bias", "timeframe", "setup", "entry", "stop", "targets", "invalidation", "confidence", "horizon_h", "rationale", "data_gaps"],
+      "properties": {
+        "expert": {"type": "string", "pattern": "^trader-[a-z0-9-]+$"},
+        "asof_utc": {"type": "string", "description": "copied from snapshot asof_utc"},
+        "asset": {"enum": ["BTCUSDT", "ETHUSDT"]},
+        "action": {"enum": ["new", "keep", "cancel", "none"], "description": "new = new/changed plan; keep = previous block still valid, repeat it unchanged; cancel = withdraw previous; none = no setup and nothing previous"},
+        "bias": {"enum": ["long", "short", "flat"]},
+        "timeframe": {"enum": ["1d", "4h", "1h", "15m"], "description": "timeframe of the setup/trigger"},
+        "setup": {"type": ["string", "null"], "maxLength": 60, "description": "named setup from own method file; null when flat"},
+        "entry": {"oneOf": [{"$ref": "#/$defs/entry"}, {"type": "null"}]},
+        "stop": {"type": ["number", "null"]},
+        "targets": {"type": "array", "items": {"type": "number"}, "maxItems": 3},
+        "invalidation": {"type": "string", "maxLength": 160, "description": "price/condition that kills the idea (may differ from stop: e.g. 4h close below X)"},
+        "confidence": {"type": "integer", "minimum": 0, "maximum": 80, "description": "subjective P(T1 before stop) in %; office cap 80 = no certainty claims"},
+        "horizon_h": {"type": "integer", "minimum": 4, "maximum": 336},
+        "rationale": {"type": "array", "items": {"type": "string", "maxLength": 200}, "minItems": 1, "maxItems": 3},
+        "data_gaps": {"type": "array", "items": {"type": "string", "maxLength": 80}}
+      },
+      "allOf": [
+        {"if": {"properties": {"bias": {"const": "flat"}}},
+         "then": {"properties": {"entry": {"type": "null"}, "stop": {"type": "null"}, "targets": {"maxItems": 0}}}},
+        {"if": {"properties": {"bias": {"enum": ["long", "short"]}}},
+         "then": {"properties": {"entry": {"$ref": "#/$defs/entry"}, "stop": {"type": "number"}, "targets": {"minItems": 1}}}}
+      ],
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "required": ["asof_utc", "asset", "decision", "side", "entry", "stop", "targets", "risk_pct", "supporting", "opposing", "rule_hits", "reason", "neco_tr"],
+      "properties": {
+        "asof_utc": {"type": "string"},
+        "asset": {"enum": ["BTCUSDT", "ETHUSDT"]},
+        "decision": {"enum": ["open", "keep", "tighten_stop", "close", "cancel_pending", "none"]},
+        "side": {"enum": ["long", "short", null]},
+        "entry": {"oneOf": [{"$ref": "#/$defs/entry"}, {"type": "null"}]},
+        "stop": {"type": ["number", "null"]},
+        "targets": {"type": "array", "items": {"type": "number"}, "maxItems": 2},
+        "risk_pct": {"type": "number", "minimum": 0, "maximum": 2.0},
+        "supporting": {"type": "array", "items": {"type": "string"}},
+        "opposing": {"type": "array", "items": {"type": "string"}},
+        "rule_hits": {"type": "array", "items": {"type": "string"}, "description": "rule ids from trader-risk rule file, e.g. R2-conflict"},
+        "reason": {"type": "string", "maxLength": 300},
+        "neco_tr": {"type": "string", "maxLength": 200, "description": "one plain Turkish sentence for Neco"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {"title": "expert_output", "type": "array", "items": {"$ref": "#/$defs/expert_block"}, "minItems": 1},
+    {"title": "decision_output", "type": "array", "items": {"$ref": "#/$defs/decision"}, "minItems": 1}
+  ]
+}

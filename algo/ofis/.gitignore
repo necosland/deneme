@@ -1,0 +1,6 @@
+veri/
+grafik/
+log/
+defter/.kilit
+defter/*.tmp
+__pycache__/

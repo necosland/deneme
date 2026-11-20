@@ -1,0 +1,36 @@
+{
+  "_note": "Trader ofisi tek ayar kaynagi. Kosucu ve trader-risk buradaki sayilari kullanir; baska yerde sayi tekrarlanmaz. Sahte para; gercek emir, borsa anahtari yok.",
+  "assets": ["BTCUSDT", "ETHUSDT"],
+  "cadence": {"run_after_4h_close_utc": ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"], "delay_min": 20, "monitor_every_min": 5, "_schedule": "Windows Task Scheduler via kur-gorev.ps1: TraderOfisTur 03:20 07:20 11:20 15:20 19:20 23:20 TR, TraderOfisKontrol every 5 min"},
+  "experts": [
+    {"id": "trader-likidite", "name": "Tolga", "field": "price action & liquidity (SMC/ICT)", "runs": "every", "enabled": true, "scored_since": null},
+    {"id": "trader-elliott", "name": "Ekrem", "field": "Elliott wave + Fibonacci", "runs": "every", "enabled": true, "scored_since": null},
+    {"id": "trader-seviye", "name": "Selin", "field": "support/resistance + volume profile", "runs": "every", "enabled": true, "scored_since": null},
+    {"id": "trader-turev", "name": "Derya", "field": "derivatives positioning", "runs": "every", "enabled": true, "scored_since": null},
+    {"id": "trader-makro", "name": "Kerem", "field": "macro & flows", "runs": ["08:00", "16:00"], "enabled": true, "scored_since": null},
+    {"id": "trader-senaryo", "name": "Bora", "field": "range/liquidity two-scenario reading (inspired by Efe Bulduk's public approach)", "runs": "every", "enabled": true, "scored_since": null},
+    {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (PLANNED: waits for course OZET + harmonic detector in veri_topla.py)", "runs": "every", "enabled": false, "scored_since": null}
+  ],
+  "head": {"id": "trader-risk", "name": "Rıza"},
+  "risk": {
+    "start_equity_usdt": 10000,
+    "risk_pct_default": 1.0,
+    "risk_pct_max": 2.0,
+    "risk_pct_counter_regime": 0.5,
+    "max_open_risk_pct": 3.0,
+    "max_positions_per_asset": 1,
+    "max_leverage": 2.0,
+    "min_confidence": 55,
+    "max_confidence": 80,
+    "min_rr_t1": 1.5,
+    "min_stop_atr4h": 0.5,
+    "event_blackout_h": 12,
+    "instrument": "USDT-M perpetual (paper); short requires futures in real life",
+    "fee_taker": 0.0005,
+    "fee_maker": 0.0002,
+    "slippage": 0.0005,
+    "t1_close_fraction": 0.5,
+    "move_stop_to_entry_after_t1": true,
+    "pending_order_expiry_runs": 1
+  }
+}

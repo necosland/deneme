@@ -1,0 +1,99 @@
+{
+ "item_id": "efe-bulduk-yt:HRm4EVMR9tw",
+ "relevant": true,
+ "btc": {
+  "bias": "bear",
+  "horizon": "months",
+  "support": [
+   63000,
+   61000,
+   54000
+  ],
+  "resistance": [
+   72000,
+   76000,
+   77000
+  ],
+  "targets": [
+   52000,
+   48000
+  ],
+  "invalidation": null,
+  "note": "Host expects gradual bleed to end of Jan; 48-52k wick possible, bounce to 75-77k from 61-65k also expected. 70-72k band already lost."
+ },
+ "eth": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": ""
+ },
+ "vol": "up",
+ "vol_note": "Guest Selma: OI still high, moves sharp both ways; Fed meeting Dec 9 and early-2027 Democratic regulation as drivers.",
+ "risks": [
+  "Fed Dec 9 meeting, possible 25bp hike (Chris cites ~88.5%)",
+  "Dec 18 FOMC minutes",
+  "Democrats take Senate/House committees early 2027: Warren (Banking), Brown, SEC/CFTC oversight",
+  "Clarity Act restarted from zero",
+  "Possible AI-related hack/shock"
+ ],
+ "catalysts": [
+  "Dec 9 Fed decision",
+  "Dec 18 FOMC minutes",
+  "2027 start: new Congress committee chairs"
+ ],
+ "confidence": "medium",
+ "hedging": "Says 'fall to 48-52k' bluntly but later 'not expecting that, rather gradual bleed'; admits his 70k long was wrong-way, unsure how deep.",
+ "non_obvious": [
+  "Guest Selma: stablecoin supply contracting, holders selling BTC into Tether, unlike past bottoms.",
+  "Selma: BTC-denominated OI at record while USD OI ~18bn support; Binance shorts loaded into spot-driven pumps, no real flush.",
+  "Chris (guest): realized price ~56k, past bears spent months below it; 20-day risk band lower edge tested."
+ ],
+ "calls": [
+  {
+   "asset": "BTC",
+   "call": "Gradual bleed through end of January, 48-52k wick possible",
+   "direction": "down",
+   "level": 52000,
+   "horizon": "months",
+   "condition": "no bounce holding from 61-65k"
+  },
+  {
+   "asset": "BTC",
+   "call": "Bounce from 61-65k toward 75-77k liquidity",
+   "direction": "up",
+   "level": 76000,
+   "horizon": "weeks",
+   "condition": "if 61-65k holds"
+  },
+  {
+   "asset": "BTC",
+   "call": "Buy zone 48-63k (grid bot buys 63k down to 48k)",
+   "direction": "buy_zone",
+   "level": 63000,
+   "horizon": "months",
+   "condition": null
+  },
+  {
+   "asset": "BTC",
+   "call": "Sell zone up to 77.5k (grid bot sells 63k-77.5k)",
+   "direction": "sell_zone",
+   "level": 77500,
+   "horizon": "weeks",
+   "condition": null
+  }
+ ],
+ "summary_tr": "Efe Bulduk BTC'de ocak sonuna kadar kademeli kanama bekliyor, 48-52 bin fitil ihtimalini dışlamıyor. 61-65 binden 75-77 bin bounce de bekliyor. 70-72 bin bandı artık direnç. Aralık Fed'i ve 2027 Demokrat regülasyon riski öne çıkıyor.",
+ "source": "efe-bulduk-yt",
+ "date_utc": "2026-11-14T19:55Z",
+ "title": "Yapay Zeka Balonu Patlıyor Mu? Bitcoin Neden Serbest Düşüşte?",
+ "url": "https://www.youtube.com/watch?v=HRm4EVMR9tw",
+ "kind": "youtube_transcript",
+ "px_at_publish": {
+  "BTC": 65727.61,
+  "ETH": 1835.09
+ },
+ "_cost_usd": 0.2214168
+}

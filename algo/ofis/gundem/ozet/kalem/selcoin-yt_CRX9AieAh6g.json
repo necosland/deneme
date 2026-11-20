@@ -1,0 +1,61 @@
+{
+ "item_id": "selcoin-yt:CRX9AieAh6g",
+ "relevant": true,
+ "btc": {
+  "bias": "bull",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": "Says BTC formed a potential bottom zone after rising-wedge breakdown; expects some recovery. No levels given. 2020 $5k buy example is past anecdote."
+ },
+ "eth": {
+  "bias": "bull",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": "Implied: BTC, ETH, XRP 'may show moves that recoup losses', unlike small altcoins. Weak, no levels."
+ },
+ "vol": "unspecified",
+ "vol_note": "Calm data calendar ahead; high volatility expected only for Anthropic IPO, not BTC/ETH.",
+ "risks": [
+  "Prices may go lower after buying; speaker says drawdowns are normal",
+  "Small altcoins hard to recover; avoid leverage",
+  "Possible Anthropic post-IPO decline after initial rally",
+  "AI capex may not return expected revenue"
+ ],
+ "catalysts": [
+  "Anthropic IPO trading starts 17:30 on 2026-11-19, may lift US tech",
+  "G20 summit mid-December at Trump National Miami"
+ ],
+ "confidence": "low",
+ "hedging": "'No guarantee it will be so', 'we hope', 'recovery is likely'; no levels or dates.",
+ "non_obvious": [
+  "S&P 500 shorts still heavy per long/short ratio while Nasdaq longs rose; shorts cut in S&P.",
+  "Frames capital as the most expensive thing globally while asset prices (housing, stocks, crypto) are cheapened."
+ ],
+ "calls": [
+  {
+   "asset": "BTC",
+   "call": "Recovery bounce likely after bottom zone formed",
+   "direction": "up",
+   "level": null,
+   "horizon": "unspecified",
+   "condition": "after rising wedge breakdown and bottom zone"
+  }
+ ],
+ "summary_tr": "Selcuk Ergin çoğunlukla Economist kapağını ve Anthropic halka arzını anlatıyor. Bitcoin'de yükselen kama kırılımı sonrası dip bölgesi oluştuğunu, toparlanma olmasının muhtemel olduğunu söylüyor. Seviye vermiyor, küçük altcoinlerden uzak durulmasını öneriyor.",
+ "source": "selcoin-yt",
+ "date_utc": "2026-11-19T14:00Z",
+ "title": "Adamlar Düğmeye Bastı! / Hayırlı Olsun 2027",
+ "url": "https://www.youtube.com/watch?v=CRX9AieAh6g",
+ "kind": "youtube_transcript",
+ "px_at_publish": {
+  "BTC": 63558.01,
+  "ETH": 1798.55
+ },
+ "_cost_usd": 0.0881148
+}

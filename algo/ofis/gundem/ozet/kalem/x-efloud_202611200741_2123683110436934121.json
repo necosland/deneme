@@ -1,0 +1,53 @@
+{
+ "item_id": "x-efloud:202611200741_2123683110436934121",
+ "relevant": true,
+ "btc": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": "No BTC view or level. Only says BTC, indices, commodities and small caps were crushed while DXY dominated. OKX TR report (BTC/ETH) only linked, no content."
+ },
+ "eth": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": "No ETH view. OKX TR report covers ETH, ETHBTC and USDT.D but text only links it."
+ },
+ "vol": "unspecified",
+ "vol_note": "No vol view; says news flow is volatile and heavy selling can come quickly.",
+ "risks": [
+  "Macro backdrop negative, selling pressure may continue (NQ, SPX)",
+  "DXY dominance: bullish DXY with targets 105.8 then 106.6",
+  "Gold below 3860 swing low, 3600 and 3430-3250 demand zone in play",
+  "Weekend entry for SPX seen as critical"
+ ],
+ "catalysts": [
+  "Fed rate decision (around 2026-11-18, DXY post)",
+  "Macro data/statements cited as driver for NQ downside to 24250"
+ ],
+ "confidence": "medium",
+ "hedging": "Conditional language: 'if it loses', 'I may buy', waits for confirmation; says he can be wrong.",
+ "non_obvious": [
+  "Efloud describes a broad cross-asset selloff (equities, oil, gold, silver, BTC, small caps) with only DXY strong",
+  "DXY bullish near 104 resistance; a pullback is expected if 103.4 is lost, 102.4 as support",
+  "NQ buy zone 24250 (resistance 26880); SPX resistance 7290, no positive picture before reclaiming the red box"
+ ],
+ "calls": [],
+ "summary_tr": "Efloud'un bu demetinde BTC/ETH görüşü yok. Makro: DXY boğa (104 direnç, 103.4 kaybı düzeltme), NQ 24250'ye gerileme beklentisi, altında 3430-3250 talep bölgesi. BTC için yalnız 'risk varlıkları yıkıldı' tespiti var.",
+ "source": "x-efloud",
+ "date_utc": "2026-11-20T07:41Z",
+ "title": "@Efloud posts 2026-11-15T09:23Z .. 2026-11-20T07:41Z (6)",
+ "url": "https://x.com/Efloud",
+ "kind": "tweets",
+ "px_at_publish": {
+  "BTC": 61858.96,
+  "ETH": 1752.78
+ },
+ "_cost_usd": 0.0661304
+}

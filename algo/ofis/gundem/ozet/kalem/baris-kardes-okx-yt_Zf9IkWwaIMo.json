@@ -1,0 +1,124 @@
+{
+ "item_id": "baris-kardes-okx-yt:Zf9IkWwaIMo",
+ "relevant": true,
+ "btc": {
+  "bias": "bear",
+  "horizon": "weeks",
+  "support": [
+   64000,
+   62751,
+   62357
+  ],
+  "resistance": [
+   65600,
+   68693,
+   72932,
+   74667,
+   77182
+  ],
+  "targets": [
+   53735
+  ],
+  "invalidation": 77182,
+  "note": "Says uptrend ended: lost true market mean, STH cost basis. Dip-buying in tranches for long term; 53-54k realized price called major buy zone. Invalidation implied."
+ },
+ "eth": {
+  "bias": "bear",
+  "horizon": "weeks",
+  "support": [
+   1794,
+   1775,
+   1660
+  ],
+  "resistance": [
+   1845,
+   1900,
+   1987,
+   2243
+  ],
+  "targets": [],
+  "invalidation": 2243,
+  "note": "Below realized price 2243, no comfort; 1794 bounce, 1660 near -1.5 SD seen as value area for gradual buying. Invalidation implied."
+ },
+ "vol": "unspecified",
+ "vol_note": "No explicit vol call; warns holders underwater will sell on small negative news, Monday open key.",
+ "risks": [
+  "Monday open after weak week",
+  "Spot ETF outflows ~3B USD since end of October",
+  "Dec rate hike odds above 88% cited",
+  "Warsh speech not dovish, no rate mention",
+  "BTC could fall below realized price as in prior cycles"
+ ],
+ "catalysts": [
+  "Key data releases this week (unspecified)",
+  "Next OKX TR report on Thursday"
+ ],
+ "confidence": "medium",
+ "hedging": "Data-driven framing, 'I don't know the bottom', 'could be bottom but there is a bottom of the bottom', 'not all capital'.",
+ "non_obvious": [
+  "BTC has not touched realized price (~53.7k) this cycle, unlike all prior cycles; he sees this as unfinished",
+  "ETH market cap below stablecoin cap: money rotating into stables, low trust",
+  "Liquidity index rejected at 0.81, now 0.34; prior cycles all reached 0 (this one low 0.06)"
+ ],
+ "calls": [
+  {
+   "asset": "BTC",
+   "call": "64k support must hold; break deepens the decline",
+   "direction": "hold_above",
+   "level": 64000,
+   "horizon": "days",
+   "condition": "spot accumulation zone cited"
+  },
+  {
+   "asset": "BTC",
+   "call": "Realized price 53-54k would be a major buy opportunity",
+   "direction": "buy_zone",
+   "level": 53735,
+   "horizon": "months",
+   "condition": "if price falls to realized price"
+  },
+  {
+   "asset": "BTC",
+   "call": "Uptrend not back until 77.2k true market mean is reclaimed",
+   "direction": "up",
+   "level": 77182,
+   "horizon": "unspecified",
+   "condition": "also needs 72.9k 200DMA and 74.7k STH cost"
+  },
+  {
+   "asset": "ETH",
+   "call": "1794 support must hold; lower levels exist if lost",
+   "direction": "hold_above",
+   "level": 1794,
+   "horizon": "days",
+   "condition": null
+  },
+  {
+   "asset": "ETH",
+   "call": "No relief for ETH until 2243 realized price is reclaimed",
+   "direction": "up",
+   "level": 2243,
+   "horizon": "unspecified",
+   "condition": "first test likely acts as resistance"
+  },
+  {
+   "asset": "ETH",
+   "call": "Approach to 1660 is a buying area",
+   "direction": "buy_zone",
+   "level": 1660,
+   "horizon": "weeks",
+   "condition": "near -1.5 SD level"
+  }
+ ],
+ "summary_tr": "Barış Kardeş BTC'de yükseliş trendinin bittiğini söylüyor; dip arayışı sürüyor. BTC 64 bin tutmalı, 72,9-77,2 bin geri alınmadan trend yok; 53-54 bin realized price büyük alım fırsatı. ETH'de 1794 destek, 2243 aşılmadan rahat yok.",
+ "source": "baris-kardes-okx-yt",
+ "date_utc": "2026-11-17T06:49Z",
+ "title": "Barış Kardeş ile Onchain Verilerde Son Durum",
+ "url": "https://www.youtube.com/watch?v=Zf9IkWwaIMo",
+ "kind": "youtube_transcript",
+ "px_at_publish": {
+  "BTC": 64555.58,
+  "ETH": 1826.2
+ },
+ "_cost_usd": 0.1437254
+}

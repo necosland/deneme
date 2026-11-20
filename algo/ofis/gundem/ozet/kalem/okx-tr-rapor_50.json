@@ -1,0 +1,138 @@
+{
+ "item_id": "okx-tr-rapor:50",
+ "relevant": true,
+ "btc": {
+  "bias": "bear",
+  "horizon": "weeks",
+  "support": [
+   63217,
+   62914,
+   62132,
+   60000,
+   57800
+  ],
+  "resistance": [
+   64000,
+   65600,
+   66900,
+   68200,
+   71000,
+   72800
+  ],
+  "targets": [
+   55200,
+   50000
+  ],
+  "invalidation": null,
+  "note": "Efloud: HTF structure may have changed, LH/LL intact; 78.5k and 72k already lost. 65.6k reclaim opens 68k. Targets 55.2k/50k only if 57.8k lost."
+ },
+ "eth": {
+  "bias": "bear",
+  "horizon": "weeks",
+  "support": [
+   1788,
+   1769,
+   1756,
+   1710,
+   1648,
+   1600
+  ],
+  "resistance": [
+   1840,
+   1865,
+   1890,
+   1960,
+   2000,
+   2200
+  ],
+  "targets": [
+   1640,
+   1600
+  ],
+  "invalidation": null,
+  "note": "Below 1840 historical support; fell harder than BTC on ETHBTC drop and USDT.D rise. Below 1710 opens 1640/1600. WO reclaim targets 1890/2000."
+ },
+ "vol": "up",
+ "vol_note": "Hawkish Oct FOMC minutes (Dec hike 85-95% priced), PCE and GDP on Nov 25, Dec 9 FOMC, Nov 20 options expiry.",
+ "risks": [
+  "Hawkish Fed: Dec hike 25-50 bps, US10Y 5.05-5.15%, DXY 103.8-103.9",
+  "USDT.D above 8.6% targets 8.96% then 11.23%: altcoin crash",
+  "Loss of 57.8k BTC / 1.71k ETH: capitulation continues",
+  "Retail long/short 2.8 long-heavy: long liquidation blocks at 61-62.3k"
+ ],
+ "catalysts": [
+  "Nov 19 16:30 TSI US jobless claims, Philly Fed, Fed speakers",
+  "Nov 19 Anthropic IPO on Nasdaq (report claims $64B): liquidity rotation",
+  "Nov 20 Michigan sentiment, BTC options expiry",
+  "Nov 25 Oct PCE and Q3 GDP",
+  "Dec 9 FOMC"
+ ],
+ "confidence": "medium",
+ "hedging": "Conditional, confirmation-first: 'may', 'could', scenarios both ways; onchain scenarios stated as non-certain theoretical models.",
+ "non_obvious": [
+  "Options max pain 71k is 12.7% above spot; big call walls 73k-76k; Put/Call 0.62 despite the selloff.",
+  "Percent supply in profit 47.46% (<50%) and aSOPR-1 below extreme downside band, yet Score metric 0 and Fear&Greed 26.97.",
+  "USDT.D hit 8.3% and erased all altcoin gains since August; ETF cost basis 85,075 and MSTR 75,657 are far above spot."
+ ],
+ "calls": [
+  {
+   "asset": "BTC",
+   "call": "60k zone is a buy area, only with LTF confirmation",
+   "direction": "buy_zone",
+   "level": 60000,
+   "horizon": "weeks",
+   "condition": "LTF confirmation required"
+  },
+  {
+   "asset": "BTC",
+   "call": "Loss of 57.8k opens 55.2k then 50k",
+   "direction": "down",
+   "level": 55200,
+   "horizon": "weeks",
+   "condition": "loses 57800 (Jul 1 low)"
+  },
+  {
+   "asset": "BTC",
+   "call": "Reclaiming 65.6k allows move toward 68k",
+   "direction": "up",
+   "level": 68000,
+   "horizon": "days",
+   "condition": "reclaims 65600"
+  },
+  {
+   "asset": "BTC",
+   "call": "Below 64k wall (S-R flip), support band 62.7k-63.2k",
+   "direction": "lose_below",
+   "level": 62710,
+   "horizon": "days",
+   "condition": "breaks 62914-63181 cluster; next 62132, 60000"
+  },
+  {
+   "asset": "ETH",
+   "call": "Loss of 1710 opens 1640 then 1600",
+   "direction": "down",
+   "level": 1640,
+   "horizon": "weeks",
+   "condition": "loses 1710 (Jul 6 low)"
+  },
+  {
+   "asset": "ETH",
+   "call": "Reclaiming 1840 puts 1960 as resistance/target",
+   "direction": "up",
+   "level": 1960,
+   "horizon": "weeks",
+   "condition": "reclaims 1840"
+  }
+ ],
+ "summary_tr": "Efloud BTC ve ETH'de düşüş yapısı sürüyor diyor; BTC için 65.600 kazanılırsa 68.000, 57.800 kaybedilirse 55.200/50.000; ETH'de 1.710 altı 1.640/1.600. 60.000 onaylı alım bölgesi. Barış Kardeş şahin Fed ve kapitülasyon sinyalleriyle temkinli; BTC 62.7-63.2k destek, 64k direnç.",
+ "source": "okx-tr-rapor",
+ "date_utc": "2026-11-19T12:00Z",
+ "title": "OKX TR Haftalik Arastirma Raporu #50",
+ "url": "https://tr.okx.com/learn/haftalik-arastirma-raporu-50",
+ "kind": "report",
+ "px_at_publish": {
+  "BTC": 63878.21,
+  "ETH": 1806.26
+ },
+ "_cost_usd": 0.12408519999999998
+}

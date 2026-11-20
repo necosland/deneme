@@ -224,6 +224,23 @@ def due(expert_cfg, asof):
     return r == "every" or (isinstance(r, list) and asof[-5:] in r)
 
 
+def gundem_line():
+    """Gundem ozeti (gundem/ozetle.py, trader-gundem Defne): son_kisa.json <= 4 gunluk ise yolu, degilse none.
+    Kerem ve Riza'ya baglam; hata turu asla durdurmaz."""
+    try:
+        f = O.ROOT / "gundem" / "ozet" / "son_kisa.json"
+        age_h = (time.time() - f.stat().st_mtime) / 3600
+        if age_h > 96:
+            return "GUNDEM=none"
+        d = json.loads(f.read_text(encoding="utf-8"))
+        return (f"GUNDEM={f} (digest of public commentary by analysts Neco trusts, dated {d.get('date')}, "
+                f"{age_h:.0f}h old, ~1.5k tokens: per-source bias, consensus/divergence, crowd expectation, levels "
+                "they watch. Context only: never a setup trigger or a level source by itself; SNAPSHOT wins on "
+                "conflict; a one-sided consensus can be contrarian. Read it once; cite as 'GUNDEM:' if it moved you.)")
+    except Exception:  # noqa: BLE001
+        return "GUNDEM=none"
+
+
 # ---------------- ana akis ----------------
 def main():
     ap = argparse.ArgumentParser()
@@ -305,6 +322,8 @@ def main():
                 rec_f = rundir / "recent_trader-senaryo.json"
                 O.write_json(rec_f, [{k: t[k] for k in ("asset", "side", "exit_utc", "exit_reason", "r_mult")} for t in rec])
             lines.append(f"RECENT={rec_f}")
+        if ex == "trader-makro":
+            lines.append(gundem_line())
         lines.append(f"ASSETS={','.join(cfg['assets'])}. Follow your agent instructions. "
                      "Your final message must be only the ```json array (one block per asset). "
                      "Every field is required (horizon_h too when flat); each rationale item <= 200 chars.")
@@ -363,7 +382,7 @@ def main():
         sc = D.scores(st)
         O.write_json(scores_f, {k: {x: v[x] for x in ("closed", "hit_rate", "avg_r", "ev_r_ci90", "brier")} for k, v in sc.items()})
         rlim = " ".join(f"{k}={v}" for k, v in R.items() if isinstance(v, (int, float)) and not isinstance(v, bool))
-        prompt = "\n".join([f"EXPERTS={experts_f}", f"SNAPSHOT={views['risk']}",
+        prompt = "\n".join([f"EXPERTS={experts_f}", f"SNAPSHOT={views['risk']}", gundem_line(),
                             f"OPEN={open_f if D.open_summary(st) else 'none'}", f"LEDGER={ledger_f}",
                             f"SCORES={scores_f}", f"LIMITS={rlim}",
                             f"ASSETS={','.join(cfg['assets'])}. Follow your agent instructions. "

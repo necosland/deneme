@@ -1,0 +1,43 @@
+{
+ "item_id": "x-teknikcihoca:202611201928_2123861099632271672",
+ "relevant": true,
+ "btc": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": "Only 'Bitcoin below $60,000' with down arrows (price already 58.5k) and a rhetorical gold-vs-BTC jab; no forecast, level or horizon."
+ },
+ "eth": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": ""
+ },
+ "vol": "unspecified",
+ "vol_note": "",
+ "risks": [],
+ "catalysts": [],
+ "confidence": "low",
+ "hedging": "Rhetorical questions and observations only, no stated view or conviction on BTC/ETH.",
+ "non_obvious": [
+  "Implied: author notes gold dip-buyers are ignoring BTC's drop below 60k; hints at BTC weakness, not a call."
+ ],
+ "calls": [],
+ "summary_tr": "Teknikci Hoca'nın gönderileri çoğunlukla altın, konut ve fon mağdurları gibi konu dışı. BTC için yalnızca 'Bitcoin 60.000$ altında' tespiti var; yön, seviye ya da ufuk vermiyor. ETH'ye değinmiyor.",
+ "source": "x-teknikcihoca",
+ "date_utc": "2026-11-20T19:28Z",
+ "title": "@TeknikciHoca posts 2026-11-17T18:35Z .. 2026-11-20T19:28Z (6)",
+ "url": "https://x.com/TeknikciHoca",
+ "kind": "tweets",
+ "px_at_publish": {
+  "BTC": 58558.66,
+  "ETH": 1607.97
+ },
+ "_cost_usd": 0.0457066
+}

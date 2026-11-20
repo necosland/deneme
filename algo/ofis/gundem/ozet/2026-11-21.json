@@ -1,0 +1,205 @@
+{
+ "date": "2026-11-21",
+ "window_days": 7,
+ "items": 10,
+ "per_source": [
+  {
+   "source": "efe-bulduk-yt",
+   "date": "2026-11-14",
+   "btc": "bear",
+   "eth": "none",
+   "horizon": "months",
+   "confidence": "medium",
+   "line": "Stale (14 Nov): gradual bleed to end-Jan, 48-52k wick possible; bounce to 75-77k if 61-65k holds. Price now below that zone. Own 70k long was wrong-way."
+  },
+  {
+   "source": "selcoin-yt",
+   "date": "2026-11-19",
+   "btc": "bull",
+   "eth": "bull",
+   "horizon": "unspecified",
+   "confidence": "low",
+   "line": "16 Nov: 73.2k/87k targets, 65k base. 19 Nov: only 'bottom zone formed, recovery likely', no levels. Generic commentary, hedged; ETH weak bull."
+  },
+  {
+   "source": "baris-kardes-okx-yt",
+   "date": "2026-11-17",
+   "btc": "bear",
+   "eth": "bear",
+   "horizon": "weeks",
+   "confidence": "medium",
+   "line": "Onchain: uptrend over (lost true mean, STH cost). 53.7k realized price = major buy zone; 77.2k invalidation. His X on 20 Nov is neutral: wait for direction."
+  },
+  {
+   "source": "glassnode-week-onchain",
+   "date": "2026-11-17",
+   "btc": "mixed",
+   "eth": "none",
+   "horizon": "weeks",
+   "confidence": "medium",
+   "line": "Data-led: capitulation-level realized loss favors a bottom but demand thin. Daily close <62K targets 58.5K then 53.7K; 74.1K reclaim confirms bottom."
+  },
+  {
+   "source": "okx-tr-rapor",
+   "date": "2026-11-19",
+   "btc": "bear",
+   "eth": "bear",
+   "horizon": "weeks",
+   "confidence": "medium",
+   "line": "Confirmation-first: loss of 57.8k opens 55.2k/50k; 65.6k reclaim opens 68k; 60k buy only with LTF confirm. ETH: below 1710 opens 1640/1600."
+  },
+  {
+   "source": "x-efloud",
+   "date": "2026-11-20",
+   "btc": "none",
+   "eth": "none",
+   "horizon": "unspecified",
+   "confidence": "medium",
+   "line": "No BTC/ETH view in posts; broad cross-asset selloff with strong DXY. Only links OKX TR report (likely same person as its Efloud view)."
+  },
+  {
+   "source": "x-kardesbaris",
+   "date": "2026-11-20",
+   "btc": "neutral",
+   "eth": "none",
+   "horizon": "unspecified",
+   "confidence": "low",
+   "line": "Waits for direction ('ground is slippery'); his own rule says uptrend over (STH RP, 200D MA lost). Fear&Greed at new cycle low. No levels. Same person as Barış YT."
+  },
+  {
+   "source": "x-teknikcihoca",
+   "date": "2026-11-20",
+   "btc": "none",
+   "eth": "none",
+   "horizon": "unspecified",
+   "confidence": "low",
+   "line": "Only notes 'Bitcoin below $60,000' and a gold-vs-BTC jab; no forecast, level or horizon."
+  }
+ ],
+ "consensus": {
+  "btc": "bear",
+  "eth": "bear",
+  "strength": "moderate",
+  "text": "BTC: 3 of 5 people with a view are bearish (Efe, Barış Kardeş, OKX report/Efloud), Selcoin bull, Glassnode mixed. ETH: Barış and OKX bear vs Selcoin's weak bull. Efloud and the OKX report counted as one person."
+ },
+ "disagreements": [
+  "Selcoin (bull, 73.2k/87k on 16 Nov, base 65k) vs Efe/Barış/OKX (bear); price 58.6k is already below Selcoin's 65k base.",
+  "Glassnode sees capitulation/bottom-like setup vs Barış: realized price 53.7k untouched, so bottom unfinished.",
+  "Downside depth: Efe 48-52k (months) vs OKX 55.2k/50k below 57.8k vs Glassnode 58.5k/53.7k below 62k close.",
+  "ETH: Selcoin range 1769-2259 and weak bull vs Barış/OKX bear; 1769 now sits above price 1608."
+ ],
+ "crowd_expectation": "Most expect a slow bleed with lower highs and a test of the 53-55k realized-price zone; bounces to 65.6-68k seen as resistance; buying only in tranches or with confirmation.",
+ "contrarian_read": "Consensus is only moderate. Crowd waits for 53-55k, so a sharp squeeze toward 65.6k-68k could catch late sellers; Glassnode's capitulation data and 59.5-62.2k long-liquidation cluster cut both ways. Context, not signal.",
+ "key_levels": {
+  "BTC": [
+   {
+    "level": 53700,
+    "kind": "target",
+    "n": 2
+   },
+   {
+    "level": 57800,
+    "kind": "support",
+    "n": 1
+   },
+   {
+    "level": 60000,
+    "kind": "resistance",
+    "n": 1
+   },
+   {
+    "level": 62000,
+    "kind": "resistance",
+    "n": 3
+   },
+   {
+    "level": 64000,
+    "kind": "resistance",
+    "n": 2
+   },
+   {
+    "level": 65600,
+    "kind": "resistance",
+    "n": 4
+   },
+   {
+    "level": 72932,
+    "kind": "resistance",
+    "n": 3
+   },
+   {
+    "level": 77182,
+    "kind": "invalidation",
+    "n": 2
+   }
+  ],
+  "ETH": [
+   {
+    "level": 1600,
+    "kind": "target",
+    "n": 1
+   },
+   {
+    "level": 1660,
+    "kind": "resistance",
+    "n": 1
+   },
+   {
+    "level": 1710,
+    "kind": "resistance",
+    "n": 1
+   },
+   {
+    "level": 1769,
+    "kind": "resistance",
+    "n": 2
+   },
+   {
+    "level": 1794,
+    "kind": "resistance",
+    "n": 2
+   },
+   {
+    "level": 1840,
+    "kind": "resistance",
+    "n": 2
+   },
+   {
+    "level": 1960,
+    "kind": "resistance",
+    "n": 1
+   },
+   {
+    "level": 2243,
+    "kind": "invalidation",
+    "n": 2
+   }
+  ]
+ },
+ "vol_view": "Expected higher: hawkish Fed risk, Deribit implied range widening, long-liquidation cluster 59.5-62.3k just above price.",
+ "risks_catalysts": [
+  "Dec 9 FOMC; Dec hike odds cited at 85-95%",
+  "Nov 25 Oct PCE and Q3 GDP (OKX)",
+  "Dec 10 November CPI print (Glassnode)",
+  "Dec 18 FOMC minutes (Efe)",
+  "Long liquidation blocks 59.5-62.3k; loss of 57.8k BTC / 1.71k ETH",
+  "USDT.D above 8.6% risks altcoin crash; ETF outflows ~2.6-3B USD"
+ ],
+ "surprises": [
+  "Selcoin went from specific 73.2k/87k targets to a levelless 'recovery likely' while price fell below his 65k base.",
+  "Barış and Glassnode both cite 53.7k realized price but read it oppositely: unfinished bottom vs capitulation already shown.",
+  "OKX: options max pain 71k and Put/Call 0.62 despite the selloff; ETH market cap below stablecoin cap (Barış)."
+ ],
+ "headline_tr": "Çoğunluk BTC'de düşüş yönlü; Selcoin toparlanma, Glassnode 'dip olabilir ama talep zayıf' diyor",
+ "ozet_tr": "Son bir haftada görüş bildiren beş kişiden üçü BTC için düşüş bekliyor (Efe, Barış Kardeş, OKX raporu). Selcoin toparlanma bekliyor ama artık seviye vermiyor. Glassnode verisi dip benzeri bir temizlik gösteriyor, yine de talep zayıf. Fiyat 58,6 bin dolar; birçok kaynağın destek saydığı 62-65 bin bölgesi artık üstte, direnç gibi duruyor. Aşağıda en çok anılan hedef 53-55 bin. ETH'de iki kaynak düşüş, biri zayıf toparlanma diyor. Önemli tarihler: 25 Kasım PCE, 9 Aralık Fed kararı.",
+ "_run": {
+  "items_new": 10,
+  "items_ok": 10,
+  "items_failed": [],
+  "calls_logged": 25,
+  "cost_usd_items": 1.0145,
+  "cost_usd_digest": 0.1352182,
+  "cost_usd_total": 1.1497,
+  "generated_utc": "2026-11-20 21:43"
+ }
+}

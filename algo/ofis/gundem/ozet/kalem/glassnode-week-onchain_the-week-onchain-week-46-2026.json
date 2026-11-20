@@ -1,0 +1,101 @@
+{
+ "item_id": "glassnode-week-onchain:the-week-onchain-week-46-2026",
+ "relevant": true,
+ "btc": {
+  "bias": "mixed",
+  "horizon": "weeks",
+  "support": [
+   62000,
+   58500,
+   53700
+  ],
+  "resistance": [
+   66000,
+   74100
+  ],
+  "targets": [
+   58500,
+   53700
+  ],
+  "invalidation": 62000,
+  "note": "Capitulation-level realized loss and flush favor a bottom, but demand is thin. Targets apply only on a daily close below 62K. 66K is the block's upper edge (implied resistance)."
+ },
+ "eth": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": ""
+ },
+ "vol": "up",
+ "vol_note": "Deribit implied range widens into 2027; large long-liquidation cluster at 59.5-62.2K could force a fast move if 62K breaks.",
+ "risks": [
+  "Daily close below the 62-66K block puts August buyers at a loss",
+  "Large long-liquidation cluster at 59.5-62.2K just below price",
+  "Stablecoin supply down 4.2% in 90 days as T-bill yields rise",
+  "Miners (MARA, Riot) sold about 28K BTC in November",
+  "US spot ETF net outflows of $2.6B in ten trading days to Nov 13",
+  "Altcoins still breaking the longer trend (200-day share not at past-low floors)"
+ ],
+ "catalysts": [
+  "NVIDIA earnings, Nov 17",
+  "Anthropic expected to list on Nasdaq, Nov 19",
+  "Fed rate decision, Dec 9",
+  "November CPI print, Dec 10",
+  "Coinbase Premium turning positive and holding"
+ ],
+ "confidence": "medium",
+ "hedging": "Frames the washout as a bottom-like setup but says demand is thin, and uses 'could' and 'should' for the downside path.",
+ "non_obvious": [
+  "Realized Loss vs. past-year profits hit capitulation levels last seen in 2018, 2020, 2022 and early 2023.",
+  "The 62-66K block grew by about 66K BTC in two days of heavy selling. It holds about a fifth of short-term holder coins.",
+  "In each year since 2023 the deepest altcoin washout came within 4 days of a BTC low, and BTC was higher 60 days later every time."
+ ],
+ "calls": [
+  {
+   "asset": "BTC",
+   "call": "62K-66K block is the key support; a daily close below 62K opens a drop to 58.5K",
+   "direction": "lose_below",
+   "level": 62000,
+   "horizon": "weeks",
+   "condition": "daily close below 62000"
+  },
+  {
+   "asset": "BTC",
+   "call": "Break of the block could extend to the Realized Price near 53.7K",
+   "direction": "down",
+   "level": 53700,
+   "horizon": "weeks",
+   "condition": "after daily close below 62000 and 58500"
+  },
+  {
+   "asset": "BTC",
+   "call": "Reclaiming the STH Cost Basis at 74.1K would confirm a bottom is forming",
+   "direction": "up",
+   "level": 74100,
+   "horizon": "weeks",
+   "condition": "reclaim of 74100"
+  },
+  {
+   "asset": "BTC",
+   "call": "Hold above 62K daily close keeps the capitulation-low setup intact",
+   "direction": "hold_above",
+   "level": 62000,
+   "horizon": "weeks",
+   "condition": null
+  }
+ ],
+ "summary_tr": "Glassnode: çöküş kapitülasyon seviyesinde zarar ve kaldıraç temizliği getirdi. 62-66 bin bloğu kilit destek. Günlük kapanış 62 bin altına inerse 58,5 bin ve 53,7 bine yol açılır. 74,1 bin geri alınırsa dip teyit olur. Talep zayıf.",
+ "source": "glassnode-week-onchain",
+ "date_utc": "2026-11-17T16:40Z",
+ "title": "Capitulation Meets Support",
+ "url": "https://research.glassnode.com/the-week-onchain-week-46-2026/",
+ "kind": "article",
+ "px_at_publish": {
+  "BTC": 63747.09,
+  "ETH": 1778.52
+ },
+ "_cost_usd": 0.0689636
+}

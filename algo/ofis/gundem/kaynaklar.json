@@ -1,0 +1,107 @@
+{
+  "_note": "Trader ofisi gundem kaynaklari. Neco yeni kaynak ekleyebilir: ayni bicimde bir satir ekle (type: rss | youtube | x | okx_rapor). enabled=false olan atlanir. max_items: tek calismada en cok kac kalem (en yeniler). Kimlik notlari 'who' alaninda.",
+  "lookback_days_first_run": 7,
+  "digest_window_days": 7,
+  "sources": [
+    {
+      "id": "glassnode-week-onchain",
+      "name": "Glassnode - The Week On-chain",
+      "type": "rss",
+      "url": "https://insights.glassnode.com/rss/",
+      "link_contains": ["the-week-onchain"],
+      "lang": "en",
+      "max_items": 2,
+      "enabled": true,
+      "who": "Glassnode research team; free public weekly newsletter. RSS carries full text (content:encoded). Posts now live on research.glassnode.com.",
+      "method": "RSS full text"
+    },
+    {
+      "id": "efe-bulduk-yt",
+      "name": "Efe Bulduk (YouTube)",
+      "type": "youtube",
+      "channel_id": "UCVA-FhZ4H8lQdygXemfALLw",
+      "handle": "@EfeBulduk",
+      "lang": "tr",
+      "min_duration_s": 600,
+      "max_items": 3,
+      "enabled": true,
+      "who": "Efe Bulduk, economist, WinningCircle founder. Streams (E Plani, market updates) + 'Canli Cuzdan' series. Shorts/vlogs dropped by min_duration_s.",
+      "method": "YouTube RSS list + yt-dlp auto subtitles"
+    },
+    {
+      "id": "selcoin-yt",
+      "name": "Selcoin - Selcuk Ergin (YouTube)",
+      "type": "youtube",
+      "channel_id": "UCDmr51JwXxErCrTALTGokpQ",
+      "handle": "@Selcoin",
+      "lang": "tr",
+      "min_duration_s": 300,
+      "max_items": 3,
+      "enabled": true,
+      "who": "Selcuk Ergin, channel @Selcoin (verified via yt-dlp search 2026-11-21). Turkish; crypto + gold + BIST + housing, about 2 videos/week, clickbait titles.",
+      "method": "YouTube RSS list + yt-dlp auto subtitles"
+    },
+    {
+      "id": "baris-kardes-okx-yt",
+      "name": "Baris Kardes - OKX TR broadcast (YouTube)",
+      "type": "youtube",
+      "channel_id": "UCrzrJlK9eIwBWEKHBZq6gmA",
+      "handle": "@OKXTurkiye",
+      "title_include": ["Barış Kardeş", "Kardeş", "Efloud"],
+      "lang": "tr",
+      "min_duration_s": 900,
+      "max_items": 2,
+      "enabled": true,
+      "who": "Baris Kardes (X @KardesBaris, onchain analyst, bariskardes.com; Neco confirmed handle 2026-11-21). Weekly Monday 21:00 TR 'Onchain Verilerde Son Durum' on OKX TR X broadcast, archived on OKX Turkiye YouTube. Other OKX TR shows filtered out by title_include.",
+      "method": "YouTube RSS list (title filter) + yt-dlp auto subtitles"
+    },
+    {
+      "id": "okx-tr-rapor",
+      "name": "OKX TR Haftalik Arastirma Raporu (Efloud + Baris Kardes)",
+      "type": "okx_rapor",
+      "url_pattern": "https://tr.okx.com/learn/haftalik-arastirma-raporu-{n}",
+      "start_no": 50,
+      "lang": "tr",
+      "max_items": 1,
+      "enabled": true,
+      "who": "Bi-weekly report written by Efloud (TA: BTC, ETH, ETHBTC, USDT.D) and Baris Kardes (onchain). #50 published 2026-11-19.",
+      "method": "public HTML page, text extracted (charts are images, not read)"
+    },
+    {
+      "id": "x-kardesbaris",
+      "name": "Baris Kardes (X @KardesBaris)",
+      "type": "x",
+      "handle": "KardesBaris",
+      "lang": "tr",
+      "max_items": 1,
+      "max_photos": 3,
+      "enabled": true,
+      "who": "Baris Kardes, onchain analyst, own indicators (e.g. 'Baris Kardes Fear&Greed Index').",
+      "method": "api.fxtwitter.com/2/profile/<handle>/statuses (public mirror, no login); own posts only, retweets skipped; new posts bundled into one item per run"
+    },
+    {
+      "id": "x-efloud",
+      "name": "Efloud (X @Efloud)",
+      "type": "x",
+      "handle": "Efloud",
+      "lang": "tr",
+      "max_items": 1,
+      "max_photos": 3,
+      "enabled": true,
+      "who": "Efloud, Turkish price-action trader ('Mostly TA'), co-author of OKX TR weekly report. YouTube @EfloudTheSurfer (UCP8-pG7mOB6ySsgrGAsd6eQ) exists but is an education/trade-review series (MPA #xx), last upload 2026-10-23: not added.",
+      "method": "api.fxtwitter.com/2/profile/<handle>/statuses (public mirror, no login)"
+    },
+    {
+      "id": "x-teknikcihoca",
+      "name": "Teknikci Hoca (X @TeknikciHoca)",
+      "type": "x",
+      "handle": "TeknikciHoca",
+      "lang": "tr",
+      "max_items": 1,
+      "max_photos": 3,
+      "enabled": true,
+      "who": "X @TeknikciHoca (account since 2013, ~208k followers), bio 'Crypto & macro researcher | Trader & technical analyst since 2013 | Turkiye / Europe'. Real name not public in sources checked (site teknikcihoca.com is a placeholder, linktr.ee lists X/YouTube/Telegram/LinkedIn only). Link to Efe Bulduk's circle NOT verified (Neco's note). Many off-topic posts (football, real estate).",
+      "method": "api.fxtwitter.com/2/profile/<handle>/statuses (public mirror, no login)"
+    }
+  ]
+}

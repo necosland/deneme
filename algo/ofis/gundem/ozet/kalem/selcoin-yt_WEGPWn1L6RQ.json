@@ -1,0 +1,97 @@
+{
+ "item_id": "selcoin-yt:WEGPWn1L6RQ",
+ "relevant": true,
+ "btc": {
+  "bias": "bull",
+  "horizon": "weeks",
+  "support": [
+   65000
+  ],
+  "resistance": [
+   73200,
+   87000
+  ],
+  "targets": [
+   73200,
+   87000
+  ],
+  "invalidation": null,
+  "note": "Rising wedge turned passive on 65k test; triple-bottom/H&S-like base. 87k only if 73.2k is cleared and held. Gradual buying, not a trend call."
+ },
+ "eth": {
+  "bias": "neutral",
+  "horizon": "unspecified",
+  "support": [
+   1769
+  ],
+  "resistance": [
+   2259
+  ],
+  "targets": [],
+  "invalidation": null,
+  "note": "Implied range: says to use 1769 and 2259 as the base levels; resistance 'softer' than BTC's."
+ },
+ "vol": "up",
+ "vol_note": "Nvidia earnings on the evening after publish expected to cause a big swing; Fed hawkish risk after high US CPI.",
+ "risks": [
+  "Nvidia earnings may disappoint; market wants better than good",
+  "Hot US CPI could keep the Fed hawkish and sales going",
+  "BTC dominance 61 holding blocks altcoin rotation"
+ ],
+ "catalysts": [
+  "Nvidia earnings, evening of 2026-11-17",
+  "Morgan Stanley upgraded global equities to overweight"
+ ],
+ "confidence": "medium",
+ "hedging": "'73.2k could be the next point', 'will not define a clear uptrend', 'choice is yours'; no invalidation given.",
+ "non_obvious": [
+  "OKX composite long share 55.4% (large accounts 47% by USD, 72% by account count), down from above 58% last week.",
+  "Altcoin total market cap ex-BTC/ETH at 641B USD, a level tested many times since 2024.",
+  "Source raised cash from 25% to 40%, now cutting it gradually; sold small altcoins before the drop."
+ ],
+ "calls": [
+  {
+   "asset": "BTC",
+   "call": "BTC next short-term target is 73200",
+   "direction": "up",
+   "level": 73200,
+   "horizon": "weeks",
+   "condition": null
+  },
+  {
+   "asset": "BTC",
+   "call": "Hold above 73200 opens air pocket up to 87000",
+   "direction": "up",
+   "level": 87000,
+   "horizon": "weeks",
+   "condition": "73200 broken and held"
+  },
+  {
+   "asset": "BTC",
+   "call": "Gradual accumulation after the sell-off; 65k wedge test passed",
+   "direction": "hold_above",
+   "level": 65000,
+   "horizon": "weeks",
+   "condition": null
+  },
+  {
+   "asset": "ETH",
+   "call": "1769 support holds; 2259 is resistance",
+   "direction": "range",
+   "level": null,
+   "horizon": "unspecified",
+   "condition": "range 1769-2259"
+  }
+ ],
+ "summary_tr": "Selcuk Ergin BTC'de yükselen kamanın 65 bin testiyle geçersiz kaldığını, üçlü dip izi ve ucuzluk sinyali gördüğünü söylüyor. İlk hedef 73.200, üstünde tutunursa 87.000. ETH'de destek 1.769, direnç 2.259. Nvidia bilançosu oynaklık getirebilir; kademeli alım öneriyor.",
+ "source": "selcoin-yt",
+ "date_utc": "2026-11-16T14:15Z",
+ "title": "Büyük Para Operasyona Başladı! / Herkes Hazırlansın!",
+ "url": "https://www.youtube.com/watch?v=WEGPWn1L6RQ",
+ "kind": "youtube_transcript",
+ "px_at_publish": {
+  "BTC": 65166.33,
+  "ETH": 1846.46
+ },
+ "_cost_usd": 0.0903746
+}

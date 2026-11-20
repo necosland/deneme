@@ -1,0 +1,48 @@
+{
+ "item_id": "x-kardesbaris:202611201526_2123800151332659262",
+ "relevant": true,
+ "btc": {
+  "bias": "neutral",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": "Implied: waits for direction. STH RP 75791 and 200D MA 73179 already lost (price 59475). TMM level not stated in text; no new levels."
+ },
+ "eth": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": ""
+ },
+ "vol": "unspecified",
+ "vol_note": "",
+ "risks": [
+  "His rule: losing STH RP and 200D MA means uptrend is over (both already lost per price)",
+  "Own Fear&Greed index at new cycle low, below June 2026 level"
+ ],
+ "catalysts": [],
+ "confidence": "low",
+ "hedging": "'Zemin kaygan, sabırlı olun ve yönü bekleyin'; 'bakalım neler olacak'",
+ "non_obvious": [
+  "His Fear&Greed index fell below its June 2026 level for the first time this cycle, yet never entered Extreme Fear",
+  "Said price defended a zone that is cost-basis cluster for 1W, 1M, 3M and 6M holders (level not given)",
+  "Said first bottom signs lit in some data; treats zones as areas, not single levels"
+ ],
+ "calls": [],
+ "summary_tr": "Barış Kardeş net yön vermiyor: sabır ve yön bekleme diyor. STH RP (75.791) ve 200D MA (73.179) fiyatın üstünde kaldı. Fear&Greed endeksi Haziran 2026 seviyesinin altına indi ama Extreme Fear'a girmedi. Yeni seviye veya çağrı yok.",
+ "source": "x-kardesbaris",
+ "date_utc": "2026-11-20T15:26Z",
+ "title": "@KardesBaris posts 2026-11-15T09:07Z .. 2026-11-20T15:26Z (14)",
+ "url": "https://x.com/KardesBaris",
+ "kind": "tweets",
+ "px_at_publish": {
+  "BTC": 59475.47,
+  "ETH": 1655.57
+ },
+ "_cost_usd": 0.058552400000000004
+}

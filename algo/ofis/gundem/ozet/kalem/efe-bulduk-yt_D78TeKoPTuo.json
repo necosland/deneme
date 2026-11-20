@@ -1,0 +1,41 @@
+{
+ "item_id": "efe-bulduk-yt:D78TeKoPTuo",
+ "relevant": false,
+ "btc": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": ""
+ },
+ "eth": {
+  "bias": "none",
+  "horizon": "unspecified",
+  "support": [],
+  "resistance": [],
+  "targets": [],
+  "invalidation": null,
+  "note": ""
+ },
+ "vol": "unspecified",
+ "vol_note": "",
+ "risks": [],
+ "catalysts": [],
+ "confidence": "low",
+ "hedging": "",
+ "non_obvious": [],
+ "calls": [],
+ "summary_tr": "Konu dışı: karavan vlogu ve cüzdan hesabı. Efe yalnızca Lighter (LIT) tokenında yaptığı işlemi ve disiplin dersini anlatıyor. BTC ya da ETH için yön, seviye veya çağrı yok.",
+ "source": "efe-bulduk-yt",
+ "date_utc": "2026-11-17T16:30Z",
+ "title": "Kendi Kuralımı Bozdum, Cüzdan Eksiye Düştü | Canlı Cüzdan #3",
+ "url": "https://www.youtube.com/watch?v=D78TeKoPTuo",
+ "kind": "youtube_transcript",
+ "px_at_publish": {
+  "BTC": 63747.09,
+  "ETH": 1778.52
+ },
+ "_cost_usd": 0.1074608
+}

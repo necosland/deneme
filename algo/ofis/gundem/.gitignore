@@ -1,0 +1,4 @@
+ham/
+durum.json
+*.tmp
+__pycache__/

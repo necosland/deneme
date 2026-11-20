@@ -28,6 +28,10 @@ NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 T_DATA, T_EXPERT, T_RISK, T_TOTAL = 240, 300, 240, 15 * 60
 VIEW_OF = {"trader-likidite": "fiyat", "trader-elliott": "fiyat", "trader-seviye": "fiyat", "trader-senaryo": "senaryo",
            "trader-turev": "turev", "trader-makro": "makro", "trader-risk": "risk", "trader-harmonik": "harmonik"}
+# ek veri (TASARIM.md 14 "Ek veri ve kayitcilar"): varlik alanlari ve hangi rolun hangi aciklamayi gordugu
+EK_ASSET = ("options", "onchain", "orderbook", "recorded")
+LEGEND_OF = {"turev": ("options", "onchain", "orderbook", "recorded", "macro.stablecoin_supply"),
+             "senaryo": ("options", "orderbook", "recorded"), "makro": ("onchain", "macro.stablecoin_supply", "macro.extra")}
 LOGF = "tur.log"
 T0 = time.time()
 
@@ -38,9 +42,11 @@ def say(msg):
 
 # ---------------- gorunumler ----------------
 def make_view(snap, role):
-    from veri_topla import dump
+    from veri_topla import LEGEND_EK, dump
     keep_top = ("asof_utc", "generated_utc", "mode", "legend")
     v = {k: snap.get(k) for k in keep_top}
+    if isinstance(v.get("legend"), dict):   # ek veri aciklamalari yalniz o alani alan role
+        v["legend"] = {k: x for k, x in v["legend"].items() if k not in LEGEND_EK or k in LEGEND_OF.get(role, ())}
     macro = snap.get("macro") if isinstance(snap.get("macro"), dict) else {}
     cal = {"calendar_usd_high": macro.get("calendar_usd_high")}
     omitted = []
@@ -50,15 +56,20 @@ def make_view(snap, role):
             v["assets"][sym] = None
             continue
         if role in ("fiyat", "senaryo"):
-            x = {k: val for k, val in a.items() if k not in ("derivs", "harmonics")}
+            x = {k: val for k, val in a.items() if k not in ("derivs", "harmonics") + EK_ASSET}
             x["candles"] = {k: val for k, val in a["candles"].items() if k != "15m"}
             omitted = ["assets.*.derivs", "assets.*.harmonics", "assets.*.candles.15m", "sentiment",
-                       "macro except calendar_usd_high"]
+                       "macro except calendar_usd_high", "assets.*.options/onchain/orderbook/recorded"]
             if role == "senaryo":   # Bora'nin OI filtresi icin turev ozeti
                 dv = a.get("derivs") or {}
                 x["derivs_lite"] = {k: dv.get(k) for k in ("source", "oi_usd_bn", "oi_chg_24h_pct", "oi_chg_7d_pct",
                                                            "funding_7d_avg", "funding_last")}
                 omitted[0] = "assets.*.derivs (except derivs_lite)"
+                op = a.get("options")   # opsiyon ozeti (vade tablosu yok) + defter + kayitlar
+                x["options_lite"] = None if not isinstance(op, dict) else {
+                    k: op.get(k) for k in ("dvol", "atm_iv_cm", "rr25_cm", "pc_oi_ratio_all", "monthly")}
+                x["orderbook"], x["recorded"] = a.get("orderbook"), a.get("recorded")
+                omitted[-1] = "assets.*.onchain, assets.*.options.term (options_lite given)"
         elif role == "harmonik":
             c4 = dict(a["candles"]["4h"])
             c4["rows"] = c4["rows"][-12:]
@@ -72,12 +83,15 @@ def make_view(snap, role):
             c4["rows"] = c4["rows"][-12:]
             x = {"ctx": a["ctx"], "levels": a["levels"],
                  "structure": {k: a["structure"][k] for k in ("4h", "1h")}, "candles": {"4h": c4},
-                 "derivs": a.get("derivs"), "charts": a.get("charts")}
-            omitted = ["structure.1d", "fvg", "equal_hl", "vp", "candles except last 12x4h", "macro except calendar_usd_high"]
+                 "derivs": a.get("derivs"), "charts": a.get("charts"),
+                 **{k: a.get(k) for k in EK_ASSET}}
+            omitted = ["structure.1d", "fvg", "equal_hl", "vp", "candles except last 12x4h",
+                       "macro except calendar_usd_high and stablecoin_supply"]
         elif role == "makro":
             x = {"ctx": a["ctx"], "levels": a["levels"], "structure": {"1d": a["structure"]["1d"]},
-                 "candles": {"1d": a["candles"]["1d"]}, "charts": a.get("charts")}
-            omitted = ["structure 4h/1h", "fvg", "equal_hl", "vp", "candles 4h/1h/15m", "derivs"]
+                 "candles": {"1d": a["candles"]["1d"]}, "charts": a.get("charts"), "onchain": a.get("onchain")}
+            omitted = ["structure 4h/1h", "fvg", "equal_hl", "vp", "candles 4h/1h/15m", "derivs",
+                       "options", "orderbook", "recorded"]
         elif role == "risk":
             x = {"ctx": a["ctx"], "levels": a["levels"]}
             omitted = ["everything except ctx, levels, macro.calendar_usd_high"]
@@ -87,7 +101,7 @@ def make_view(snap, role):
     if role == "makro":
         v["sentiment"], v["macro"] = snap.get("sentiment"), snap.get("macro")
     elif role == "turev":
-        v["sentiment"], v["macro"] = snap.get("sentiment"), cal
+        v["sentiment"], v["macro"] = snap.get("sentiment"), {**cal, "stablecoin_supply": macro.get("stablecoin_supply")}
     elif role in ("fiyat", "risk", "harmonik", "senaryo"):
         v["macro"] = cal
     else:

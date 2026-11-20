@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "trader-ofis/sema.json",
+  "$comment": "Output schema only. Snapshot INPUT fields are documented in the snapshot 'legend' (veri_topla.py LEGEND_EK for options/onchain/orderbook/recorded/macro extras) and TASARIM.md section 14.",
   "description": "Trader ofisi cikti semasi (TEK KAYNAK). Uzman: expert_output (varlik basina bir blok). Bas trader: decision_output. Sayi sinirlari ofis-ayar.json ile ayni tutulur.",
   "$defs": {
     "entry": {

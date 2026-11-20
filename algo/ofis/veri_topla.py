@@ -18,6 +18,7 @@ import io
 import json
 import math
 import pathlib
+import sys
 import time
 from urllib.parse import urlparse
 
@@ -36,6 +37,30 @@ FETCH = {"15m": 96, "1h": 720, "4h": 500, "1d": 400}
 SHOW = {"15m": 16, "1h": 24, "4h": 30, "1d": 30}
 ZZ_K = {"1d": 3.0, "4h": 2.0, "1h": 2.0}   # zigzag donus esigi = k x ATR14 (kendi zaman diliminde)
 ERR, BLOCKED = [], set()
+# Ek veri alanlari (canli-ozel, TASARIM.md 14 "Ek veri ve kayitcilar"). tur.py rol gorunumunde yalniz o alani alan rol
+# bu aciklamalari gorur (token tasarrufu).
+LEGEND_EK = {
+    "options": "Deribit, per asset: atm_iv_cm/rr25_cm = constant-maturity ATM IV and 25-delta risk reversal "
+               "(call25 IV - put25 IV, vol pts; + = calls richer), deltas Black-76 from mark_iv; pc_oi = put/call OI "
+               "(contracts); monthly = nearest last-Friday expiry: max_pain, top OI strikes [strike, coins]; "
+               "dvol = Deribit vol index (last, 7d chg pts, 30d min/max)",
+    "onchain": "Coin Metrics community, daily, latest days may be 'flash' (preliminary): mvrv (market/realized cap), "
+               "active_addr, ex_netflow_musd (exchange inflow-outflow USD m; + = net to exchanges), ex_supply_chg_pct",
+    "orderbook": "Binance book at snapshot time (~20 min after asof): bands_musd {pct: [bid_usd_m, ask_usd_m]} within "
+                 "+-pct of mid, null = book depth did not reach (see reach_pct; futures REST <=1000 levels); "
+                 "walls_bid/ask = largest [bucket_price, usd_m] in ~0.1% buckets within 5%",
+    "recorded": "from our own recorders (kayit/), 'insufficient history' until enough coverage. liq_clusters: observed "
+                "Binance USD-M liquidations, longs_liq = SELL orders (longs liquidated), shorts_liq = BUY; top = "
+                "[bucket_price, usd_m, n]; stream sends max 1/sec/symbol so totals are a lower bound. depth_heatmap: "
+                "24h avg resting spot+futures liquidity, buckets >1 bucket (~0.5%) away from price "
+                "[bucket_price, avg_usd_m, persist_pct = share of 5-min samples "
+                ">=2x median bucket]; futures book reaches only ~0.3% (BTC)/0.8% (ETH), far buckets are spot",
+    "macro.stablecoin_supply": "DefiLlama total stablecoin circulation, USD bn, 7d/30d % change",
+    "macro.extra": "ndx, usdjpy, move (Yahoo; ^MOVE), hy_oas_pct (FRED BAMLH0A0HYM2, ICE BofA US HY OAS %), "
+                   "btc_corr rows [vs, corr 30 obs, corr 90 obs, break] on BTC daily vs US daily returns "
+                   "(us10y: level change), stress.everything_down and stress.corr_break "
+                   "(|c30-c90|>0.4 or sign flip with both |c|>=0.1); thresholds in ofis-ayar.json veri",
+}
 
 
 # ---------------- yardimcilar ----------------
@@ -416,12 +441,16 @@ def fng():
         return None
 
 
+SERIES = {}   # yahoo gunluk kapanislari (1 yil): veri_ek.cross_asset korelasyonlari icin
+
+
 def yahoo(sym):
-    d = get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}", {"range": "3mo", "interval": "1d"})
+    d = get(f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}", {"range": "1y", "interval": "1d"})
     try:
         res = d["chart"]["result"][0]
         c = pd.Series(res["indicators"]["quote"][0]["close"],
                       index=pd.to_datetime(res["timestamp"], unit="s", utc=True)).dropna()
+        SERIES[sym] = c
         return {"last": r5(c.iloc[-1]), "bar_date": ts(c.index[-1], True),
                 "chg_5d_pct": pct(c.iloc[-1], c.iloc[-6]), "chg_20d_pct": pct(c.iloc[-1], c.iloc[-21])}
     except (TypeError, KeyError, IndexError):
@@ -772,8 +801,12 @@ def main():
                        "equal_hl": "untaken equal highs/lows (tolerance 0.25*ATR14 of that tf)",
                        "vp": "volume profile from Binance spot quote volume: poc/vah/val(70%)/hvn/lvn",
                        "candles": "closed candles only, times are open times UTC",
-                       "paper_systems_now": "current position (1=long, 0=cash) of our 3 rule-based paper systems"},
+                       "paper_systems_now": "current position (1=long, 0=cash) of our 3 rule-based paper systems",
+                       **LEGEND_EK},
             "assets": {}}
+    sys.modules.setdefault("veri_topla", sys.modules[__name__])   # veri_ek ayni ERR/get'i kullansin
+    import veri_ek as X
+    C, now = X.cfg(), pd.Timestamp.now(tz="UTC").to_pydatetime()
     btc = frames.get("BTCUSDT")
     for s in assets:
         fr = frames.get(s)
@@ -795,6 +828,13 @@ def main():
             "derivs": None if replay else derivs(s, fr["4h"]),
         }
         x = snap["assets"][s]
+        if not replay:   # canli-ozel: cekildigi anin degeri (TASARIM.md 14 "Ek veri ve kayitcilar")
+            cur = s.replace("USDT", "")
+            px = x["ctx"]["last_close"]
+            x["options"] = X.safe(f"options {cur}", X.options, cur, now) if cur in ("BTC", "ETH") else None
+            x["onchain"] = X.safe(f"onchain {cur}", X.onchain, cur.lower(), asof) if cur in ("BTC", "ETH") else None
+            x["orderbook"] = X.safe(f"orderbook {s}", X.orderbook, s)
+            x["recorded"] = X.recorded(s, px, now, C)
         x["charts"] = charts(s, fr, x["levels"], x["vp"]["4h_all"],
                              ROOT / "grafik" / (asof.strftime("%Y%m%d_%H%M") + ("_replay" if replay else "")))
     if replay:
@@ -806,7 +846,12 @@ def main():
                          "fed_funds_eff": fred("DFF", asof), "ust2y": fred("DGS2", asof),
                          "fed_balance_sheet_musd": fred("WALCL", asof),
                          "crypto_global": coingecko(), "calendar_usd_high": calendar(asof),
-                         "btc_etf_flows": etf_flows()}
+                         "btc_etf_flows": etf_flows(),
+                         "ndx": yahoo("^NDX"), "usdjpy": yahoo("JPY=X"), "move": yahoo("^MOVE"),
+                         "hy_oas_pct": fred("BAMLH0A0HYM2", asof),
+                         "stablecoin_supply": X.safe("stablecoins", X.stablecoins, asof)}
+        if btc is not None:
+            snap["macro"].update(X.safe("cross_asset", X.cross_asset, btc["1d"], C) or {})
     snap["errors"] = ERR
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)

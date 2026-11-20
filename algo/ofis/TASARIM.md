@@ -10,6 +10,8 @@ Amaç: uzman yargısını (LLM agentları) kural tabanlı sistemlerimize ve al-t
 | `algo/ofis/defter.py` | Sahte defter: kod sınırları, gölge işlem, puan, raporlar (bölüm 4-5). `python defter.py rapor` raporu yeniden yazar. |
 | `algo/ofis/kontrol.py` | İzleyici, 5 dk (bölüm 3). |
 | `algo/ofis/ortak.py` | Yollar, şema doğrulama, kilit, claude.exe bulucu. |
+| `algo/ofis/veri_ek.py`, `kayit_ortak.py` | Ek veri: opsiyon, zincir üstü, çapraz varlık stresi, emir defteri, kayıt özetleri (bölüm 14). |
+| `algo/ofis/kayit_derinlik.py`, `kayit_tasfiye.py`, `kur-kayit.ps1` | Arka plan kayıtçıları + görevleri (bölüm 14). `kayit/` git'e girmez. |
 | `algo/ofis/kur-gorev.ps1` | İki Windows zamanlanmış görevini kurar/günceller. |
 | `algo/ofis/DURUM.md` | Türkçe özet (her tur ve her işlem olayında yeniden yazılır). |
 | `algo/ofis/log/` | `tur.log`, `kontrol.log`, `<stamp>/` (istemler, görünümler, ham CLI çıktısı, `ozet.json` token/süre). git'e girmez. |
@@ -111,7 +113,7 @@ Uygulama: `veri_topla.py` `HARM` (kurs OZET bölüm 2 kod bantları; Crab CD/BC 
 - fapi.binance.com bazı bölgelerden (ör. ABD IP'li GitHub Actions) 451 döner; script Bybit'e düşer, o da engelli olabilir. Koşucu Türkiye'deki makinede ya da engelsiz sunucuda çalışmalı.
 - Farside (ETF akışı) bot duvarı çıkarabilir; makro uzmanı bir kez WebFetch dener.
 - Yahoo chart API resmi değil; kırılırsa DXY yerine FRED `DTWEXBGS` (geniş dolar endeksi, günlük gecikmeli) kullanılabilir.
-- Tasfiye haritası ücretsiz kaynakta yok; `est_liq_zones` tahmindir.
+- Tasfiye haritası ücretsiz kaynakta yok; `est_liq_zones` tahmindir. 2026-11-21'den beri gözlenen tasfiyeler kendi kaydımızdan (`recorded.liq_clusters`, bölüm 14); geçmişi yok, birikiyor.
 - Elliott kurs kitabı (`C:\Users\pc\trader-ofis-egitim\elliott-kurs\OZET.md`) gelince trader-elliott'a konu dosyası olarak eklenecek.
 
 ## 12. Komite (toplantı) — `komite.py`, kuruldu 2026-11-21
@@ -127,3 +129,29 @@ Amaç: uzmanlar yalnız blok yazıp Rıza'nın toplaması yerine, gerçek bir ku
 9. Ajan bilgisi: `agent-bilgi\trader-ofis\ortak\toplanti.md` (yanıt ve başkan kuralları: kısa İngilizce, kanıtsız fikir değiştirme yok); `trader-risk\karar-kurallari.md` "Toplantı" bölümü.
 10. Deneme: `python algo/ofis/tur.py --force --no-ledger --komite` (bayraktan bağımsız açar); `--no-komite` kapatır. Komite hatası turu durdurmaz: kör bloklarla devam eder.
 11. İlk deneme (2026-11-20 20:00 kapanışı, `--no-ledger`): Bora ve Selin BTC/ETH short, diğerleri flat. Canlı turda başkan uzman kimliği yerine ad yazdı (`trader-selin`) → kod gündemi devreye girdi; düzeltme: kimlik/ad eşleme + istemde IDS satırı. Tekrar (`python algo/ofis/komite.py --replay 20261120_2142`, uzmanlar yeniden çağrılmaz): 6 soru, 6 uzman, kimse fikir değiştirmedi (yeni kanıt yok), karar iki varlıkta none (R1 güven <55, R5 olay). Maliyet: toplantı 8 çağrı 0,46 $ (Rıza kapanışı dahil; ek maliyet ~0,33 $), 113 sn; normal tur ~0,9-1,1 $ → ~1,3-1,4 kat. Yanıtlar 60 kelime hedefini ~%20 aşıyor.
+
+## 14. Ek veri ve kayıtçılar — `veri_ek.py`, kuruldu 2026-11-21
+Hepsi ücretsiz, anahtarsız, herkese açık uç nokta; yalnız canlı modda (yeniden oynatmada yok: geçmiş bir ana ait değil). Her bölüm `safe()` ile sarılı: hata snapshot'ı düşürmez, `errors`'a yazılır, alan null kalır. Eşikler `ofis-ayar.json` → `veri` (ölçülmemiş varsayımlar). Alan açıklamaları snapshot `legend`'ında (`LEGEND_EK`); `tur.py` her rol görünümüne yalnız o rolün aldığı alanların açıklamasını koyar.
+
+| Alan | Kaynak | Kime (görünüm) |
+|---|---|---|
+| `assets.*.options`: `atm_iv_cm` 7/30/90g, `rr25_cm` 7/30g (25 delta risk reversal, call−put IV), `term` (≤6 vade: ATM IV, RR, put/call OI), `pc_oi_ratio_all`, `monthly` (en yakın ay sonu cuması: max pain, en büyük 3 call/put OI kullanımı), `dvol` | Deribit `get_book_summary_by_currency` + `get_volatility_index_data`; delta Black-76 (mark_iv, vade forward'ı, r=0), sabit vade ara değer (ATM toplam varyansla) | Derya tam; Bora `options_lite` (term yok) |
+| `assets.*.onchain`: `mvrv`, `mvrv_chg_30d`, aktif adres (son, 7g/30g %), borsa net akışı 7/30g (USD m), borsadaki arz değişimi 7/30g | Coin Metrics community API (`CapMVRVCur, AdrActCnt, FlowInExUSD, FlowOutExUSD, SplyExNtv`), son günler "flash" | Derya, Kerem |
+| `macro.stablecoin_supply` | DefiLlama `stablecoincharts/all` (tüm sabit paralar, USD) 7/30g % | Derya, Kerem |
+| `macro.ndx`, `usdjpy`, `move`, `hy_oas_pct` | Yahoo `^NDX`, `JPY=X`, `^MOVE`; FRED `BAMLH0A0HYM2` | Kerem |
+| `macro.btc_corr`, `macro.stress` | BTC günlük (spot) ile NDX, SPX, altın, DXY getirisi, US10Y seviye farkı; ortak ABD günleri, 30/90 gözlem. `everything_down`: son 5 ortak günde BTC, NDX, altın < −%3 ve DXY ↑. `corr_break`: \|c30−c90\| > 0,4 ya da iki taraf \|c\| ≥ 0,1 iken işaret dönmesi | Kerem |
+| `assets.*.orderbook`: spot + vadeli, ±%0,5/1/2/5 bant likiditesi (USD m), en büyük 3 duvar (~%0,1 kova), `reach_pct` | Binance spot `data-api.binance.vision` 5000 kademe, USD-M `fapi` 1000 kademe; snapshot anı (asof + ~20 dk) | Derya, Bora |
+| `assets.*.recorded.liq_clusters`: 24s / 7g, long/short tasfiye toplamı ve en büyük 3 fiyat kovası (~%0,5) | kendi kaydımız (`kayit/tasfiye/`) | Derya, Bora |
+| `assets.*.recorded.depth_heatmap`: 24s ortalama duran likidite, fiyattan ~%0,5'ten uzak en büyük 3 kova/yön + kalıcılık % | kendi kaydımız (`kayit/derinlik/`) | Derya, Bora |
+
+Kayıtçılar (LLM yok, `pythonw`: pencere/ses yok; kurulum `kur-kayit.ps1`, `kur-gorev.ps1`'e dokunmaz):
+- `TraderOfisDerinlik` (5 dk, IgnoreNew, 3 dk sınır): `kayit_derinlik.py` → `kayit/derinlik/YYYY-MM-DD.csv.gz` (UTC günü; satır = zaman, sembol, piyasa, orta fiyat, erişim %, bantlar, duvarlar, ±%5 içinde ~%0,25'lik kovalar). Gün başına ~1.150 satır. Hata `kayit/derinlik/hata.log`.
+- `TraderOfisTasfiye` (oturum açılışı + saatte bir, süre sınırı yok, IgnoreNew + dosya kilidi `kayit/tasfiye/.kilit`): `kayit_tasfiye.py` sürekli websocket `wss://fstream.binance.com/market/ws/!forceOrder@arr` (eski `/ws/` yolu 2026-11-21'de bağlanıyor ama veri göndermiyordu; ikisi arasında geçer). BTC/ETH → `kayit/tasfiye/YYYY-MM-DD.csv` (zaman, sembol, emir yönü, fiyat, miktar, USD; SELL = long tasfiye). Kapsam: akım veri gönderirken 5 dakikada bir `kalp.csv`; 20 dk hiçbir sembolden mesaj yoksa yeniden bağlanır. Günlük `kayit/tasfiye/tasfiye.log`.
+- Yeterli geçmiş yoksa alan `{"status": "insufficient history", "covered_h", "need_h"}` döner: tasfiye 24s için ≥18 saat, 7g için ≥120 saat kalp kapsamı; derinlik ısı haritası için 24 saatte ≥6 saat örnek.
+
+Sınırlar (dürüstlük):
+- Binance tasfiye akımı sembol başına saniyede en çok bir tasfiye verir: toplamlar alt sınırdır, kümelenme yeri yine görünür.
+- Vadeli REST defteri 1000 kademe: BTC'de ~±%0,25, ETH'de ~±%0,75 görür; daha uzak bant null, ısı haritasının uzak kovaları yalnız spottur. Duvarlar çekilebilir (spoof).
+- Opsiyon deltası kendi hesabımız (Deribit greeks'i değil); 1 günden kısa vadeler atlanır. Max pain yalnız aylık vade için.
+- Korelasyon hizalaması: BTC'nin D günü açılan mumu (D+1 00:00 UTC kapanış) ile ABD'nin D kapanışı; hafta sonu BTC hareketi pazartesiye katlanır. ABD seansı açıkken Yahoo son çubuğu gün içidir (BTC karşılığı olmadığı için korelasyona girmez).
+- Token (2026-11-21, aynı snapshot, görünüm boyutu ~bayt/4): turev +1,57k, senaryo +1,12k, makro +0,58k, fiyat/harmonik/risk ±0. Tam snapshot ~8,0k → ~9,9k.

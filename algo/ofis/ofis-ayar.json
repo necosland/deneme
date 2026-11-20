@@ -2,6 +2,7 @@
   "_note": "Trader ofisi tek ayar kaynagi. Kosucu ve trader-risk buradaki sayilari kullanir; baska yerde sayi tekrarlanmaz. Sahte para; gercek emir, borsa anahtari yok.",
   "assets": ["BTCUSDT", "ETHUSDT"],
   "cadence": {"run_after_4h_close_utc": ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"], "delay_min": 20, "monitor_every_min": 5, "_schedule": "Windows Task Scheduler via kur-gorev.ps1: TraderOfisTur 03:20 07:20 11:20 15:20 19:20 23:20 TR, TraderOfisKontrol every 5 min"},
+  "veri": {"_note": "veri_ek.py esikleri (TASARIM.md 14 Ek veri ve kayitcilar); denenmemis varsayimlar", "everything_down_pct": 3.0, "everything_down_obs": 5, "corr_break_abs_delta": 0.4, "corr_sign_min_abs": 0.1, "liq_min_hours_24h": 18, "liq_min_hours_7d": 120, "heatmap_min_hours": 6, "cluster_bucket_pct": 0.5},
   "experts": [
     {"id": "trader-likidite", "name": "Tolga", "field": "price action & liquidity (SMC/ICT)", "runs": "every", "enabled": true, "scored_since": null},
     {"id": "trader-elliott", "name": "Ekrem", "field": "Elliott wave + Fibonacci", "runs": "every", "enabled": true, "scored_since": null},

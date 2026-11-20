@@ -8,6 +8,7 @@ Amaç: uzman yargısını (LLM agentları) kural tabanlı sistemlerimize ve al-t
 | `algo/ofis/veri_topla.py` | Anlık görüntü + grafik (LLM yok). Yazıldı. |
 | `algo/ofis/tur.py` (+ `tur.ps1` elle giriş) | 4h tur koşucusu (bölüm 2, 11). |
 | `algo/ofis/defter.py` | Sahte defter: kod sınırları, gölge işlem, puan, raporlar (bölüm 4-5). `python defter.py rapor` raporu yeniden yazar. |
+| `algo/ofis/evren.py`, `algo/ofis/tarayici.py` | Coin evreni (haftalık) ve LLM'siz tarayıcı (her tur), bölüm 13. |
 | `algo/ofis/kontrol.py` | İzleyici, 5 dk (bölüm 3). |
 | `algo/ofis/ortak.py` | Yollar, şema doğrulama, kilit, claude.exe bulucu. |
 | `algo/ofis/veri_ek.py`, `kayit_ortak.py` | Ek veri: opsiyon, zincir üstü, çapraz varlık stresi, emir defteri, kayıt özetleri (bölüm 14). |
@@ -65,12 +66,12 @@ Amaç: uzman yargısını (LLM agentları) kural tabanlı sistemlerimize ve al-t
 
 **Ofis (gerçek sahte defter):** öz sermaye eğrisi, getiri, en kötü düşüş, Sharpe (günlük), işlem sayısı, ortalama R.
 
-**Karşılaştırma (aynı başlangıç tarihinden, aynı ölçekte):** BTC al-tut, ETH al-tut, 50/50; repodaki üç paper sistemi (`algo/paper/ozsermaye.csv`; yerel kopya yoksa GitHub'daki paper dalı/çıktısı, bkz. açık konular).
+**Karşılaştırma (aynı başlangıç tarihinden, aynı ölçekte):** BTC al-tut (2026-11-21: ETH al-tut ve 50/50 kaldırıldı, coin başına al-tut yok); repodaki üç paper sistemi (`algo/paper/ozsermaye.csv`; yerel kopya yoksa GitHub'daki paper dalı/çıktısı, bkz. açık konular).
 
 **Önceden yazılan karar kuralları (sonuç görmeden; değiştirilmez, RAPOR turlarıyla aynı disiplin):**
-- Hiçbir uzman ≥30 kapanmış gölge işlem ve ≥3 ay dolmadan değerlendirilmez.
+- Hiçbir uzman ≥30 kapanmış gölge işlem ve ≥3 ay dolmadan değerlendirilmez. trader-risk oy ağırlığı (R10) için eşik 100 işlem (2026-11-21, kanıt okuma listesi bölüm 8: 30 işlemde %90 aralık ≈ ±0,30 R).
 - "Umut veren uzman": beklenen R > 0 ve bootstrap %90 güven aralığının alt sınırı > 0, Brier < 0,25 (yazı-tura çizgisi) ve aynı dönemde gölge getiri al-tutun ve üç paper sistemin hepsinin üstünde.
-- "Kapat": ≥30 işlemde beklenen R'nin %90 üst sınırı < 0 → `enabled: false` (trader-risk zaten oyunu saymıyor, R10).
+- "Kapat": ≥100 işlemde beklenen R'nin %90 üst sınırı < 0 → `enabled: false` (trader-risk R10 ile aynı eşik).
 - Ofis ancak ≥6 ay ve ≥50 işlemde al-tutu ve paper sistemleri yenerse "umut veren" sayılır. Uzman sayısı arttıkça şansla iyi çıkan olur: değerlendirmede çoklu deneme düzeltmesi (repodaki DSR yaklaşımı) uygulanır.
 - Haftalık Türkçe rapor (koşucu üretir): `algo/ofis/rapor/hafta-<YYYY-WW>.md`, uzman tablosu + ofis eğrisi.
 
@@ -129,6 +130,17 @@ Amaç: uzmanlar yalnız blok yazıp Rıza'nın toplaması yerine, gerçek bir ku
 9. Ajan bilgisi: `agent-bilgi\trader-ofis\ortak\toplanti.md` (yanıt ve başkan kuralları: kısa İngilizce, kanıtsız fikir değiştirme yok); `trader-risk\karar-kurallari.md` "Toplantı" bölümü.
 10. Deneme: `python algo/ofis/tur.py --force --no-ledger --komite` (bayraktan bağımsız açar); `--no-komite` kapatır. Komite hatası turu durdurmaz: kör bloklarla devam eder.
 11. İlk deneme (2026-11-20 20:00 kapanışı, `--no-ledger`): Bora ve Selin BTC/ETH short, diğerleri flat. Canlı turda başkan uzman kimliği yerine ad yazdı (`trader-selin`) → kod gündemi devreye girdi; düzeltme: kimlik/ad eşleme + istemde IDS satırı. Tekrar (`python algo/ofis/komite.py --replay 20261120_2142`, uzmanlar yeniden çağrılmaz): 6 soru, 6 uzman, kimse fikir değiştirmedi (yeni kanıt yok), karar iki varlıkta none (R1 güven <55, R5 olay). Maliyet: toplantı 8 çağrı 0,46 $ (Rıza kapanışı dahil; ek maliyet ~0,33 $), 113 sn; normal tur ~0,9-1,1 $ → ~1,3-1,4 kat. Yanıtlar 60 kelime hedefini ~%20 aşıyor.
+
+
+## 13. Çok coinli evren ve tarayıcı — `evren.py`, `tarayici.py`, kuruldu 2026-11-21
+Amaç: BTC/ETH'den piyasa değerinde ilk 10 coine genişlemek, LLM maliyetini ~5 kat değil ≤1,5 kat artırmak. Ayar `ofis-ayar.json` `universe` (açık), risk `max_same_dir_alts`, `max_net_beta_risk_pct`.
+- **Evren** (`evren.py`, `veri/evren.json`, `refresh_days`=7'de bir): CoinGecko piyasa değeri sırası; stablecoin, sarılı, likit stake/restake, köprülü, tokenlaştırılmış altın (CoinGecko kategorileri + sembol/ad sezgisi) çıkar; Binance USDT spot VE USDT-M sürekli vadelisi olan ilk `top_n`=10. BTC hep içerde. 2026-11-21 listesi: BTC ETH BNB XRP SOL TRX HYPE ZEC DOGE LINK (USDT, USDC: stable; FIGR_HELOC, XMR, LEO, WBT: Binance'te yok). HYPE'ın 57 günlük 1d geçmişi var (sma200 null).
+- **Tarayıcı** (`tarayici.py`, her tur, LLM yok, ~10 sn, `log/<stamp>/tarama.json`, `veri/tarama_son.json`): coin başına 1h/4h/1d mum, 0-100 puan = ağırlıklı bileşenler: `sr` anahtar seviye/değer alanı kenarına ATR(4h) mesafesi (20), `bos` taze 4h kırılım/süpürme ya da 1h süpürme (20), `harm` harmonik aday PRZ'de/tepki verdi (15), `brk` 20 mumluk aralık dışı kapanış + hacim (20), `ew` kurallara uyan 5 dalga itki tamamlandı ya da trende karşı ABC (10), `div` 4h/1d RSI uyumsuzluğu (15). Akıl sağlığı süzgeci: 4h ort. spot hacim ≥ 2 M USDT, ATR(4h) %0,3-8. Beta: 30 gün 4h getirisinin BTC'ye regresyonu → `ctx.beta_btc_30d`.
+- **Seçim**: BTC her tur tam analiz ve işlem adayı (`btc_always_trade`, 2026-11-21: bağlam-only BTC'de Bora'nın short'u reddediliyor, komite tetiklenmiyordu); BTC dışından puanı ≥ `min_score` en iyi `k`=3 coin; açık/bekleyen ofis pozisyonu olan coin her zaman eklenir. `btc_always_trade=false` ise BTC de sıralamaya girer, seçilmezse küçük bağlam bloğu (`_context_only`, blok yazılmaz) olur. Seçim nedeni uzmanlara verilmez (sürü etkisi olmasın), kurulumu kendileri doğrular.
+- **Koşucu**: `veri_topla.py --assets` yalnız seçilenleri toplar; snapshot bellekte kırpılır (SHA tam dosyanın); `cfg.assets` bu turun listesi olur → ASSETS satırı, eksik blok, komite, Rıza aynı listeyi kullanır; listede olmayan varlığa blok geçersiz. Yeniden kullanılan makro blokları yalnız bu turun coinleri. `sema.json` `asset` artık `^[A-Z0-9]{2,20}USDT$`. `--evren` bayrağı ayarı kapalıyken dener. Tarama çökerse eski sabit `assets` ile devam.
+- **Risk (kod, `defter.open_order`, Rıza R11)**: toplam açık risk ≤ %3 (eski); aynı yönde en çok 2 altcoin (açık + bekleyen); altcoin riski × beta (0,5-2'ye kırpılır) BTC riski sayılır, aynı yönde net beta riski ≤ `max_net_beta_risk_pct` (%3), aşarsa risk küçülür ya da red. İşleme `beta` yazılır. Defter tur varlıklarını snapshot'tan alır; puan kartında beklenen blok = gerçek satır sayısı.
+- **Maliyet ölçümü** (aynı snapshot asof 20:00, `--no-ledger --no-komite`, makro sırası değil): BTC/ETH tur 1,10 $ (6 uzman + Rıza) → TRX/XRP/HYPE + BTC bağlam 1,34 $ (1,23x) → BTC işlem adayı + TRX/XRP/HYPE 1,57 $ (1,43x; fiyat görünümü 6,5k → 12k token). Komite ve makro turları ikisinde de ayrıca eklenir. Hedef ≤1,5x; aşarsa önce `k`=2.
+- **Bilinen sınırlar**: puan ağırlıkları ve eşikler denenmemiş varsayım; piyasa genel düşüşünde çoğu coin aynı `bos`/`brk` puanını alır (eşitlikte piyasa değeri sırası). Altcoinde opsiyon verisi yok, zincir üstü/emir defteri bazı coinlerde boş olabilir. Gölge bekleyen emir coin o tur seçilmezse 1 tur sonra düşer (eski kural); açık gölge işlem kontrol.py ile sürer.
 
 ## 14. Ek veri ve kayıtçılar — `veri_ek.py`, kuruldu 2026-11-21
 Hepsi ücretsiz, anahtarsız, herkese açık uç nokta; yalnız canlı modda (yeniden oynatmada yok: geçmiş bir ana ait değil). Her bölüm `safe()` ile sarılı: hata snapshot'ı düşürmez, `errors`'a yazılır, alan null kalır. Eşikler `ofis-ayar.json` → `veri` (ölçülmemiş varsayımlar). Alan açıklamaları snapshot `legend`'ında (`LEGEND_EK`); `tur.py` her rol görünümüne yalnız o rolün aldığı alanların açıklamasını koyar.

@@ -12,6 +12,7 @@
     {"id": "trader-senaryo", "name": "Bora", "field": "range/liquidity two-scenario reading (inspired by Efe Bulduk's public approach)", "runs": "every", "enabled": true, "scored_since": null},
     {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (course: trader-ofis-egitim/harmonik-kurs; detector in veri_topla.py harmonics)", "runs": "every", "enabled": true, "scored_since": null}
   ],
+  "universe": {"enabled": true, "_note": "evren.py (haftalik top-N, stable/sarili/stake haric, Binance spot+perp) + tarayici.py (LLM'siz kurulum yakinligi puani, BTC her tur islem adayi (btc_always_trade) + BTC disindan en iyi k coin + acik pozisyonlu coinler). Kapaliyken 'assets' kullanilir. TASARIM.md 13.", "btc_always_trade": true, "top_n": 10, "refresh_days": 7, "always": ["BTCUSDT"], "exclude_symbols": [], "k": 3, "min_score": 15, "sr_atr": 0.75, "min_qvol_4h_musd": 2.0, "min_atr_pct": 0.3, "max_atr_pct": 8.0, "weights": {"sr": 20, "bos": 20, "harm": 15, "brk": 20, "ew": 10, "div": 15}},
   "head": {"id": "trader-risk", "name": "Rıza"},
   "committee": {"enabled": true, "_note": "komite.py, TASARIM.md 12: kor tur -> Riza gundemi -> yanitlar (-> tur 3) -> karar. Yonlu blok yoksa atlanir.", "max_rounds": 3, "max_questions": 6, "max_speakers_r2": 6, "max_speakers_r3": 3, "reply_words": 60, "t_chair": 150, "t_reply": 150, "max_secs": 480, "max_cost_usd": 1.2},
   "risk": {
@@ -20,6 +21,8 @@
     "risk_pct_max": 2.0,
     "risk_pct_counter_regime": 0.5,
     "max_open_risk_pct": 3.0,
+    "max_same_dir_alts": 2,
+    "max_net_beta_risk_pct": 3.0,
     "max_positions_per_asset": 1,
     "max_leverage": 2.0,
     "min_confidence": 55,

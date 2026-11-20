@@ -52,8 +52,8 @@ def make_view(snap, role):
     omitted = []
     v["assets"] = {}
     for sym, a in (snap.get("assets") or {}).items():
-        if a is None:
-            v["assets"][sym] = None
+        if a is None or a.get("_context_only"):   # tarayici: secilmeyen BTC yalniz kucuk baglam blogu
+            v["assets"][sym] = a
             continue
         if role in ("fiyat", "senaryo"):
             x = {k: val for k, val in a.items() if k not in ("derivs", "harmonics") + EK_ASSET}
@@ -221,6 +221,8 @@ def validate_blocks(expert, parsed, snap, cfg, v):
                 errs.append(f"asof {b['asof_utc']} != {snap['asof_utc']}")
             if asset in seen:
                 errs.append("duplicate asset")
+            if asset not in cfg["assets"]:
+                errs.append(f"asset {asset} not in this round's ASSETS")
             if b["bias"] in ("long", "short"):
                 ctx = ((snap["assets"].get(asset) or {}).get("ctx") or {})
                 errs += O.geometry_errors(b["bias"], b["entry"], b["stop"], b["targets"], ctx.get("last_close"),
@@ -265,6 +267,7 @@ def main():
     ap.add_argument("--no-ledger", action="store_true")
     ap.add_argument("--komite", action="store_true", help="komiteyi ayardan bagimsiz ac (deneme)")
     ap.add_argument("--no-komite", action="store_true")
+    ap.add_argument("--evren", action="store_true", help="evren+tarayiciyi ayardan bagimsiz ac (deneme)")
     a = ap.parse_args()
     cfg = O.ayar()
     R = cfg["risk"]
@@ -273,11 +276,21 @@ def main():
     rundir.mkdir(parents=True, exist_ok=True)
     say(f"=== round {stamp} start (claude={O.find_claude()})")
 
+    # 0. evren + tarayici (TASARIM.md 13; ofis-ayar.json universe): LLM'siz secim, uzmanlar yalniz secilenleri gorur
+    sel = None
+    if a.evren or (cfg.get("universe") or {}).get("enabled"):
+        try:
+            import tarayici as TR
+            sel = TR.secim(cfg, log=say)
+            O.write_json(rundir / "tarama.json", sel)
+        except Exception as e:  # noqa: BLE001  tarama bozulursa eski sabit liste ile devam
+            say(f"tarama FAILED, fallback to assets {cfg['assets']}: {type(e).__name__} {e}")
     # 1. veri
     if a.skip_data:
         snap_path = O.VERI / "son.json"
     else:
-        p = subprocess.run([str(O.PY), str(O.ROOT / "veri_topla.py")], cwd=str(O.REPO), capture_output=True,
+        p = subprocess.run([str(O.PY), str(O.ROOT / "veri_topla.py"),
+                            *(["--assets", ",".join(sel["fetch"])] if sel else [])], cwd=str(O.REPO), capture_output=True,
                            text=True, encoding="utf-8", errors="replace", timeout=T_DATA, creationflags=NOWIN)
         say(f"veri_topla rc={p.returncode} {p.stdout.strip()[-300:]}")
         if p.returncode != 0:
@@ -296,6 +309,12 @@ def main():
         say(f"asof {asof} already decided: skip (use --force)")
         return 0
     say(f"snapshot {snap_path.name} asof={asof} sha={sha[:12]} errors={len(snap.get('errors') or [])}")
+    if sel:   # snapshot bellekte kirpilir (SHA tam dosyanin); bu turun varliklari = secilenler
+        snap, cfg["assets"] = TR.uygula(snap, sel, log=say)
+        say(f"round assets={cfg['assets']} context={sel['context']}")
+        if not cfg["assets"]:
+            say("no selected asset in snapshot: stop")
+            return 2
 
     # 2. gorunumler
     views = {}
@@ -379,7 +398,7 @@ def main():
         say(f"{ex}: {summary[ex]}")
     reused = []
     for e in reuse:
-        prev = last_blocks(e["id"], stamp)
+        prev = [b for b in last_blocks(e["id"], stamp) if b.get("asset") in cfg["assets"]]   # tarayici: bu turun coinleri
         if prev:
             reused += prev
             for b in prev:

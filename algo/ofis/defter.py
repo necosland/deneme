@@ -78,13 +78,25 @@ def mark_equity(st):
 
 def open_risk_usdt(st):
     """Acik pozisyonlarin stopa kadar riski (T1 sonrasi girise cekilen stopta 0) + bekleyen emirlerin plan riski."""
-    tot = 0.0
-    for t in live(st, "ofis"):
-        if t["status"] == "pending":
-            tot += t["risk_usdt"]
-        else:
-            tot += max(0.0, sgn(t["side"]) * (t["fill_px"] - t["stop"]) * t["qty"])
-    return tot
+    return sum(trade_risk(t) for t in live(st, "ofis"))
+
+
+def trade_risk(t):
+    if t["status"] == "pending":
+        return t["risk_usdt"]
+    return max(0.0, sgn(t["side"]) * (t["fill_px"] - t["stop"]) * t["qty"])
+
+
+def beta_w(asset, beta):
+    """BTC riski esdegeri carpani: BTC 1; altcoin 30g beta, kararsiz tahmine karsi [0,5, 2] araliginda."""
+    if asset == "BTCUSDT":
+        return 1.0
+    return min(2.0, max(0.5, beta if isinstance(beta, (int, float)) else 1.0))
+
+
+def net_beta_risk_usdt(st):
+    """Isaretli BTC-beta riski: long +, short -, her islem riski x beta (TASARIM.md 13)."""
+    return sum(sgn(t["side"]) * beta_w(t["asset"], t.get("beta")) * trade_risk(t) for t in live(st, "ofis"))
 
 
 def stops_today(st):
@@ -139,7 +151,13 @@ def apply_decisions(st, decisions, snap, stamp, blocks):
     R = cfg["risk"]
     res = []
     by_asset = {d["asset"]: d for d in decisions}
-    for asset in cfg["assets"]:
+    # tur varliklari: snapshot'taki analiz edilen coinler (evren/tarayici acikken secilenler; BTC baglam blogu haric)
+    round_assets = [s for s, x in (snap.get("assets") or {}).items() if not (x or {}).get("_context_only")]
+    for s, x in (snap.get("assets") or {}).items():   # BTC baglamdayken de al-tut fiyati guncellensin
+        lc = ((x or {}).get("ctx") or {}).get("last_close")
+        if lc and s not in round_assets and not live(st, None, s):
+            st["last_px"][s] = lc
+    for asset in round_assets or cfg["assets"]:
         a = (snap.get("assets") or {}).get(asset) or {}
         ctx = a.get("ctx") or {}
         last, atr4 = ctx.get("last_close"), (ctx.get("atr14") or {}).get("4h")
@@ -233,6 +251,20 @@ def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg):
     if not rej and dd >= 10:
         notes.append(f"drawdown {dd:.1f}% >= 10: risk halved")
         rp /= 2
+    bw = beta_w(asset, ctx.get("beta_btc_30d"))
+    if not rej and asset != "BTCUSDT":     # korelasyon: ayni yonde en cok N altcoin (acik + bekleyen)
+        same = [t["asset"] for t in live(st, "ofis") if t["asset"] not in ("BTCUSDT", asset) and t["side"] == side]
+        if len(same) >= R.get("max_same_dir_alts", 2):
+            rej = f"R11 correlation: already {len(same)} {side} alt positions {same} (max {R.get('max_same_dir_alts', 2)})"
+    if not rej and R.get("max_net_beta_risk_pct"):   # altcoin = beta x BTC riski; net yonlu BTC-beta riski sinirli
+        nb = 100 * sgn(side) * net_beta_risk_usdt(st) / eq     # bu yondeki mevcut net beta riski (%)
+        room_b = (R["max_net_beta_risk_pct"] - nb) / bw
+        if room_b < rp:
+            if room_b < 0.25:
+                rej = f"R11 BTC-beta exposure full ({nb:.2f}% of {R['max_net_beta_risk_pct']}% {side}, beta {bw})"
+            else:
+                notes.append(f"risk {rp}->{room_b:.2f} to fit max_net_beta_risk_pct (beta {bw})")
+                rp = room_b
     if not rej:
         room = R["max_open_risk_pct"] - 100 * open_risk_usdt(st) / eq
         if room < rp:
@@ -251,6 +283,7 @@ def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg):
     t = new_trade(st, "ofis", asset, side, entry, stop, targets[:2], horizon, eq * rp / 100, stamp,
                   R["pending_order_expiry_runs"], src="trader-risk")
     t["risk_pct"] = round(rp, 3)
+    t["beta"] = ctx.get("beta_btc_30d")
     t["note"] = "; ".join(notes)
     event(st, t, "emir", f"risk {rp:.2f}% {'; '.join(notes)}")
     return True, f"risk {rp:.2f}% " + "; ".join(notes), t
@@ -467,7 +500,7 @@ def scores(st):
             buckets[f"{lo}-{hi}"] = [len(b), round(sum(1 for t in b if t["hit"]) / len(b), 3) if b else None]
         hold = [(t["exit_ms"] - t["fill_ms"]) / 3.6e6 for t in closed]
         runs = len({s.get("run") for s in rows})
-        exp_blocks = runs * len(cfg["assets"])
+        exp_blocks = len(rows)   # tur basina varlik satiri (gecersiz/eksik dahil); varlik sayisi turdan tura degisir
         out[ex] = {"name": e["name"], "enabled": e["enabled"], "rounds": runs, "valid_blocks": len(blocks),
                    "invalid_rate": round(1 - len(blocks) / exp_blocks, 3) if exp_blocks else None,
                    "flat_rate": round(len(flat) / len(blocks), 3) if blocks else None,
@@ -579,12 +612,10 @@ def write_reports(st):
               f"| Ofis | %{tr(100 * (L['equity_usdt'] / start_eq - 1))} |"]
     sp, lp = st.get("start_px") or {}, st.get("last_px") or {}
     bh = {}
-    for a in ("BTCUSDT", "ETHUSDT"):
+    for a in ("BTCUSDT",):   # karsilastirma: yalniz BTC al-tut + paper sistemler (2026-11-21 karari)
         if sp.get(a) and lp.get(a):
             bh[a] = 100 * (lp[a] / sp[a] - 1)
             lines.append(f"| {a[:3]} al-tut | %{tr(bh[a])} |")
-    if len(bh) == 2:
-        lines.append(f"| 50/50 BTC-ETH | %{tr(sum(bh.values()) / 2)} |")
     for k, v in (st.get("paper_cache") or {}).items():
         lines.append(f"| Paper: {k} | %{tr(v['ret_pct'])} (son kayıt {v['asof']}) |")
     lines += ["", "## Uzmanlar (gölge işlem, her biri 1R sabit risk)", "",

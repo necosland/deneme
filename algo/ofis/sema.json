@@ -19,7 +19,7 @@
       "properties": {
         "expert": {"type": "string", "pattern": "^trader-[a-z0-9-]+$"},
         "asof_utc": {"type": "string", "description": "copied from snapshot asof_utc"},
-        "asset": {"enum": ["BTCUSDT", "ETHUSDT"]},
+        "asset": {"type": "string", "pattern": "^[A-Z0-9]{2,20}USDT$", "description": "Binance USDT pair; must be in this round's ASSETS (runner checks)"},
         "action": {"enum": ["new", "keep", "cancel", "none"], "description": "new = new/changed plan; keep = previous block still valid, repeat it unchanged; cancel = withdraw previous; none = no setup and nothing previous"},
         "bias": {"enum": ["long", "short", "flat"]},
         "timeframe": {"enum": ["1d", "4h", "1h", "15m"], "description": "timeframe of the setup/trigger"},
@@ -46,7 +46,7 @@
       "required": ["asof_utc", "asset", "decision", "side", "entry", "stop", "targets", "risk_pct", "supporting", "opposing", "rule_hits", "reason", "neco_tr"],
       "properties": {
         "asof_utc": {"type": "string"},
-        "asset": {"enum": ["BTCUSDT", "ETHUSDT"]},
+        "asset": {"type": "string", "pattern": "^[A-Z0-9]{2,20}USDT$", "description": "Binance USDT pair; must be in this round's ASSETS (runner checks)"},
         "decision": {"enum": ["open", "keep", "tighten_stop", "close", "cancel_pending", "none"]},
         "side": {"enum": ["long", "short", null]},
         "entry": {"oneOf": [{"$ref": "#/$defs/entry"}, {"type": "null"}]},

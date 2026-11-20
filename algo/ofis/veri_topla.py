@@ -410,13 +410,14 @@ def derivs(sym, h4):
         for key, path in (("ls_accounts_4h", "globalLongShortAccountRatio"),
                           ("ls_top_positions_4h", "topLongShortPositionRatio")):
             d = get(f"{FAPI}/futures/data/{path}", {"symbol": sym, "period": "4h", "limit": 7})
-            if d:
+            if isinstance(d, list) and d:
                 o[key] = [r5(x["longShortRatio"]) for x in d]
         t = get(f"{FAPI}/futures/data/takerlongshortRatio", {"symbol": sym, "period": "4h", "limit": 7})
-        if t:
+        if isinstance(t, list) and t:
             o["taker_buy_sell_4h"] = [r5(x["buySellRatio"]) for x in t]
+        # alts often have no quarterly contract: Binance returns an error dict, not a list
         b = get(f"{FAPI}/futures/data/basis", {"pair": sym, "contractType": "CURRENT_QUARTER", "period": "1d", "limit": 1})
-        if b:
+        if isinstance(b, list) and b:
             o["quarterly_basis_rate"] = r5(b[-1].get("basisRate"))
             o["quarterly_basis_annualized"] = r5(b[-1].get("annualizedBasisRate"))
     tk = get(f"{BYBIT}/v5/market/tickers", {"category": "linear", "symbol": sym})
@@ -778,12 +779,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--asof", help="ISO UTC; verilirse yeniden oynatma (turev/makro bos)")
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--assets", help="virgullu sembol listesi; verilirse ofis-ayar.json assets yerine (evren/tarayici secimi)")
     a = ap.parse_args()
     replay = a.asof is not None
     t = pd.Timestamp(a.asof) if replay else pd.Timestamp.now(tz="UTC")
     t = t.tz_localize("UTC") if t.tzinfo is None else t.tz_convert("UTC")
     asof = t.floor("4h")
-    assets = load_assets()
+    assets = [x.strip().upper() for x in a.assets.split(",") if x.strip()] if a.assets else load_assets()
     if "BTCUSDT" in assets:
         assets = ["BTCUSDT"] + [x for x in assets if x != "BTCUSDT"]
     frames = {}

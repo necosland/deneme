@@ -1,0 +1,116 @@
+{
+ "_format": "Each case: id, set (lesson|heldout), src (course frame/note), instrument (shown only in report), data (ham/<data>.csv daily OHLC), bar (pandas resample rule: D, 2D, 3D, W-FRI), from, cut (last bar date included; no later bars), family (impulse|diagonal|zigzag|flat|triangle|combination), direction (pattern direction up|down), points [[label, H|L, approx date, window_days]], optional next (direction of the leg after cut: up|down; instructor's own if known), optional instructor_next (live forecast the instructor made at cut), optional parent (forecast variant: inherits instrument/data/bar/from/family/direction; points are only those before cut), note.",
+ "cases": [
+  {"id": "H01", "set": "lesson", "src": "EN 02-06_1155", "instrument": "EURUSD weekly", "data": "EURUSD_X", "bar": "W-FRI", "from": "2015-01-01", "cut": "2018-04-06",
+   "family": "impulse", "direction": "up",
+   "points": [["0","L","2017-01-03",14],["1","H","2017-02-02",14],["2","L","2017-04-10",14],["3","H","2017-09-08",14],["4","L","2017-11-07",14],["5","H","2018-02-16",14]]},
+  {"id": "F01", "set": "lesson", "parent": "H01", "cut": "2017-12-15", "next": "up",
+   "points": [["0","L","2017-01-03",14],["1","H","2017-02-02",14],["2","L","2017-04-10",14],["3","H","2017-09-08",14],["4","L","2017-11-07",14]]},
+
+  {"id": "H03", "set": "heldout", "src": "EN 02-08_1155", "instrument": "EURGBP daily (2-day bars)", "data": "EURGBP_X", "bar": "2D", "from": "2015-01-01", "cut": "2016-11-04",
+   "family": "impulse", "direction": "up",
+   "points": [["0","L","2015-07-17",12],["1","H","2015-08-25",12],["2","L","2015-11-05",14],["3","H","2016-04-07",14],["4","L","2016-05-31",12],["5","H","2016-10-11",8]]},
+
+  {"id": "H04", "set": "lesson", "src": "EN 03-09_0915", "instrument": "Gold (12H chart, daily bars here)", "data": "GC_F", "bar": "2D", "from": "2013-09-01", "cut": "2016-01-08",
+   "family": "diagonal", "direction": "down",
+   "points": [["0","H","2014-03-17",10],["1","L","2014-11-07",10],["2","H","2015-01-22",10],["3","L","2015-07-24",10],["4","H","2015-10-15",10],["5","L","2015-12-03",10]]},
+  {"id": "F02", "set": "lesson", "parent": "H04", "cut": "2015-10-30", "next": "down",
+   "points": [["0","H","2014-03-17",10],["1","L","2014-11-07",10],["2","H","2015-01-22",10],["3","L","2015-07-24",10],["4","H","2015-10-15",10]]},
+
+  {"id": "H05", "set": "heldout", "src": "EN 03-10_1220", "instrument": "Crude oil (4H chart, daily bars here)", "data": "CL_F", "bar": "D", "from": "2017-10-01", "cut": "2018-06-01",
+   "family": "diagonal", "direction": "up",
+   "points": [["0","L","2018-02-09",4],["1","H","2018-02-26",4],["2","L","2018-03-08",4],["3","H","2018-03-26",4],["4","L","2018-04-06",4],["5","H","2018-05-22",4]]},
+
+  {"id": "H06", "set": "lesson", "src": "EN 04-12_0855", "instrument": "Bitcoin daily (2-day bars)", "data": "BTCUSDT", "bar": "2D", "from": "2017-08-17", "cut": "2019-01-12",
+   "family": "combination", "direction": "down",
+   "points": [["0","H","2017-12-17",5],["W","L","2018-02-06",8],["X","H","2018-02-26",10],["Y","L","2018-12-15",8]],
+   "note": "Instructor: double zigzag W(A 22-Dec, B 6-Jan, C 6-Feb) X(5-Mar) Y(A Apr-2018, B Sep-2018, C 15-Dec)."},
+  {"id": "F05", "set": "lesson", "parent": "H06", "cut": "2018-10-26", "next": "down",
+   "points": [["0","H","2017-12-17",5],["W","L","2018-02-06",8],["X","H","2018-02-26",10]],
+   "note": "Cut after Y-B (Sep-2018); next = Y-C down."},
+
+  {"id": "H07", "set": "heldout", "src": "EN 04-13_0830", "instrument": "EURUSD daily (2-day bars)", "data": "EURUSD_X", "bar": "2D", "from": "2004-04-01", "cut": "2005-12-09",
+   "family": "combination", "direction": "down",
+   "points": [["0","H","2004-12-30",6],["W","L","2005-02-09",8],["X","H","2005-03-11",8],["Y","L","2005-07-05",10],["X2","H","2005-09-01",14],["Z","L","2005-11-15",10]],
+   "note": "Triple zigzag W-X-Y-X-Z."},
+
+  {"id": "H08", "set": "heldout", "src": "EN 05-15_0850", "instrument": "GBPUSD daily", "data": "GBPUSD_X", "bar": "D", "from": "2018-04-01", "cut": "2019-04-05",
+   "family": "flat", "direction": "up",
+   "points": [["0","L","2018-08-15",6],["A","H","2018-09-20",6],["B","L","2019-01-03",6],["C","H","2019-03-13",6]],
+   "note": "Expanded flat in a downtrend; C = ending diagonal."},
+  {"id": "F03", "set": "heldout", "parent": "H08", "cut": "2019-01-25", "next": "up",
+   "points": [["0","L","2018-08-15",6],["A","H","2018-09-20",6],["B","L","2019-01-03",6]]},
+
+  {"id": "H09", "set": "lesson", "src": "EN 05-15_1355", "instrument": "AUDUSD daily", "data": "AUDUSD_X", "bar": "D", "from": "2015-05-01", "cut": "2016-05-06",
+   "family": "flat", "direction": "up",
+   "points": [["0","L","2015-09-07",6],["A","H","2015-10-12",6],["B","L","2016-01-15",6],["C","H","2016-04-21",6]],
+   "note": "Expanded flat a-b-c, itself part of a larger correction."},
+
+  {"id": "H10", "set": "lesson", "src": "EN 06-17_1435", "instrument": "EURUSD weekly", "data": "EURUSD_X", "bar": "W-FRI", "from": "2013-06-01", "cut": "2016-12-02",
+   "family": "triangle", "direction": "up",
+   "points": [["0","L","2015-03-16",14],["A","H","2015-08-24",14],["B","L","2015-12-03",14],["C","H","2016-05-03",14],["D","L","2016-10-25",14],["E","H","2016-11-09",7]],
+   "note": "Contracting triangle in bearish trend (triangle legs alternate; 'direction' = direction of leg A)."},
+
+  {"id": "H11", "set": "heldout", "src": "EN 06-18_0830", "instrument": "Silver (12H chart, daily bars here)", "data": "SI_F", "bar": "D", "from": "2016-08-01", "cut": "2018-02-09",
+   "family": "triangle", "direction": "up",
+   "points": [["0","L","2016-12-20",8],["A","H","2017-04-17",8],["B","L","2017-07-07",8],["C","H","2017-09-08",8],["D","L","2017-12-12",8],["E","H","2018-01-25",8]],
+   "note": "Running triangle (B below A start) in bearish trend."},
+  {"id": "F07", "set": "heldout", "parent": "H11", "cut": "2017-12-29", "next": "up",
+   "points": [["0","L","2016-12-20",8],["A","H","2017-04-17",8],["B","L","2017-07-07",8],["C","H","2017-09-08",8],["D","L","2017-12-12",8]]},
+
+  {"id": "H12", "set": "lesson", "src": "EN 06-19_0750", "instrument": "Crude oil daily", "data": "CL_F", "bar": "D", "from": "2013-10-01", "cut": "2014-06-13",
+   "family": "triangle", "direction": "down",
+   "points": [["0","H","2014-03-03",3],["A","L","2014-03-17",4],["B","H","2014-04-10",5],["C","L","2014-04-29",5],["D","H","2014-05-21",5],["E","L","2014-06-02",4]],
+   "note": "Barrier triangle (B and D equal) in bullish trend."},
+
+  {"id": "H13", "set": "lesson", "src": "EN 06-20_0750", "instrument": "DAX (4H chart, daily bars here)", "data": "GDAXI", "bar": "D", "from": "2013-07-01", "cut": "2014-11-07",
+   "family": "triangle", "direction": "down",
+   "points": [["0","H","2013-12-02",5],["A","L","2013-12-18",6],["B","H","2014-01-17",8],["C","L","2014-03-14",6],["D","H","2014-06-20",14],["E","L","2014-10-16",6]],
+   "note": "Expanding triangle in uptrend."},
+
+  {"id": "H14", "set": "heldout", "src": "EN 08-24_3040", "instrument": "AUDNZD (daily chart, weekly bars here)", "data": "AUDNZD_X", "bar": "W-FRI", "from": "2007-06-01", "cut": "2011-07-15",
+   "family": "diagonal", "direction": "up",
+   "points": [["0","L","2008-10-10",14],["1","H","2010-03-01",40],["2","L","2010-06-01",40],["3","H","2010-12-01",40],["4","L","2011-01-25",25],["5","H","2011-05-04",21]],
+   "note": "Ending contracting diagonal, wave 1 extended; true top = A of wave 5 (truncation)."},
+
+  {"id": "H15", "set": "lesson", "src": "EN 10-39_0210 (live trade)", "instrument": "NASDAQ-100 weekly", "data": "NDX", "bar": "W-FRI", "from": "2015-06-01", "cut": "2020-09-18",
+   "family": "diagonal", "direction": "up", "instructor_next": "down",
+   "points": [["1","H","2018-10-01",21],["2","L","2018-12-24",14],["3","H","2020-02-19",14],["4","L","2020-03-23",10],["5","H","2020-09-02",10]],
+   "note": "Expanding ending diagonal circled 1-5; live short taken at the top. Start of 1 not marked precisely (arrow at 2016 low)."},
+  {"id": "F08", "set": "lesson", "parent": "H15", "cut": "2020-04-17", "next": "up",
+   "points": [["1","H","2018-10-01",21],["2","L","2018-12-24",14],["3","H","2020-02-19",14],["4","L","2020-03-23",10]]},
+
+  {"id": "H16", "set": "lesson", "src": "EN 04-11_0655", "instrument": "Gold (8H chart, daily bars here)", "data": "GC_F", "bar": "D", "from": "2015-06-01", "cut": "2016-07-29",
+   "family": "zigzag", "direction": "up",
+   "points": [["0","L","2015-12-03",6],["A","H","2016-03-11",8],["B","L","2016-05-30",6],["C","H","2016-07-06",6]],
+   "note": "Regular zigzag up in a bearish trend; C ends with ending diagonal."},
+  {"id": "F04", "set": "lesson", "parent": "H16", "cut": "2016-06-10", "next": "up",
+   "points": [["0","L","2015-12-03",6],["A","H","2016-03-11",8],["B","L","2016-05-30",6]]},
+
+  {"id": "H17", "set": "heldout", "src": "EN 08-30_0140", "instrument": "USDZAR daily", "data": "ZAR_X", "bar": "D", "from": "2017-08-01", "cut": "2018-09-21",
+   "family": "impulse", "direction": "up",
+   "points": [["0","L","2018-02-26",6],["1","H","2018-03-02",5],["2","L","2018-03-22",8],["3","H","2018-06-28",6],["4","L","2018-07-31",6],["5","H","2018-09-05",6]]},
+  {"id": "F06", "set": "heldout", "parent": "H17", "cut": "2018-08-08", "next": "up",
+   "points": [["0","L","2018-02-26",6],["1","H","2018-03-02",5],["2","L","2018-03-22",8],["3","H","2018-06-28",6],["4","L","2018-07-31",6]]},
+
+  {"id": "H18", "set": "lesson", "src": "TR 5.10 + premium PDF 05.04.2021", "instrument": "GBPUSD daily", "data": "GBPUSD_X", "bar": "D", "from": "2019-11-01", "cut": "2021-04-02",
+   "family": "impulse", "direction": "up", "instructor_next": "down",
+   "points": [["0","L","2020-03-20",4],["1","H","2020-04-22",10],["2","L","2020-05-18",8],["3","H","2020-09-01",4],["4","L","2020-09-23",6],["5","H","2021-02-24",4]],
+   "note": "Daily impulse from Covid low complete at Feb-2021 top; instructor shorted (wave a down). Waves 1/2 dates read approximately (Mar-Apr / May 2020)."},
+
+  {"id": "H19", "set": "lesson", "src": "TR 5.11 + premium PDF 06.04.2021", "instrument": "EURUSD daily", "data": "EURUSD_X", "bar": "D", "from": "2020-01-01", "cut": "2021-04-01",
+   "family": "impulse", "direction": "up", "instructor_next": "down",
+   "points": [["0","L","2020-03-23",4],["3","H","2020-09-01",4],["4","L","2020-11-04",8],["5","H","2021-01-06",4]],
+   "note": "Waves 1-2 not shown with dates in notes; 4 = double three; after 5 instructor counted i-ii-iii down."},
+
+  {"id": "H20", "set": "heldout", "src": "TR 5.13", "instrument": "DXY daily", "data": "DX-Y.NYB", "bar": "D", "from": "2019-12-01", "cut": "2021-02-12",
+   "family": "impulse", "direction": "down",
+   "points": [["0","H","2020-03-20",3],["1","L","2020-03-27",4],["2","H","2020-04-24",25],["3","L","2020-09-01",4],["4","H","2020-09-25",4],["5","L","2021-01-06",4]],
+   "note": "Wave 2 = a-b-c near 101 (Apr-May 2020) - date approximate. Count done with replay (hindsight)."},
+
+  {"id": "H21", "set": "lesson", "src": "TR premium PDF 05.04.2021", "instrument": "USDCAD daily", "data": "CAD_X", "bar": "D", "from": "2019-11-01", "cut": "2021-04-02",
+   "family": "impulse", "direction": "down", "instructor_next": "up",
+   "points": [["0","H","2020-03-19",3],["5","L","2021-03-18",4]],
+   "note": "5-wave decline from Mar-2020 top; wave 2 a triangle, 4 sideways; inner dates not given -> only start/end scored. Instructor went long (wave i up, ii done)."}
+ ]
+}

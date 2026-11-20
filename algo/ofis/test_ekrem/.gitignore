@@ -1,0 +1,7 @@
+.venv/
+ham/
+snap/
+anahtar/
+cikti/*/b*
+cikti/*/run*.log
+__pycache__/

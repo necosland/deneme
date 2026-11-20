@@ -1,0 +1,43 @@
+[
+ {
+  "batch": "11210031_2",
+  "codes": [
+   "KDB43",
+   "K20AF",
+   "K0B00"
+  ],
+  "cost_usd": 0.1529766,
+  "secs": 65,
+  "turns": 12,
+  "n_out": 3,
+  "error": null
+ },
+ {
+  "batch": "11210031_1",
+  "codes": [
+   "K672A",
+   "KA0FD",
+   "K43C2",
+   "K30B3"
+  ],
+  "cost_usd": 0.21011439999999998,
+  "secs": 98,
+  "turns": 14,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210031_0",
+  "codes": [
+   "K2C08",
+   "K7F37",
+   "K9B0D",
+   "K5F01"
+  ],
+  "cost_usd": 0.1942452,
+  "secs": 102,
+  "turns": 14,
+  "n_out": 4,
+  "error": null
+ }
+]

@@ -1,0 +1,110 @@
+[
+ {
+  "batch": 0,
+  "codes": [
+   "KE5AD",
+   "KF6CF"
+  ],
+  "cost_usd": 0.1646716,
+  "secs": 79,
+  "turns": 9,
+  "n_out": 2,
+  "error": null
+ },
+ {
+  "batch": "11210020_2",
+  "codes": [
+   "K1596",
+   "K672A",
+   "KA0FD",
+   "K43C2"
+  ],
+  "cost_usd": 0.1799542,
+  "secs": 78,
+  "turns": 13,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210020_0",
+  "codes": [
+   "K2C08",
+   "K7F37",
+   "K0F57",
+   "KE9AE"
+  ],
+  "cost_usd": 0.18593500000000002,
+  "secs": 83,
+  "turns": 13,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210020_1",
+  "codes": [
+   "K9B0D",
+   "KE12A",
+   "K5F01",
+   "KEB74"
+  ],
+  "cost_usd": 0.19146260000000004,
+  "secs": 89,
+  "turns": 13,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210020_3",
+  "codes": [
+   "K120C",
+   "KC9FB",
+   "KAC1B",
+   "K34E9"
+  ],
+  "cost_usd": 0.183023,
+  "secs": 80,
+  "turns": 13,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210020_5",
+  "codes": [
+   "K0B00",
+   "K763B",
+   "K7F17",
+   "K8F70"
+  ],
+  "cost_usd": 0.1788226,
+  "secs": 77,
+  "turns": 13,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210020_4",
+  "codes": [
+   "K30B3",
+   "KDB43",
+   "K1A2D",
+   "K20AF"
+  ],
+  "cost_usd": 0.201737,
+  "secs": 94,
+  "turns": 13,
+  "n_out": 4,
+  "error": null
+ },
+ {
+  "batch": "11210020_6",
+  "codes": [
+   "K9445",
+   "K0F72"
+  ],
+  "cost_usd": 0.12712779999999999,
+  "secs": 53,
+  "turns": 9,
+  "n_out": 2,
+  "error": null
+ }
+]

@@ -455,6 +455,166 @@ def etf_flows():
         return None
 
 
+# ---------------- harmonik (kaynak: C:/Users/pc/trader-ofis-egitim/harmonik-kurs/OZET.md bolum 1-6) ----------------
+# Oranlar: ab=|B-A|/|A-X|, bc=|C-B|/|B-A|, cd=|D-C|/|C-B|, xd=|D-A|/|A-X|, dxc=|C-D|/|C-X|, abcd=|D-C|/|B-A|.
+# Bantlar OZET tablosundaki "code band" (iki kurs sayfasi celisirse genis olan). Shark: XABCD araci (X,A,B,C,D) =
+# Shark (0,X,A,B,C). 5-0 alinmadi (kursta stop/hedef yok). "def" = D'yi tanimlayan oran ve ideal degeri.
+HARM = {
+    "Gartley":   {"ab": (0.58, 0.65), "bc": (0.382, 0.886), "cd": (1.13, 1.618), "xd": (0.618, 0.84), "def": ("xd", 0.786)},
+    "Bat":       {"ab": (0.382, 0.52), "bc": (0.382, 0.886), "cd": (1.618, 2.618), "xd": (0.85, 0.90), "def": ("xd", 0.886)},
+    "AltBat":    {"ab": (0.35, 0.40), "bc": (0.382, 0.886), "cd": (2.0, 3.618), "xd": (1.10, 1.17), "def": ("xd", 1.13)},
+    "Butterfly": {"ab": (0.76, 0.83), "bc": (0.382, 0.886), "cd": (1.618, 2.618), "xd": (1.20, 1.414), "def": ("xd", 1.27)},
+    "Crab":      {"ab": (0.382, 0.67), "bc": (0.382, 0.91), "cd": (2.24, 3.618), "xd": (1.55, 1.70), "def": ("xd", 1.618)},
+    "DeepCrab":  {"ab": (0.836, 0.93), "bc": (0.382, 0.886), "cd": (2.0, 3.618), "xd": (1.55, 1.70), "def": ("xd", 1.618)},
+    "Cypher":    {"ab": (0.382, 0.618), "bc": (1.13, 1.45), "cd": (1.272, 2.0), "dxc": (0.75, 0.886), "def": ("dxc", 0.786)},
+    "Shark":     {"bc": (1.13, 1.618), "cd": (1.618, 2.24), "xd": (0.886, 1.18), "def": ("xd", 1.0)},
+    "ABCD":      {"bc": (0.587, 0.825), "cd": (1.27, 1.618), "abcd": None, "def": ("abcd", None)},
+}
+HARM_TF = (("1h", 2.0), ("4h", 2.0), ("4h", 3.5), ("1d", 3.0))   # (zaman dilimi, zigzag k): birden cok olcek
+D_TOL = 0.05   # D'ye bagli oranlarda (cd, xd, dxc) bant +-%5 genisler: kursta D bir bolge, fiyat once doner ya da tasar
+
+
+def _in(r, b, tol=0.0):
+    return r is not None and np.isfinite(r) and b[0] * (1 - tol) <= r <= b[1] * (1 + tol)
+
+
+def _closeness(r, b):
+    c, h = (b[0] + b[1]) / 2, (b[1] - b[0]) / 2
+    return 1.0 if h <= 0 else 1 - min(1.0, abs(r - c) / h)
+
+
+def _last_candle(df):
+    o, h, l, c = df[["open", "high", "low", "close"]].to_numpy()[-1]
+    po, pc = df.open.iloc[-2], df.close.iloc[-2]
+    body = abs(c - o)
+    if h - l <= 0:
+        return None
+    if c > o and pc < po and c >= po and o <= pc:
+        return "bull_engulf"
+    if c < o and pc > po and c <= po and o >= pc:
+        return "bear_engulf"
+    if min(o, c) - l >= 2 * body and h - max(o, c) <= body:
+        return "hammer"
+    if h - max(o, c) >= 2 * body and min(o, c) - l <= body:
+        return "shooting_star"
+    return None
+
+
+def _confirm(df, d, iB, pB, iD, pD, plo, phi):
+    """Kurs bolum 5: RSI uyumsuzlugu (D vs B), TDI benzeri kesisim (RSI21: cizgi SMA2, sinyal SMA7, son 3 mum),
+    son kapali mum tipi, son kapanis PRZ icinde mi. d=-1 bogasal (D dip, yukari donus beklenir)."""
+    r14, r21 = rsi(df.close), rsi(df.close, 21)
+    diff = (r21.rolling(2).mean() - r21.rolling(7).mean()).to_numpy()[-4:]
+    up = d < 0
+    cross = any((diff[j - 1] <= 0 < diff[j]) if up else (diff[j - 1] >= 0 > diff[j]) for j in range(1, len(diff)))
+    beyond = (pD < pB) if up else (pD > pB)
+    div = None if not beyond else bool((r14.iloc[iD] > r14.iloc[iB]) if up else (r14.iloc[iD] < r14.iloc[iB]))
+    last = df.close.iloc[-1]
+    return {"rsi_div_vs_B": div, "tdi_cross_3bars": bool(cross), "last_candle": _last_candle(df),
+            "last_close_in_prz": bool(plo <= last <= phi)}
+
+
+def harmonics(fr, keep=6):
+    """Pivot tabanli XABCD adaylari. Kod yalniz olcer; karar trader-harmonik'in.
+    live: X,A,B,C onayli + D = suren bacagin ucu (forming / at_prz / overshot). reacted: 5 nokta onayli, D son 10 mumda."""
+    out = []
+    for iv, k in HARM_TF:
+        df = fr[iv]
+        piv, prov = zigzag(df, k)
+        if len(df) < 30:
+            continue
+        a, idx = atr(df).iloc[-1], df.index
+        sets = []
+        if prov and len(piv) >= 4:
+            sets.append((piv[-4:] + [prov], "live"))
+        if len(piv) >= 5 and len(df) - 1 - piv[-1][0] <= 10:
+            sets.append((piv[-5:], "reacted"))
+        for pts, kind in sets:
+            (iX, X, _), (iA, A, _), (iB, B, _), (iC, C, _), (iD, Dn, tD) = pts
+            d = 1 if tD.startswith("H") else -1          # D tepe = ayisal (sat), D dip = bogasal (al)
+            xa, ab_, bc_ = abs(A - X), abs(B - A), abs(C - B)
+            if min(xa, ab_, bc_) <= 0:
+                continue
+            r = {"ab": ab_ / xa, "bc": bc_ / ab_, "cd": abs(Dn - C) / bc_, "xd": abs(Dn - A) / xa,
+                 "dxc": abs(C - Dn) / abs(C - X) if C != X else float("nan"), "abcd": abs(Dn - C) / ab_}
+            for name, P in HARM.items():
+                pre = [q for q in ("ab", "bc") if q in P]
+                if not all(_in(r[q], P[q]) for q in pre):
+                    continue
+                cdlo, cdhi = sorted(C + d * x * bc_ for x in P["cd"])
+                if name == "ABCD":
+                    opts = []
+                    for t in (1.0, 1.272, 1.618):
+                        lo, hi = sorted(C + d * x * ab_ for x in (t * 0.97, t * 1.03))
+                        if hi >= cdlo and lo <= cdhi:
+                            opts.append((t, lo, hi))
+                    if not opts:
+                        continue
+                    ideal, plo, phi = opts[0]
+                    conflu = True
+                else:
+                    q, ideal = P["def"]
+                    ref, leg = (C, abs(C - X)) if q == "dxc" else (A, xa)
+                    plo, phi = sorted(ref + d * x * leg for x in P[q])
+                    conflu = phi >= cdlo and plo <= cdhi
+                    if conflu:
+                        plo, phi = max(plo, cdlo), min(phi, cdhi)
+                near, far = (plo, phi) if d > 0 else (phi, plo)
+                if kind == "reacted":
+                    status = "reacted"
+                elif d * (Dn - near) < -0.25 * a:
+                    status = "forming"
+                elif d * (Dn - far) > 0.5 * a:
+                    status = "overshot"
+                else:
+                    status = "at_prz"
+                dist = max(0.0, -d * (Dn - near)) / a
+                if status == "forming" and dist > 3:
+                    continue
+                dq = [q for q in ("cd", "xd", "dxc") if q in P]
+                if status in ("at_prz", "reacted"):
+                    if not all(_in(r[q], P[q], D_TOL) for q in dq):
+                        continue
+                    if name == "ABCD" and abs(r["abcd"] - ideal) / ideal > 0.03 + D_TOL:
+                        continue
+                cl = [_closeness(r[q], P[q]) for q in pre]
+                Dref = Dn if status != "forming" else (plo + phi) / 2
+                if status != "forming":
+                    dv = r[P["def"][0]]
+                    cl.append(1 - min(1.0, abs(dv - ideal) / (0.05 * ideal)))
+                lvl = lambda x: A + d * x * xa  # noqa: E731  XA seviyesi
+                if name == "ABCD":
+                    stop = Dref + d * 0.272 * abs(Dref - A)
+                elif name == "Gartley":
+                    stop = lvl(0.786)
+                elif name == "Butterfly":
+                    stop = lvl(1.414)
+                elif name in ("Crab", "DeepCrab"):
+                    stop = lvl(2.0)
+                elif name == "AltBat":
+                    stop = Dref + d * 0.272 * abs(C - Dref)
+                else:                                    # Bat, Cypher, Shark: D'nin hemen otesi
+                    stop = Dref
+                stop = max(stop, Dref) if d > 0 else min(stop, Dref)
+                hard = X if name in ("Gartley", "Bat", "Cypher") else (
+                    lvl(1.414) if name == "Butterfly" else lvl(2.0) if name in ("Crab", "DeepCrab") else None)
+                leg = abs(A - Dref) if name == "ABCD" else abs(C - Dref)
+                t2r = 0.5 if name == "Shark" else 0.618
+                out.append({
+                    "pattern": name, "dir": "bear" if d > 0 else "bull", "tf": iv, "zz_k": k, "status": status,
+                    "fit": round(100 * float(np.mean(cl))),
+                    "XABCD": [[ts(idx[i], iv == "1d"), r5(p)] for i, p, _ in pts],
+                    "ratios": {q: r5(r[q]) for q in P if q != "def"},
+                    "prz": [r5(plo), r5(phi)], "bc_confluence": bool(conflu),
+                    "d_now": r5(Dn), "dist_prz_atr": r5(dist), "atr14_tf": r5(a),
+                    "course_stop": r5(stop), "hard_invalid": r5(hard),
+                    "t1": r5(Dref - d * 0.382 * leg), "t2": r5(Dref - d * t2r * leg),
+                    "confirm": None if status == "forming" else _confirm(df, d, iB, B, iD, Dn, plo, phi)})
+    order = {"at_prz": 0, "forming": 1, "reacted": 2, "overshot": 3}
+    out.sort(key=lambda x: (order[x["status"]], -x["fit"]))
+    return out[:keep]
+
+
 # ---------------- grafik ----------------
 CHART_BARS = {"1d": 120, "4h": 120, "1h": 96}
 
@@ -585,6 +745,7 @@ def main():
             "fvg": {"4h": fvgs(fr["4h"], a4), "1h": fvgs(fr["1h"], a1)},
             "equal_hl": {"4h": equal_levels(fr["4h"], a4, "4h"), "1h": equal_levels(fr["1h"], a1, "1h")},
             "vp": {"4h_all": vprofile(fr["4h"]), "1h_30d": vprofile(fr["1h"]), "1d_180d": vprofile(fr["1d"].tail(180))},
+            "harmonics": harmonics(fr),
             "candles": {iv: rows(fr[iv], iv) for iv in ("1d", "4h", "1h", "15m")},
             "derivs": None if replay else derivs(s, fr["4h"]),
         }

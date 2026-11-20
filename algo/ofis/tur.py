@@ -27,7 +27,7 @@ import ortak as O
 NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 T_DATA, T_EXPERT, T_RISK, T_TOTAL = 240, 300, 240, 15 * 60
 VIEW_OF = {"trader-likidite": "fiyat", "trader-elliott": "fiyat", "trader-seviye": "fiyat", "trader-senaryo": "fiyat",
-           "trader-turev": "turev", "trader-makro": "makro", "trader-risk": "risk"}
+           "trader-turev": "turev", "trader-makro": "makro", "trader-risk": "risk", "trader-harmonik": "harmonik"}
 LOGF = "tur.log"
 T0 = time.time()
 
@@ -50,9 +50,18 @@ def make_view(snap, role):
             v["assets"][sym] = None
             continue
         if role == "fiyat":
-            x = {k: val for k, val in a.items() if k != "derivs"}
+            x = {k: val for k, val in a.items() if k not in ("derivs", "harmonics")}
             x["candles"] = {k: val for k, val in a["candles"].items() if k != "15m"}
-            omitted = ["assets.*.derivs", "assets.*.candles.15m", "sentiment", "macro except calendar_usd_high"]
+            omitted = ["assets.*.derivs", "assets.*.harmonics", "assets.*.candles.15m", "sentiment",
+                       "macro except calendar_usd_high"]
+        elif role == "harmonik":
+            c4 = dict(a["candles"]["4h"])
+            c4["rows"] = c4["rows"][-12:]
+            x = {"ctx": a["ctx"], "levels": a["levels"], "harmonics": a.get("harmonics"),
+                 "structure": {k: a["structure"][k] for k in ("1d", "4h")},
+                 "candles": {"4h": c4, "1h": a["candles"]["1h"]}, "charts": a.get("charts")}
+            omitted = ["structure.1h", "fvg", "equal_hl", "vp", "candles 1d/15m and 4h older than 12 bars", "derivs",
+                       "sentiment", "macro except calendar_usd_high"]
         elif role == "turev":
             c4 = dict(a["candles"]["4h"])
             c4["rows"] = c4["rows"][-12:]
@@ -74,7 +83,7 @@ def make_view(snap, role):
         v["sentiment"], v["macro"] = snap.get("sentiment"), snap.get("macro")
     elif role == "turev":
         v["sentiment"], v["macro"] = snap.get("sentiment"), cal
-    elif role in ("fiyat", "risk"):
+    elif role in ("fiyat", "risk", "harmonik"):
         v["macro"] = cal
     else:
         v["sentiment"], v["macro"] = snap.get("sentiment"), snap.get("macro")

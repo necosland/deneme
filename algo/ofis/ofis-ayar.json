@@ -9,7 +9,7 @@
     {"id": "trader-turev", "name": "Derya", "field": "derivatives positioning", "runs": "every", "enabled": true, "scored_since": null},
     {"id": "trader-makro", "name": "Kerem", "field": "macro & flows", "runs": ["08:00", "16:00"], "enabled": true, "scored_since": null},
     {"id": "trader-senaryo", "name": "Bora", "field": "range/liquidity two-scenario reading (inspired by Efe Bulduk's public approach)", "runs": "every", "enabled": true, "scored_since": null},
-    {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (PLANNED: waits for course OZET + harmonic detector in veri_topla.py)", "runs": "every", "enabled": false, "scored_since": null}
+    {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (course: trader-ofis-egitim/harmonik-kurs; detector in veri_topla.py harmonics)", "runs": "every", "enabled": true, "scored_since": null}
   ],
   "head": {"id": "trader-risk", "name": "Rıza"},
   "risk": {

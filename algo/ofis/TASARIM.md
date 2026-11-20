@@ -88,7 +88,8 @@ Amaç: uzman yargısını (LLM agentları) kural tabanlı sistemlerimize ve al-t
 - Denetim ölçütü: `C:\Users\pc\.claude\agent-bilgi\trader-ofis\ortak\denetim-olcutu.md`.
 - İlk kurulumda: `veri_topla.py` bir kez canlı çalışır, `errors` ve token tahmini okunur; her uzman bir kez çağrılıp çıktısı şemayla doğrulanır; trader-risk bir kez çatışmalı (bir long + bir short) yapay EXPERTS dosyasıyla çağrılır ve `none` + `R2-conflict` beklenir.
 
-## 10. Planlı: harmonik uzman (trader-harmonik, Hakan) — kurs özeti bekleniyor
+## 10. Harmonik uzman (trader-harmonik, Hakan) — kuruldu 2026-11-20
+Uygulama: `veri_topla.py` `HARM` (kurs OZET bölüm 2 kod bantları; Crab CD/BC 2,24-3,618, Butterfly 1,618-2,618 = iki sayfadan geniş olanı; 5-0 alınmadı), `harmonics()` ölçekler 1h k2, 4h k2, 4h k3,5, 1d k3; D'ye bağlı oranlarda ±%5 tolerans; varlık başına en iyi 6 aday. Koşucu görünümü `tur.py` rol `harmonik`. PRZ kutusu grafiğe henüz çizilmiyor. Aşağısı ilk plan:
 - Kod (`veri_topla.py`, yeni `harmonics` alanı, 4h ve 1d): onaylı zigzag pivotlarından ardışık X-A-B-C (+ D) beşlileri. D iki türlü: (a) onaylı son pivot ya da `current_leg_extreme` (tamamlanmış/tamamlanmakta), (b) henüz gelmediyse PRZ = XA geri çekilme oranı ile BC uzantısı ve AB=CD bölgelerinin kesişimi (fiyat aralığı).
 - Desenler: Gartley, Bat, Butterfly, Crab, Shark, Cypher, AB=CD. Oran tablosu ve tolerans kursun `OZET.md`'sinden alınacak, kodda tek sözlükte tutulacak; kurs gelmeden Carney oranları kullanılmayacak, çünkü iki farklı tablo puanlamayı karıştırır.
 - Çıktı satırı: `[pattern, bull/bear, tf, X..D zaman+fiyat, PRZ low/high, oran hataları, durum: forming/in_prz/completed/invalidated]`; varlık ve zaman dilimi başına en iyi 3 aday (toplam oran hatasına göre). Grafikte PRZ kutusu.

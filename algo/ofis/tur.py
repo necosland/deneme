@@ -249,6 +249,8 @@ def main():
     ap.add_argument("--only", help="yalniz bu uzmanlar (virgulle)")
     ap.add_argument("--no-risk", action="store_true")
     ap.add_argument("--no-ledger", action="store_true")
+    ap.add_argument("--komite", action="store_true", help="komiteyi ayardan bagimsiz ac (deneme)")
+    ap.add_argument("--no-komite", action="store_true")
     a = ap.parse_args()
     cfg = O.ayar()
     R = cfg["risk"]
@@ -372,11 +374,17 @@ def main():
                                                              "block": b, "reused": True, "snapshot_sha256": sha})
             say(f"{e['id']}: reused blocks from {prev[0]['asof_utc']}")
 
+    # 4b. komite (TASARIM.md 12, ofis-ayar.json committee): kapaliysa km None, kor bloklar aynen
+    import komite as KM
+    km = KM.toplanti(cfg, a, snap, stamp, rundir, valid_blocks, reused, views, VIEW_OF, run_claude,
+                     lambda ex, p: validate_blocks(ex, p, snap, cfg, vb), say)
+    dec_blocks = km.blocks() if km and km.held else valid_blocks + reused
+
     # 5. risk
     decisions, dec_ok = [], False
     if not a.no_risk:
         experts_f = rundir / "experts.json"
-        O.write_json(experts_f, valid_blocks + reused)
+        O.write_json(experts_f, dec_blocks)
         ledger_f, scores_f = rundir / "ledger.json", rundir / "scores.json"
         O.write_json(ledger_f, D.ledger_summary(st))
         sc = D.scores(st)
@@ -384,7 +392,7 @@ def main():
         rlim = " ".join(f"{k}={v}" for k, v in R.items() if isinstance(v, (int, float)) and not isinstance(v, bool))
         prompt = "\n".join([f"EXPERTS={experts_f}", f"SNAPSHOT={views['risk']}", gundem_line(),
                             f"OPEN={open_f if D.open_summary(st) else 'none'}", f"LEDGER={ledger_f}",
-                            f"SCORES={scores_f}", f"LIMITS={rlim}",
+                            f"SCORES={scores_f}", f"LIMITS={rlim}", *(km.risk_lines() if km else []),
                             f"ASSETS={','.join(cfg['assets'])}. Follow your agent instructions. "
                             "Your final message must be only the ```json array (one decision per asset)."])
         (rundir / "prompt_trader-risk.txt").write_text(prompt, encoding="utf-8")
@@ -416,6 +424,10 @@ def main():
                                   "decisions": [f"{d['asset']}:{d['decision']}:{d['side']}" for d in decisions]}
         say(f"trader-risk: {summary['trader-risk']}")
 
+    if km:
+        km.close(decisions, [] if dec_ok else ["no valid decision"], test=a.no_ledger)
+        summary["komite"] = km.summary()
+
     # 6. defter
     if not a.no_ledger:
         import kontrol as K
@@ -429,9 +441,11 @@ def main():
                     st["start_px"] = {s: (x or {}).get("ctx", {}).get("last_close") for s, x in snap["assets"].items()}
                 ev, note = K.run(st)
                 say(f"catch-up: events={ev} {note}")
-                res = D.apply_decisions(st, decisions, snap, stamp, valid_blocks + reused) if dec_ok else []
+                res = D.apply_decisions(st, decisions, snap, stamp, dec_blocks) if dec_ok else []
                 say(f"applied: {res}")
                 D.add_shadow(st, valid_blocks, called, stamp, snap)
+                if km:
+                    km.shadow(D, st, stamp, snap)
                 for d in decisions:
                     st["last_decisions"][d["asset"]] = {"asof_utc": asof, "decision": d["decision"], "neco_tr": d["neco_tr"]}
                 D.refresh_paper(st)

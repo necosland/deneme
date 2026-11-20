@@ -12,6 +12,7 @@
     {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (course: trader-ofis-egitim/harmonik-kurs; detector in veri_topla.py harmonics)", "runs": "every", "enabled": true, "scored_since": null}
   ],
   "head": {"id": "trader-risk", "name": "Rıza"},
+  "committee": {"enabled": true, "_note": "komite.py, TASARIM.md 12: kor tur -> Riza gundemi -> yanitlar (-> tur 3) -> karar. Yonlu blok yoksa atlanir.", "max_rounds": 3, "max_questions": 6, "max_speakers_r2": 6, "max_speakers_r3": 3, "reply_words": 60, "t_chair": 150, "t_reply": 150, "max_secs": 480, "max_cost_usd": 1.2},
   "risk": {
     "start_equity_usdt": 10000,
     "risk_pct_default": 1.0,

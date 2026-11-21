@@ -581,7 +581,7 @@ def play(code, meta):
     O.write_json(rdir / "scores.json", {e: {"closed": 0, "hit_rate": None, "avg_r": None, "ev_r_ci90": [None, None],
                                             "brier": None} for e in EXPERTS})
     SIM_NOW[0] = None
-    rlim = " ".join(f"{k}={v}" for k, v in R.items() if isinstance(v, (int, float)) and not isinstance(v, bool))
+    rlim = " ".join(f"{k}={str(v).lower() if isinstance(v, bool) else v}" for k, v in R.items() if not k.startswith('_') and isinstance(v, (int, float, str)))
     prompt = "\n".join([HEADER_RISK, f"EXPERTS={rdir / 'experts.json'}", f"SNAPSHOT={views['risk']}", "GUNDEM=none",
                         "OPEN=none", f"LEDGER={rdir / 'ledger.json'}", f"SCORES={rdir / 'scores.json'}",
                         f"LIMITS={rlim}", f"ASSETS={','.join(ASSETS)}. Follow your agent instructions. "

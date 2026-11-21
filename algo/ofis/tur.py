@@ -662,7 +662,7 @@ def main():
         O.write_json(ledger_f, D.ledger_summary(st))
         sc = D.scores(st)
         O.write_json(scores_f, {k: {x: v[x] for x in ("closed", "hit_rate", "avg_r", "ev_r_ci90", "brier")} for k, v in sc.items()})
-        rlim = " ".join(f"{k}={v}" for k, v in R.items() if isinstance(v, (int, float)) and not isinstance(v, bool))
+        rlim = " ".join(f"{k}={str(v).lower() if isinstance(v, bool) else v}" for k, v in R.items() if not k.startswith('_') and isinstance(v, (int, float, str)))
         try:
             import durdurma as DD
             off = sorted(DD.disabled(cfg))

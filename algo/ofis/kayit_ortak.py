@@ -51,11 +51,11 @@ def nice(x):
     return min((m * e for m in (1, 2, 2.5, 5, 10)), key=lambda s: abs(s - x))
 
 
-def fetch_book(mkt, sym, timeout=20):
-    """(bids, asks) [(fiyat, miktar)] en iyiden kotuye; hata -> (None, mesaj)."""
+def fetch_book(mkt, sym, timeout=20, limit=None):
+    """(bids, asks) [(fiyat, miktar)] en iyiden kotuye; hata -> (None, mesaj). limit verilmezse BOOK'taki kademe."""
     url, lim = BOOK[mkt]
     try:
-        r = requests.get(url, params={"symbol": sym, "limit": lim}, headers=UA, timeout=timeout)
+        r = requests.get(url, params={"symbol": sym, "limit": limit or lim}, headers=UA, timeout=timeout)
         if r.status_code in (403, 451):
             return None, f"{mkt} depth {sym}: HTTP {r.status_code} (blocked)"
         r.raise_for_status()
@@ -108,6 +108,22 @@ def heat_buckets(bids, asks):
     for k, v in _buckets(asks, step, mid, mid + span).items():
         d[k] = d.get(k, 0.0) + v
     return step, d
+
+
+def kayit_syms(cap=12):
+    """Kayitcilarin izledigi semboller: ofis-ayar assets + universe.always + veri/evren.json (universe aciksa).
+    Tarayici her tur bu evrenden secer; snapshot varliklari boylece kayitta olur. Hata -> BTC, ETH."""
+    import json
+    out = ["BTCUSDT", "ETHUSDT"]
+    try:
+        c = json.loads((ROOT / "ofis-ayar.json").read_text(encoding="utf-8"))
+        u = c.get("universe") or {}
+        out += list(c.get("assets") or []) + list(u.get("always") or [])
+        if u.get("enabled"):
+            out += json.loads((ROOT / "veri" / "evren.json").read_text(encoding="utf-8")).get("assets") or []
+    except Exception:  # noqa: BLE001
+        pass
+    return list(dict.fromkeys(s.upper() for s in out))[:cap]
 
 
 # ---------------- dosya ----------------

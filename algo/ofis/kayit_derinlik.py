@@ -1,24 +1,29 @@
 """Trader ofisi kayitcisi: emir defteri derinligi (LLM yok, anahtar yok). Zamanlayici 5 dakikada bir calistirir
 (gorev TraderOfisDerinlik, pythonw: pencere/ses yok).
 
-Her calismada BTCUSDT ve ETHUSDT icin Binance spot (5000 kademe) ve USD-M vadeli (1000 kademe) defterini ceker;
-satir basina bant likiditesi, en buyuk duvarlar ve +-%5 icindeki ~%0.25'lik fiyat kovalarini
+Her calismada kayit sembolleri (kayit_ortak.kayit_syms: ofis-ayar assets + evren, en cok 12; 2026-11-21 oncesi
+yalniz BTC/ETH) icin Binance spot (BTC/ETH 5000, digerleri 1000 kademe) ve USD-M vadeli (1000 kademe) defterini ceker;
+satir basina bant likiditesi, en buyuk 5 duvar (~%0.1 kova; once 3) ve +-%5 icindeki ~%0.25'lik fiyat kovalarini
 algo/ofis/kayit/derinlik/YYYY-MM-DD.csv.gz dosyasina ekler (UTC gunu). Snapshot bu kayittan 24 saatlik
-"derinlik isi haritasi" ozeti cikarir (veri_ek.depth_heatmap).
+"derinlik isi haritasi" ozeti (veri_ek.depth_heatmap) ve kalici duvarlar (akis.walls) cikarir.
 Kullanim: python algo/ofis/kayit_derinlik.py
 """
 import sys
+import time
 
 import kayit_ortak as K
 
-SYMS = ("BTCUSDT", "ETHUSDT")
+SYMS = K.kayit_syms()
+SPOT_FULL = ("BTCUSDT", "ETHUSDT")   # 5000 kademe (agirlik 250); digerleri 1000 (agirlik 50)
+NWALLS = 5
+TIME_LIMIT_S = 140                    # gorev siniri 3 dk: yavas agda kalan semboller bu turda atlanir
 HEADER = ["ts_utc", "sym", "mkt", "mid", "reach_bid_pct", "reach_ask_pct",
           "b0.5", "a0.5", "b1", "a1", "b2", "a2", "b5", "a5", "walls_bid", "walls_ask", "heat_step", "heat"]
 DIR = K.KAYIT / "derinlik"
 
 
 def row(t, sym, mkt, book):
-    s = K.book_summary(*book)
+    s = K.book_summary(*book, nwalls=NWALLS)
     step, heat = K.heat_buckets(*book)
     bands = [x for b in K.BANDS for x in s["bands_musd"][str(b)]]
     walls = lambda w: "|".join(f"{p}@{u}" for p, u in w)  # noqa: E731
@@ -32,8 +37,12 @@ def main():
     t = t0.strftime("%Y-%m-%d %H:%M")
     rows, errs = [], []
     for sym in SYMS:
+        if time.time() - t0.timestamp() > TIME_LIMIT_S:
+            errs.append(f"time limit: skipped from {sym}")
+            break
         for mkt in ("fut", "spot"):
-            book, err = K.fetch_book(mkt, sym)
+            lim = None if mkt == "fut" or sym in SPOT_FULL else 1000
+            book, err = K.fetch_book(mkt, sym, timeout=12, limit=lim)
             if err:
                 errs.append(err)
                 continue

@@ -2,6 +2,7 @@
 # kur-gorev.ps1'den ayri: o dosyayi yeniden calistirmak calisan tur/kontrol gorevlerine dokunur, bu dosya dokunmaz.
 #  TraderOfisDerinlik : 5 dakikada bir, kayit_derinlik.py (emir defteri bantlari/duvarlari -> kayit\derinlik\)
 #  TraderOfisTasfiye  : oturum acilisi + saatte bir, kayit_tasfiye.py (surekli websocket; calisiyorsa kilit yuzunden cikar)
+#  TraderOfisAkis     : 5 dakikada bir, kayit_akis.py (vadeli aggTrades -> dakika footprint hucreleri, buyuk emirler -> kayit\akis\)
 # pythonw.exe konsolsuz calisir: pencere ve ses yok.
 $ErrorActionPreference = 'Stop'
 $dir = $PSScriptRoot
@@ -24,6 +25,13 @@ $t2a = New-ScheduledTaskTrigger -AtLogOn -User $user
 $t2b = New-ScheduledTaskTrigger -Once -At $start -RepetitionInterval (New-TimeSpan -Hours 1)
 Register-ScheduledTask -TaskName 'TraderOfisTasfiye' -Action $a2 -Trigger @($t2a, $t2b) -Settings $s2 -Principal $principal `
   -Description 'Trader ofisi kayitci (LLM yok): Binance tasfiye websocket, tek ornek. algo\ofis\kayit_tasfiye.py' -Force | Out-Null
+
+$s3 = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances IgnoreNew -AllowStartIfOnBatteries `
+      -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 4)
+$a3 = New-ScheduledTaskAction -Execute $pyw -Argument "`"$dir\kayit_akis.py`"" -WorkingDirectory $dir
+$t3 = New-ScheduledTaskTrigger -Once -At $start.AddMinutes(2) -RepetitionInterval (New-TimeSpan -Minutes 5)
+Register-ScheduledTask -TaskName 'TraderOfisAkis' -Action $a3 -Trigger $t3 -Settings $s3 -Principal $principal `
+  -Description 'Trader ofisi kayitci (LLM yok): Binance vadeli aggTrades footprint 5 dk. algo\ofis\kayit_akis.py' -Force | Out-Null
 
 Get-ScheduledTask -TaskName 'TraderOfis*' | ForEach-Object {
   $i = $_ | Get-ScheduledTaskInfo

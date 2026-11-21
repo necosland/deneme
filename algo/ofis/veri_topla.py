@@ -55,6 +55,16 @@ LEGEND_EK = {
                 "24h avg resting spot+futures liquidity, buckets >1 bucket (~0.5%) away from price "
                 "[bucket_price, avg_usd_m, persist_pct = share of 5-min samples "
                 ">=2x median bucket]; futures book reaches only ~0.3% (BTC)/0.8% (ETH), far buckets are spot",
+    "orderflow": "akis.py; Binance USD-M futures, USD m, closed candles <= asof. 1h/15m rows: [open_time, o,h,l,c, vol, "
+                 "delta (taker buy - sell), delta_pct, dmin, dmax (min/max running delta inside the candle, 1m steps), "
+                 "trades, avg_trade_usd, t_pct (% of volume with real trade cells; rest spread evenly over each 1m range "
+                 "= approx), wick_lo/wick_hi = [sell, buy] traded below/above the body, ctick = cell size (~range/10), "
+                 "cells = top cells by volume [price, sell, buy], price desc]. vp_24h: last 24h volume profile "
+                 "(poc/vah/val 70%, lo/hi, thin = [lo,hi] runs < 0.3 x median bucket, nearest first). bubbles: merged "
+                 "taker market orders (same ms + side) >= p90 of per-minute largest order over 24h, last 6h, top rows "
+                 "[HH:MM, B/S, vwap, usd_m]. walls: persistent resting-book buckets (~0.1%, spot+futures top-5 per side "
+                 "every 5 min), last 12h, rows [price, dist_pct, avg_usd_m, minutes_present, last_seen_min_before_asof]; "
+                 "futures book reaches ~0.3% only, far walls are spot. 'insufficient history' = recorder too short",
     "macro.stablecoin_supply": "DefiLlama total stablecoin circulation, USD bn, 7d/30d % change",
     "macro.extra": "ndx, usdjpy, move (Yahoo; ^MOVE), hy_oas_pct (FRED BAMLH0A0HYM2, ICE BofA US HY OAS %), "
                    "btc_corr rows [vs, corr 30 obs, corr 90 obs, break] on BTC daily vs US daily returns "
@@ -823,6 +833,7 @@ def main():
             "assets": {}}
     sys.modules.setdefault("veri_topla", sys.modules[__name__])   # veri_ek ayni ERR/get'i kullansin
     import veri_ek as X
+    import akis as AK   # emir akisi (footprint/delta, balon, duvar), 2026-11-21; replay'de de (kayit yoksa yaklasik)
     C, now = X.cfg(), pd.Timestamp.now(tz="UTC").to_pydatetime()
     btc = frames.get("BTCUSDT")
     for s in assets:
@@ -861,6 +872,7 @@ def main():
             snap["assets"][s] = None
             continue
         snap["assets"][s] = x
+        x["orderflow"] = opt("orderflow", AK.orderflow, s, asof)
         if not replay:   # canli-ozel: cekildigi anin degeri (TASARIM.md 14 "Ek veri ve kayitcilar")
             cur = s.replace("USDT", "")
             px = x["ctx"]["last_close"]

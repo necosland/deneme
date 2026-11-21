@@ -40,7 +40,7 @@ VIEW_OF = {"trader-likidite": "fiyat", "trader-elliott": "elliott", "trader-sevi
 # ek veri (TASARIM.md 14 "Ek veri ve kayitcilar"): varlik alanlari ve hangi rolun hangi aciklamayi gordugu
 EK_ASSET = ("options", "onchain", "orderbook", "recorded")
 LEGEND_OF = {"turev": ("options", "onchain", "orderbook", "recorded", "macro.stablecoin_supply"),
-             "senaryo": ("options", "orderbook", "recorded"), "makro": ("onchain", "macro.stablecoin_supply", "macro.extra")}
+             "senaryo": ("options", "orderbook", "recorded", "orderflow"), "makro": ("onchain", "macro.stablecoin_supply", "macro.extra")}
 LOGF = "tur.log"
 T0 = time.time()
 
@@ -70,11 +70,11 @@ def make_view(snap, role):
             continue
         if role in ("fiyat", "senaryo", "elliott"):
             # elliott_say.py output only to Ekrem (role "elliott" = fiyat view + elliott field)
-            drop = ("derivs", "harmonics") + EK_ASSET + (() if role == "elliott" else ("elliott",))
+            drop = ("derivs", "harmonics", "orderflow") + EK_ASSET + (() if role == "elliott" else ("elliott",))
             x = {k: val for k, val in a.items() if k not in drop}
             x["candles"] = {k: val for k, val in a["candles"].items() if k != "15m"}
             omitted = ["assets.*.derivs", "assets.*.harmonics", "assets.*.candles.15m", "sentiment",
-                       "macro except calendar_usd_high", "assets.*.options/onchain/orderbook/recorded"]
+                       "macro except calendar_usd_high", "assets.*.options/onchain/orderbook/recorded/orderflow"]
             if role == "senaryo":   # Bora'nin OI filtresi icin turev ozeti
                 dv = a.get("derivs") or {}
                 x["derivs_lite"] = {k: dv.get(k) for k in ("source", "oi_usd_bn", "oi_chg_24h_pct", "oi_chg_7d_pct",
@@ -84,6 +84,7 @@ def make_view(snap, role):
                 x["options_lite"] = None if not isinstance(op, dict) else {
                     k: op.get(k) for k in ("dvol", "atm_iv_cm", "rr25_cm", "pc_oi_ratio_all", "monthly")}
                 x["orderbook"], x["recorded"] = a.get("orderbook"), a.get("recorded")
+                x["orderflow"] = a.get("orderflow")   # footprint/delta, balon, duvar: yalniz Bora (senaryo-akis.md)
                 omitted[-1] = "assets.*.onchain, assets.*.options.term (options_lite given)"
         elif role == "harmonik":
             c4 = dict(a["candles"]["4h"])

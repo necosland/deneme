@@ -293,7 +293,7 @@ function prec(p){return p<0.01?6:p<1?5:p<100?3:2}
 DATA.forEach(function(d){
   var el=document.getElementById(d.id);if(!el)return;
   var chart=LightweightCharts.createChart(el,{autoSize:true,layout:{background:{color:'#0f172a'},textColor:'#cbd5e1'},
-    grid:{vertLines:{color:'#1e293b'},horzLines:{color:'#1e293b'}},rightPriceScale:{borderColor:'#334155'},
+    grid:{vertLines:{visible:false},horzLines:{visible:false}},rightPriceScale:{borderColor:'#334155'},
     timeScale:{timeVisible:true,secondsVisible:false,borderColor:'#334155'},handleScroll:{vertTouchDrag:false}});
   var p=d.cizgi.length?d.cizgi[0][1]:1;
   var s=chart.addSeries(LightweightCharts.CandlestickSeries,{upColor:'#22c55e',downColor:'#ef4444',borderVisible:false,

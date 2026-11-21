@@ -1,0 +1,31 @@
+{
+ "pick": "btc_filter_ema_4h|LO|EW|cap",
+ "var_sr_daily": 0.00011999183735371901,
+ "n_trials_total": 247,
+ "n_with_carry": 931,
+ "holdout_end_exclusive": "2026-11-21 00:00:00+00:00",
+ "implied_min_holdout_sharpe_for_DSR95": 1.5610039835344385,
+ "fingerprint": {
+  "evren.py": "5cb9640bd55b14cd410e3c870e9993d273566dde1ca7ca036d3242f7419bfde8",
+  "motor.py": "634819553905e805e8b5122d66d6e46efaacfbabbc8ccff2594b51077117f80c",
+  "dev.py": "fba5d45704208b9099422c24242aa92b1d444a312c7649d64b0adb89fa33a58b",
+  "holdout.py": "f4899e026caa74ea6012ef5534783dcc9578c357ba96f330481a1b746ea9f000",
+  "plan.md": "cac0674546fe627047a411a36d57aca78e7b352e82f9a842215a82ccd955f01a",
+  "cache": "73fd999f0554a951bce72eb96b85f242b86f0e722c86adf6212932f9982940b9"
+ },
+ "btc_dev": {
+  "sharpe": 1.0441152848128623,
+  "cagr_%": 60.5666964887275,
+  "maxDD_%": -76.62925431645937,
+  "ret_%": 960.376667669774,
+  "years": {
+   "2019": 80.44011435449907,
+   "2020": 301.9833973340667,
+   "2021": 59.78952157803168,
+   "2022": -64.207055726116,
+   "2023": 155.60728793887236
+  }
+ },
+ "truncation_max_abs_diff": 0.0,
+ "frozen_at_utc": "2026-11-21 10:00:24.152569+00:00"
+}

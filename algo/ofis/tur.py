@@ -681,6 +681,17 @@ def main():
     return 4 if (total_fail or risk_fail) else 0
 
 
+def elliott_ileri_hook():
+    """Elliott k=4 3. dalga ileri sahte para testi (test_ekrem/ileri_plan.md): ayri defter, LLM yok. Turu asla bozmaz."""
+    try:
+        p = subprocess.run([str(O.PY), "-W", "ignore", str(O.ROOT / "elliott_ileri.py")], cwd=str(O.REPO),
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=240,
+                           creationflags=NOWIN)
+        say(f"elliott_ileri rc={p.returncode}" + ("" if p.returncode == 0 else f" {p.stderr.strip()[-400:]}"))
+    except Exception as e:  # noqa: BLE001
+        say(f"elliott_ileri FAILED (round unaffected): {type(e).__name__} {e}")
+
+
 if __name__ == "__main__":
     os.chdir(O.ROOT)
     sys.path.insert(0, str(O.ROOT))
@@ -688,11 +699,14 @@ if __name__ == "__main__":
         if not _k.ok:
             say(f"round lock busy ({TUR_KILIT}): another round is running, skip")
             sys.exit(5)
+        rc = 3
         try:
-            sys.exit(main())
-        except SystemExit:
-            raise
+            rc = main()
+        except SystemExit as _e:
+            rc = _e.code
         except Exception:  # noqa: BLE001
             import traceback
             say("CRASH " + traceback.format_exc().replace("\n", " | ")[:2000])
-            sys.exit(3)
+            rc = 3
+        elliott_ileri_hook()
+        sys.exit(rc)

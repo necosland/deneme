@@ -1153,6 +1153,13 @@ def write_reports(st):
         lines += ["", f"Not: Görüş zamanındaki fiyattan ufuk sonuna (1 saatlik mum). Bağlam = flat + CONTEXT against-long/short "
                   f"(tuttu = fiyat o yöne gitmedi). Bant içi = flat sonrası hareket {tr(band, 1)} ATR(4h) altında. "
                   "T1 önce = giriş beklenmeden T1 stoptan önce geldi. Ayrıntı: defter/bloklar.csv.", ""]
+    try:   # Elliott k=4 3. dalga ileri testi (ayri defter, test_ekrem/ileri_plan.md); bir tur geriden gelir
+        es = json.loads((O.DEFTER / "elliott_ileri.json").read_text(encoding="utf-8"))["summary"]
+        lines += ["", f"Elliott 3. dalga ileri testi (kod, 1R, ofisten ayrı): kapanan {es['closed_n']}, açık "
+                  f"{es['open_n']}, ort. R {tr(es['mean_R'], 3)}, toplam R {tr(es['total_R'])}, durum {es['verdict']}. "
+                  "Ayrıntı: elliott_ileri.md.", ""]
+    except Exception:  # noqa: BLE001
+        pass
     p = O.ROOT / "DURUM.md"
     tmp = p.with_suffix(".md.tmp")
     tmp.write_text("\n".join(lines), encoding="utf-8")

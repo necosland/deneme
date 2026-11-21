@@ -49,7 +49,9 @@ def is_infra_error(errors):
 # ---------------- state ----------------
 def load_state():
     if STATE.exists():
-        return json.loads(STATE.read_text(encoding="utf-8"))
+        st = json.loads(STATE.read_text(encoding="utf-8"))
+        migrate_order_life(st)
+        return st
     r = O.ayar()["risk"]
     return {"version": 1, "start_utc": None, "start_px": {}, "cash": float(r["start_equity_usdt"]),
             "peak": float(r["start_equity_usdt"]), "last_check_ms": {}, "last_px": {}, "trades": [],
@@ -113,9 +115,26 @@ def mark_equity(st):
     return eq
 
 
+def exposure(st, exclude=None):
+    """Riske sayilan ofis islemleri: acik + bekleyen; bekleyen OCO grubundan (gevsek defter bracket) yalniz en buyuk
+    riskli bacak, cunku biri dolunca digeri iptal olur. exclude: bu islem ve OCO kardesleri sayilmaz (dolum aninda)."""
+    xg = (exclude or {}).get("oco")
+    out, grp = [], {}
+    for t in live(st, "ofis"):
+        if t is exclude or (xg and t.get("oco") == xg):
+            continue
+        g = t.get("oco") if t["status"] == "pending" else None
+        if g:
+            if g not in grp or t["risk_usdt"] > grp[g]["risk_usdt"]:
+                grp[g] = t
+        else:
+            out.append(t)
+    return out + list(grp.values())
+
+
 def open_risk_usdt(st):
     """Acik pozisyonlarin stopa kadar riski (T1 sonrasi girise cekilen stopta 0) + bekleyen emirlerin plan riski."""
-    return sum(trade_risk(t) for t in live(st, "ofis"))
+    return sum(trade_risk(t) for t in exposure(st))
 
 
 def trade_risk(t):
@@ -144,13 +163,13 @@ def trade_notional(st, t):
 
 def open_notional(st, exclude=None):
     """Ofisin toplam pozisyon buyuklugu (acik + dolacak bekleyen), USDT."""
-    return sum(trade_notional(st, t) for t in live(st, "ofis") if t is not exclude)
+    return sum(trade_notional(st, t) for t in exposure(st, exclude))
 
 
 def net_beta_risk_usdt(st):
     """Isaretli BTC-beta riski: long +, short -, her islem riski x beta (TASARIM.md 13)."""
     clip = O.ayar()["risk"].get("beta_clip", [0.5, 2.0])
-    return sum(sgn(t["side"]) * beta_w(t["asset"], t.get("beta"), clip) * trade_risk(t) for t in live(st, "ofis"))
+    return sum(sgn(t["side"]) * beta_w(t["asset"], t.get("beta"), clip) * trade_risk(t) for t in exposure(st))
 
 
 def stops_today(st):
@@ -174,17 +193,47 @@ def open_summary(st):
     out = []
     for t in live(st, "ofis"):
         out.append({k: t.get(k) for k in ("id", "asset", "side", "status", "entry_type", "entry_price", "fill_px",
-                                          "stop", "targets", "qty", "t1_done", "created_utc", "fill_utc", "runs_left")})
+                                          "stop", "targets", "qty", "t1_done", "created_utc", "fill_utc")})
+        if t["status"] == "pending":
+            out[-1]["expires_utc"] = O.fmt(O.from_ms(t["expires_ms"]))
     return out
 
 
-def new_trade(st, book, asset, side, entry, stop, targets, horizon_h, risk_usdt, stamp, runs, conf=None, src=None):
+def order_life_h(R, horizon_h):
+    """Bekleyen emir omru (saat) = min(blok ufku, pending_order_max_h). Neco 2026-11-21: uzmanin sonraki turda flat
+    olmasi ya da hic blok vermemesi iptal etmez; yalniz acik iptal (cancel), degisen blok ya da bu sure."""
+    hz = int(horizon_h or R.get("default_horizon_h", 72))
+    return max(1, min(hz, int(R.get("pending_order_max_h", 24))))
+
+
+def migrate_order_life(st, R=None):
+    """Eski tur sayacli bekleyen emirler (runs_left): omru olusturmadan itibaren order_life_h'e cevirir. Tekrar
+    calismasi zararsiz (runs_left kalmaz). Donus: cevrilen emir sayisi."""
+    n = 0
+    for t in st.get("trades") or []:
+        if t.get("status") == "pending" and "runs_left" in t:
+            R = R or O.ayar()["risk"]
+            t["life_h"] = order_life_h(R, t.get("horizon_h"))
+            t["expires_ms"] = int(t["created_ms"]) + t["life_h"] * 3600 * 1000
+            t.pop("runs_left")
+            n += 1
+    return n
+
+
+def same_order(t, side, entry, stop, targets):
+    """Bekleyen emir bu plana esit mi (yon, giris, stop, hedefler): esitse degismemis blok, omru surer."""
+    return (t["side"] == side and t["entry_type"] == (entry or {}).get("type")
+            and t["entry_price"] == (entry or {}).get("price") and t["stop0"] == float(stop)
+            and t["targets"] == [float(x) for x in targets])
+
+
+def new_trade(st, book, asset, side, entry, stop, targets, horizon_h, risk_usdt, stamp, life_h, conf=None, src=None):
     now = O.now_utc()
     t = {"id": st["next_id"], "book": book, "asset": asset, "side": side, "status": "pending",
          "entry_type": entry["type"], "entry_price": entry.get("price"), "stop": float(stop), "stop0": float(stop),
          "targets": [float(x) for x in targets], "horizon_h": int(horizon_h), "risk_usdt": float(risk_usdt),
          "confidence": conf, "run": stamp, "src": src, "created_utc": O.fmt(now), "created_ms": O.ms(now),
-         "runs_left": runs, "expires_ms": O.ms(now) + (runs + 1) * H4, "qty": None, "qty0": None, "fill_px": None,
+         "life_h": life_h, "expires_ms": O.ms(now) + life_h * 3600 * 1000, "qty": None, "qty0": None, "fill_px": None,
          "fill_ms": None, "fill_utc": None, "fees": 0.0, "funding": 0.0, "realized": 0.0, "t1_done": False,
          "exit_ms": None, "exit_utc": None, "exit_reason": None, "exit_px": None, "r_mult": None, "hit": None,
          "init_risk": None, "close_req_ms": None, "funding_missing": False, "note": ""}
@@ -220,17 +269,11 @@ def apply_decisions(st, decisions, snap, stamp, blocks):
             st["last_px"][asset] = last
         d = by_asset.get(asset) or {"decision": "none"}
         kind = d["decision"]
-        # bekleyen emirler: keep degilse sayac duser, cancel_pending/open ise hemen iptal
+        # bekleyen emirler: cancel_pending (acik iptal) ya da yeni open (degisen plan) iptal eder; keep/none/diger
+        # kararlar dokunmaz, emir omru expires_ms'de (order_life_h) process_candles'ta dolar
         for t in live(st, "ofis", asset, ("pending",)):
-            if kind == "keep":
-                t["runs_left"] = R["pending_order_expiry_runs"]
-                t["expires_ms"] = O.ms(O.now_utc()) + (t["runs_left"] + 1) * H4
-            elif kind in ("cancel_pending", "open"):
+            if kind in ("cancel_pending", "open"):
                 cancel(st, t, f"decision {kind}")
-            else:
-                t["runs_left"] -= 1
-                if t["runs_left"] <= 0:
-                    cancel(st, t, "expired (no keep)")
         if kind == "tighten_stop":
             for t in live(st, "ofis", asset):
                 ns = d.get("stop")
@@ -477,7 +520,7 @@ def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg, strict=True):
     hz = [b["horizon_h"] for b in blocks if b["asset"] == asset and b["bias"] == side and b["expert"] in d.get("supporting", [])]
     horizon = max(hz) if hz else R.get("default_horizon_h", 72)
     t = new_trade(st, "ofis", asset, side, entry, stop, targets[:2], horizon, eq * rp / 100, stamp,
-                  R["pending_order_expiry_runs"], src="trader-risk")
+                  order_life_h(R, horizon), src="trader-risk")
     t["risk_pct"] = round(rp, 3)
     t["beta"] = ctx.get("beta_btc_30d")
     t["note"] = "; ".join(notes)
@@ -497,21 +540,16 @@ def errored_experts(stamp):
 
 def add_shadow(st, blocks, called, stamp, snap, errored=None, hold_assets=()):
     """blocks: bu tur uretilen gecerli bloklar; called: bu tur cagrilan uzmanlar (gecersiz/zaman asimi dahil).
-    errored: cagrisi altyapi hatasiyla dusen uzmanlar (tur.py: results[ex]['error'] dolu olanlar); bunlarin bekleyen
-    golge emirlerinin sayaci dusmez. None ise sinyaller.jsonl'den cikarilir (errored_experts).
-    hold_assets: kod kapisinin bu tur atladigi coinler (uzmana sorulmadi): bekleyen golge emir sayaci dusmez."""
+    Bekleyen golge emir (Neco 2026-11-21): yalniz `cancel` blogu ya da degisen yonlu blok iptal eder; flat blok, blok
+    vermemek, altyapi hatasi (errored) ya da kapi atlamasi (hold_assets) dokunmaz; omur order_life_h (expires_ms).
+    called/errored/hold_assets artik emir omrunu etkilemez; cagri imzasi icin duruyor."""
     R = O.ayar()["risk"]
-    if errored is None:
-        errored = errored_experts(stamp)
-    errored = set(errored or ())
     lr = st.setdefault("ledger_runs", [])
     if stamp not in lr:
         lr.append(stamp)
         del lr[:-500]
-    seen = set()
     for b in blocks:
         ex, asset = b["expert"], b["asset"]
-        seen.add((ex, asset))
         ctx = ((snap.get("assets") or {}).get(asset) or {}).get("ctx") or {}
         cur = live(st, ex, asset)
         pend = [t for t in cur if t["status"] == "pending"]
@@ -519,27 +557,17 @@ def add_shadow(st, blocks, called, stamp, snap, errored=None, hold_assets=()):
         if b["bias"] in ("long", "short") and b["action"] in ("new", "keep"):
             if opn:
                 continue                      # acik golge islem varken yeni islem acilmaz
-            if pend and b["action"] == "keep":
-                for t in pend:
-                    t["runs_left"] = R["pending_order_expiry_runs"]
-                    t["expires_ms"] = O.ms(O.now_utc()) + (t["runs_left"] + 1) * H4
-                continue
+            if pend and (b["action"] == "keep"
+                         or all(same_order(t, b["bias"], b["entry"], b["stop"], b["targets"]) for t in pend)):
+                continue                      # degismeyen plan: emir ilk omruyle surer (keep uzatmaz)
             for t in pend:
-                cancel(st, t, "replaced by new block")
+                cancel(st, t, "replaced by changed block")
             new_trade(st, ex, asset, b["bias"], b["entry"], b["stop"], b["targets"], b["horizon_h"], SHADOW_RISK,
-                      stamp, R["pending_order_expiry_runs"], conf=b["confidence"],
+                      stamp, order_life_h(R, b["horizon_h"]), conf=b["confidence"],
                       src={"setup": b.get("setup"), "tf": b.get("timeframe"), "last_close": ctx.get("last_close")})
-        else:
+        elif b.get("action") == "cancel":
             for t in pend:
-                cancel(st, t, f"block {b['action']}/{b['bias']}")
-    for ex in called:                         # cagrildi ama o varlik icin gecerli blok yok: keep sayilmaz
-        if ex in errored:                     # altyapi hatasi uzmanin emri sayilmaz (DENETIM 2026-11-21 #4)
-            continue
-        for t in live(st, ex, statuses=("pending",)):
-            if (ex, t["asset"]) not in seen and t["asset"] not in hold_assets:
-                t["runs_left"] -= 1
-                if t["runs_left"] <= 0:
-                    cancel(st, t, "expired (no valid block)")
+                cancel(st, t, f"block cancel/{b['bias']}")
 
 
 # ---------------- 1m mum isleme ----------------
@@ -679,6 +707,11 @@ def process_candles(st, sym, candles, funding_ok=True):
                     t["_evpx"] = round(fill, 6)
                     event(st, t, "dolum", f"fee {'maker' if fee == fm else 'taker'}")
                 n += 1
+                if t.get("oco"):   # bracket (gevsek defter): bir bacak dolunca digeri iptal
+                    for u in trades:
+                        if u is not t and u.get("oco") == t["oco"] and u["status"] == "pending":
+                            cancel(st, u, f"oco: leg {t['id']} filled")
+                            n += 1
             # acik pozisyon: once acilista kapanis (sure doldu / karar), sonra stop, T1, T2
             if t["status"] != "open":
                 continue

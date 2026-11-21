@@ -174,6 +174,10 @@ def geometry_errors(side, entry, stop, targets, last_close, atr4h, lim, check_rr
         errs.append(f"target on wrong side of entry {e}")
     if any(sgn * (b - a) < 0 for a, b in zip(targets, targets[1:])):
         errs.append("targets not ordered near to far")
+    # limit giris: T1 son kapanisin islem yonunde otesinde olmali (R17: long limit 75000, T1 77000, son 77029;
+    # dolum aninda hedef zaten gecilmis olur). Neco 2026-11-21.
+    if (entry or {}).get("type") == "limit" and last_close is not None and not sgn * (targets[0] - last_close) > 0:
+        errs.append(f"limit entry: T1 {targets[0]} not beyond last close {last_close} for {side}")
     if errs:
         return errs
     risk = abs(e - stop)

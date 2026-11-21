@@ -1,8 +1,10 @@
 """Gevsek golge defter (Neco 2026-11-21; TASARIM.md 5). LLM yok, gercek defteri etkilemez.
 
 Ayni turun uzman bloklarindan: bir coinde >= 1 gecerli oy (vote_rule 'ev' ise EV >= loose.min_ev_r, 'min_conf' ise
-guven >= loose.min_conf) varsa acar. Rejim yasagi, R2 catisma, R3 seviye uzmani, R6 baglam yok; iki yonde oy varsa
-cogunluk, esitse acmaz. Takvim yasagi (R5), miktar, sinirlar, cikislar, maliyet gercek defterle ayni
+guven >= loose.min_conf) varsa acar. Rejim yasagi, R2 catisma, R3 seviye uzmani, R6 baglam yok. Iki yonde oy varsa:
+iki yonun en iyi girisleri >= loose.bracket_min_atr4h x ATR14(4h) uzaksa ikisi birden OCO (bracket; biri dolunca
+digeri iptal, Neco 2026-11-21); daha yakinsa cogunluk, esitse acmaz (catisma). Bekleyen emir: yalniz emri veren
+uzmanin `cancel` blogu, degisen sinyal ya da omur (defter.order_life_h) iptal eder; flat/sinyalsiz tur dokunmaz. Takvim yasagi (R5), miktar, sinirlar, cikislar, maliyet gercek defterle ayni
 (defter.open_order strict=False; process_candles). Giris/stop/hedef = o yondeki en yuksek EV'li oy.
 Durum defter/gevsek.json (ayri), emir olaylari defter/gevsek_emirler.csv, ozsermaye defter/gevsek_ozsermaye.csv.
 Karsilastirma: DURUM.md + haftalik rapor; karar 4 hafta sonra (loose.compare_after).
@@ -13,7 +15,7 @@ import json
 
 import ortak as O
 
-DEF = {"enabled": True, "min_conf": 50, "min_ev_r": 0.0}
+DEF = {"enabled": True, "min_conf": 50, "min_ev_r": 0.0, "bracket_min_atr4h": 1.0}
 
 
 def lcfg(cfg=None):
@@ -29,13 +31,20 @@ def state_f():
 def load():
     f = state_f()
     if f.exists():
-        return json.loads(f.read_text(encoding="utf-8"))
+        st = json.loads(f.read_text(encoding="utf-8"))
+        _migrate(st)
+        return st
     r = O.ayar()["risk"]   # gercek defterle ayni baslangic (state.json'a dokunmaz)
     st = {"version": 1, "start_utc": None, "start_px": {}, "cash": float(r["start_equity_usdt"]),
           "peak": float(r["start_equity_usdt"]), "last_check_ms": {}, "last_px": {}, "trades": [],
           "funding_cache": {}, "next_id": 1, "paper_cache": None, "last_decisions": {},
           "label": "gevsek", "events_file": "gevsek_emirler.csv"}
     return st
+
+
+def _migrate(st):
+    import defter as D
+    D.migrate_order_life(st)
 
 
 def save(st):
@@ -55,6 +64,25 @@ def ev_r(b, last, R):
     rr, cost_r, _ = O.rr_cost(b["bias"], b["entry"], b["stop"], b["targets"][0], last, R)
     p = (b.get("confidence") or 0) / 100
     return p * rr - (1 - p) - cost_r
+
+
+def plan(longs, shorts, last, atr4, R, L):
+    """Emir bacaklari [(yon, en iyi oy, o yondeki oylar)] ve bos ise neden. Iki yon: girisler >= bracket_min_atr4h x
+    ATR(4h) uzaksa bracket (OCO), degilse cogunluk, esitse catisma."""
+    best = lambda sv: max(sv, key=lambda b: ev_r(b, last, R))  # noqa: E731
+    if longs and shorts:
+        bl, bs = best(longs), best(shorts)
+        gap = abs(O.entry_px(bl["entry"], last) - O.entry_px(bs["entry"], last))
+        k = L.get("bracket_min_atr4h")
+        if k and atr4 and gap >= k * atr4 - 1e-9:
+            return [("long", bl, longs), ("short", bs, shorts)], ""
+        if len(longs) == len(shorts):
+            return [], (f"conflict {len(longs)} long / {len(shorts)} short, entries {gap / atr4:.2f} ATR apart"
+                        if atr4 else f"tie {len(longs)} long / {len(shorts)} short")
+    if not (longs or shorts):
+        return [], "no vote"
+    sv = longs if len(longs) > len(shorts) else shorts
+    return [(sv[0]["bias"], best(sv), sv)], ""
 
 
 def tur(st, blocks, snap, stamp, cfg, log=print):
@@ -84,32 +112,51 @@ def tur(st, blocks, snap, stamp, cfg, log=print):
                     votes.append(b)
         longs = [b for b in votes if b["bias"] == "long"]
         shorts = [b for b in votes if b["bias"] == "short"]
-        side = "long" if len(longs) > len(shorts) else "short" if len(shorts) > len(longs) else None
-        pend = D.live(st, "ofis", asset, ("pending",))
-        if side is None:
-            for t in pend:
-                t["runs_left"] -= 1
-                if t["runs_left"] <= 0:
-                    D.cancel(st, t, "expired (no loose signal)")
-            if votes:
-                res.append((asset, "none", f"tie {len(longs)} long / {len(shorts)} short"))
+        # acik iptal: bekleyen emri dayandigi uzmanlardan biri bu tur `cancel` dedi
+        cx = {b.get("expert") for b in blocks or [] if isinstance(b, dict) and b.get("asset") == asset
+              and b.get("action") == "cancel"}
+        for t in D.live(st, "ofis", asset, ("pending",)):
+            by = cx & set((t.get("src") or {}).get("votes") or [])
+            if by:
+                D.cancel(st, t, f"block cancel by {sorted(by)}")
+        legs, why = plan(longs, shorts, last, atr4, R, L)
+        if not legs:
+            if votes:     # bekleyen emir omru dolana kadar surer
+                res.append((asset, "none", why))
             continue
         if D.live(st, "ofis", asset, ("open",)):
             res.append((asset, "hold", "open position"))
             continue
+        pend = D.live(st, "ofis", asset, ("pending",))
+        if pend and len(pend) == len(legs) and all(
+                any(D.same_order(t, s, b["entry"], b["stop"], b["targets"][:2]) for t in pend) for s, b, _ in legs):
+            res.append((asset, "keep", "unchanged loose signal"))
+            continue
         for t in pend:
-            D.cancel(st, t, "replaced by new loose signal")
-        sv = longs if side == "long" else shorts
-        best = max(sv, key=lambda b: ev_r(b, last, R))
-        d = {"asset": asset, "asof_utc": asof, "decision": "open", "side": side, "entry": best["entry"],
-             "stop": best["stop"], "targets": best["targets"][:2], "risk_pct": R["risk_pct_default"],
-             "supporting": sorted({b["expert"] for b in sv})}
-        ok, why, t = D.open_order(st, d, asset, last, atr4, snap, stamp, blocks, lc, strict=False)
-        if t:
-            t["src"] = {"book": "gevsek", "setup": best.get("setup"), "expert": best["expert"],
-                        "votes": d["supporting"], "ev_r": round(ev_r(best, last, R), 3)}
-            t["confidence"] = best.get("confidence")
-        res.append((asset, "open" if ok else "rejected", why))
+            D.cancel(st, t, "replaced by changed loose signal")
+        placed = []
+        for s, best, sv in legs:
+            d = {"asset": asset, "asof_utc": asof, "decision": "open", "side": s, "entry": best["entry"],
+                 "stop": best["stop"], "targets": best["targets"][:2], "risk_pct": R["risk_pct_default"],
+                 "supporting": sorted({b["expert"] for b in sv})}
+            hide = [(st["trades"].index(x), x) for x in placed]   # OCO: kardes bacak sinir hesabinda yok sayilir
+            for _, x in hide:
+                st["trades"].remove(x)
+            try:
+                ok, why2, t = D.open_order(st, d, asset, last, atr4, snap, stamp, blocks, lc, strict=False)
+            finally:
+                for i, x in sorted(hide, key=lambda y: y[0]):
+                    st["trades"].insert(i, x)
+            if t:
+                t["src"] = {"book": "gevsek", "setup": best.get("setup"), "expert": best["expert"],
+                            "votes": d["supporting"], "ev_r": round(ev_r(best, last, R), 3)}
+                t["confidence"] = best.get("confidence")
+                placed.append(t)
+            res.append((asset, "open" if ok else "rejected", (f"bracket {s}: " if len(legs) > 1 else "") + why2))
+        if len(placed) == 2:
+            g = f"g{placed[0]['id']}"
+            for t in placed:
+                t["oco"] = g
     if res:
         log(f"loose book: {res}")
     return res
@@ -147,6 +194,8 @@ def load_if_exists():
     if not f.exists():
         return None
     try:
-        return json.loads(f.read_text(encoding="utf-8"))
+        st = json.loads(f.read_text(encoding="utf-8"))
     except ValueError:
         return None
+    _migrate(st)
+    return st

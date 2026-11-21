@@ -10,6 +10,7 @@ Amaç: uzman yargısını (LLM agentları) kural tabanlı sistemlerimize ve al-t
 | `algo/ofis/defter.py` | Sahte defter: kod sınırları, gölge işlem, puan, raporlar (bölüm 4-5). `python defter.py rapor` raporu yeniden yazar. |
 | `algo/ofis/evren.py`, `algo/ofis/tarayici.py` | Coin evreni (haftalık) ve LLM'siz tarayıcı (her tur), bölüm 13. |
 | `algo/ofis/kontrol.py` | İzleyici, 5 dk (bölüm 3). |
+| `algo/ofis/kapi.py`, `gevsek.py`, `durdurma.py`, `rapor.py` | Kod kapısı (bölüm 15), gevşek gölge defter, durdurma kuralı, haftalık rapor (bölüm 5). |
 | `algo/ofis/ortak.py` | Yollar, şema doğrulama, kilit, claude.exe bulucu. |
 | `algo/ofis/veri_ek.py`, `kayit_ortak.py` | Ek veri: opsiyon, zincir üstü, çapraz varlık stresi, emir defteri, kayıt özetleri (bölüm 14). |
 | `algo/ofis/kayit_derinlik.py`, `kayit_tasfiye.py`, `kur-kayit.ps1` | Arka plan kayıtçıları + görevleri (bölüm 14). `kayit/` git'e girmez. |
@@ -73,7 +74,9 @@ Amaç: uzman yargısını (LLM agentları) kural tabanlı sistemlerimize ve al-t
 - "Umut veren uzman": beklenen R > 0 ve bootstrap %90 güven aralığının alt sınırı > 0, Brier < 0,25 (yazı-tura çizgisi) ve aynı dönemde gölge getiri al-tutun ve üç paper sistemin hepsinin üstünde.
 - "Kapat": ≥100 işlemde beklenen R'nin %90 üst sınırı < 0 → `enabled: false` (trader-risk R10 ile aynı eşik).
 - Ofis ancak ≥6 ay ve ≥50 işlemde al-tutu ve paper sistemleri yenerse "umut veren" sayılır. Uzman sayısı arttıkça şansla iyi çıkan olur: değerlendirmede çoklu deneme düzeltmesi (repodaki DSR yaklaşımı) uygulanır.
-- Haftalık Türkçe rapor (koşucu üretir): `algo/ofis/rapor/hafta-<YYYY-WW>.md`, uzman tablosu + ofis eğrisi.
+- Haftalık Türkçe rapor (`rapor.py`, 2026-11-21): `algo/ofis/rapor/hafta_<YYYY-WW>.md` (ISO hafta), pazar 21:00 TR'den sonraki ilk turda `tur.py` yazar (ayrı zamanlı görev yok; ofis o hafta bitmeden başlamadıysa yazılmaz). Bölümler: uzman yön isabeti (`bloklar.csv`), havuz gölge işlem (uzman ve kurulum türü), Brier ve gerçekleşen isabet, sıkı/gevşek defter, Elliott ileri testi, tarayıcı seçilen/seçilmeyen (`veri/tarama_izle.csv`), yorumcu puanı (`gundem/cagri_puan.md`), durdurma kuralı, haftalık maliyet ve kod kapısı tasarrufu. Elle: `python algo/ofis/rapor.py [--hafta YYYY-WW]`.
+- **Gevşek gölge defter (önceden yazıldı 2026-11-21, Neco kararı; `gevsek.py`, `ofis-ayar.json` `loose`):** gerçek defter EV kuralıyla (`vote_rule=ev`) sürer; yanında LLM'siz ikinci defter `defter/gevsek.json`. Aynı turun Rıza'nın gördüğü bloklarından bir coinde ≥1 geçerli oy (EV ≥ `min_ev_r`=0; `min_conf` kuralında güven ≥ 50) varsa açar; rejim yasağı, R2 çatışma, R3 seviye uzmanı, R6 bağlam yok (iki yönde oy: çoğunluk, eşitse yok). Takvim yasağı (R5), miktar, toplam sınırlar, R9, çıkışlar ve maliyet gerçek defterle aynı (`defter.open_order strict=False`, `process_candles`; `kontrol.py` ikisini de işler). Giriş/stop/hedef = o yöndeki en yüksek EV'li oy. **Karşılaştırma 4 hafta sonra (`compare_after` 2026-12-19):** öz sermaye, işlem sayısı, ortalama R (DURUM.md ve haftalık rapor). Sonuç görmeden yazıldı; eşik ve kural bu süre içinde değiştirilmez.
+- **Durdurma kuralı (önceden yazıldı 2026-11-21; `durdurma.py`, `ofis-ayar.json` `stop_rule`):** kurulum türü (blok `setup`, küçük harf) başına havuzlanmış kapanan uzman gölge işlemleri (komite gölgeleri hariç); her 60 işlem katında ilk N işlemin ortalama R'si ve bootstrap %90 aralığı. Üst sınır < 0 → o tür kapanır: `defter.vote_check` oy saymaz (Rıza'nın kod denetimi ve gevşek defter), Rıza istemine `DISABLED_SETUPS` satırı gider, `defter/durdurma.json` + `log/defter.log` + DURUM.md + haftalık rapor. Sonraki katta üst sınır ≥ 0 olursa yeniden açılır (gölge işlemler sürer). 60 işlem yalnız ~0,3R büyüklüğündeki etkiyi ayırt eder; daha küçüğü görünmez, bu bilerek kabul edildi.
 
 ## 6. Gelecek bilgisi koruması
 - Uzmanların aracı yalnız `Read` (makroda bir izinli WebFetch); veriyi kendileri çekemez.
@@ -108,7 +111,7 @@ Uygulama: `veri_topla.py` `HARM` (kurs OZET bölüm 2 kod bantları; Crab CD/BC 
 - Doğrulama: blok başına (şema + uzman kimliği + asof + geometri + LIMITS: R:R, stop ≥ 0,5 ATR, giriş ≤ 2 ATR). Bozuk blok `valid:false` ve gerekçesiyle `sinyaller.jsonl`'e yazılır, oy ve gölge işlem olmaz.
 - Defter: miktar dolum anında `risk_usdt / |dolum − stop|` (market/stop girişte kayma dahil), 2x tavanı dolumda. Ofis ufku = destekleyen blokların en uzun `horizon_h`'si, dolumdan sayılır. Kod R5 (takvim) ve R9'u da uygular. Gölge: uzman/varlık başına tek işlem; açıkken yeni blok işlem açmaz, `cancel` yalnız bekleyen emri iptal eder.
 - Paper karşılaştırması: `git fetch origin <paper dalı>` + `git show …:algo/paper/ozsermaye.csv` (açık konu kapandı); ofis başlangıcındaki değere göre getiri.
-- Yapılmadı: haftalık rapor (`rapor/hafta-*.md`), yön isabeti (ek ölçü). Defter dosyaları git'e otomatik yazılmaz.
+- Haftalık rapor 2026-11-21'de yapıldı (bölüm 5). Defter dosyaları git'e otomatik yazılmaz.
 
 ## 9. Açık konular
 - fapi.binance.com bazı bölgelerden (ör. ABD IP'li GitHub Actions) 451 döner; script Bybit'e düşer, o da engelli olabilir. Koşucu Türkiye'deki makinede ya da engelsiz sunucuda çalışmalı.
@@ -167,3 +170,12 @@ Sınırlar (dürüstlük):
 - Opsiyon deltası kendi hesabımız (Deribit greeks'i değil); 1 günden kısa vadeler atlanır. Max pain yalnız aylık vade için.
 - Korelasyon hizalaması: BTC'nin D günü açılan mumu (D+1 00:00 UTC kapanış) ile ABD'nin D kapanışı; hafta sonu BTC hareketi pazartesiye katlanır. ABD seansı açıkken Yahoo son çubuğu gün içidir (BTC karşılığı olmadığı için korelasyona girmez).
 - Token (2026-11-21, aynı snapshot, görünüm boyutu ~bayt/4): turev +1,57k, senaryo +1,12k, makro +0,58k, fiyat/harmonik/risk ±0. Tam snapshot ~8,0k → ~9,9k.
+
+## 15. Kod kapısı (tur seyreltme) — `kapi.py`, kuruldu 2026-11-21 (Neco: açık)
+Amaç: hiçbir şey değişmediyse uzmanları çağırmamak (denetim: günde 6 tur → ~3-4, maliyetin büyük kısmı her turda bilgi dosyalarının yeniden okunması). Ayar `ofis-ayar.json` → `gate` (eşikler denenmemiş varsayım). Tarayıcıdan sonra, uzmanlardan önce; `--no-gate` ya da `--only` atlar.
+- **Tam tur (tüm seçilen coinler)**: sabit saat `full_slots_utc` 08:00 ve 16:00 kapanışı (11:20 / 19:20 TR; Kerem taze, günde en az 2 tam tur); son tam turdan ≥ `force_full_h` (12) saat; takvimde ≤ `event_h` (12) saat içinde olay; rejim değişimi: BTC 1d/4h yapı dönüşü (LH üstü / HL altı kapanış, son tam turdan sonra), `everything_down` ya da yeni `corr_break`, BTC ATR(4h) / 30 günlük medyan ≥ `atr_jump_x` (1,5; eşiği yeni geçti ya da son tam turdan ×1,25 arttı; Binance 4h mumundan), BTC fonlama |≥ 0,05%| ya da OI 24s |≥ %8| şoku yeni başladı, tarayıcının seçtiği coinler son tam turdakinden farklı. Rejim bayrakları "yeni açıldıysa" tetikler (sürekli açık bayrak her turu tam yapmaz).
+- **Coin başına**: hiç analiz edilmedi ya da son analiz ≥ 12 saat; ofis pozisyonu/bekleyen emri; fiyat anahtar seviyeye (önceki hafta/ay H-L, 4h ve 180g VAH/VAL/POC, son 4h/1d pivotlar) ≤ `level_atr` (0,5) × ATR(4h); harmonik aday PRZ'de/tepki verdi ya da PRZ'ye ≤ 0,5 ATR; Elliott `actionable` ya da tetiğe ≤ 0,5 ATR; son analizden sonra yeni 4h BOS/süpürme; son analizden beri |hareket| ≥ `move_atr` (1) × ATR(4h).
+- **Atlanan coin**: uzmana gitmez (BTC küçük bağlam bloğu olur, diğerleri görünümden çıkar). Her uzmanın o coindeki son bloğu `sinyaller.jsonl`'e `auto/gated/reused` satırı olarak yazılır: gölge işlem, blok puanı ve tur sayımı dışında. Bekleyen gölge emrin sayacı düşmez (süre dolumu yine işler). Uzmanın PREV dosyası coin başına son bloktur.
+- **Hiçbir coin geçmezse**: Rıza da çağrılmaz; veri, 1m yetişme, gevşek defter, öz sermaye ve raporlar yine çalışır; DURUM.md "uzmanlar çağrılmadı (gated: no change)" satırı. Maliyet 0.
+- **Kayıt**: her karar `log/kapi.jsonl` (tetikler, rejim, tahmini tasarruf = son 12 turun ortalama maliyeti × atlanan coin oranı), durum `defter/kapi.json` (coin başına son analiz asof/fiyat, son tam tur ve rejim). Haftalık rapor tam/kısmi/atlanan tur sayısını ve tasarrufu yazar.
+

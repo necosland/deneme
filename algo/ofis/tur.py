@@ -49,6 +49,10 @@ def say(msg):
     O.log(LOGF, msg)
 
 
+def elapsed():
+    return round(time.time() - T0)
+
+
 # ---------------- gorunumler ----------------
 def make_view(snap, role):
     from veri_topla import LEGEND_EK, dump
@@ -278,12 +282,16 @@ class TurKilit:
 
 
 # ---------------- dosyalar ----------------
-def last_blocks(expert, before_run):
+def last_blocks(expert, before_run, assets=None):
+    """Uzmanin son cagrildigi turun bloklari. assets verilirse coin basina en son blok (kod kapisi coin atlayabilir)."""
     rows = [r for r in O.read_jsonl(O.DEFTER / "sinyaller.jsonl")
             if r.get("expert") == expert and r.get("valid") and not r.get("reused") and not r.get("auto")
             and r.get("run") != before_run]
     if not rows:
         return []
+    if assets is not None:
+        by = {r.get("asset"): r["block"] for r in rows if r.get("asset") in assets}
+        return [by[x] for x in assets if x in by]
     last = rows[-1]["run"]
     return [r["block"] for r in rows if r["run"] == last]
 
@@ -381,6 +389,43 @@ def gundem_line():
         return "GUNDEM=none"
 
 
+def loose_step(snap, stamp, cfg, blocks, run_round=True):
+    """Gevsek golge defter (gevsek.py): deftere yetisir, tur oylarindan acar. Hata turu bozmaz."""
+    if not (cfg.get("loose") or {}).get("enabled"):
+        return
+    try:
+        import gevsek as G
+        import kontrol as K
+        lz = G.load()
+        ev, note = K.run(lz)
+        if run_round:
+            G.tur(lz, blocks, snap, stamp, cfg, log=say)
+        G.append_equity(lz)
+        G.save(lz)
+        if ev:
+            say(f"loose catch-up: events={ev} {note}")
+    except Exception as e:  # noqa: BLE001
+        say(f"loose book FAILED (round unaffected): {type(e).__name__} {e}")
+
+
+def ledger_tick(snap, stamp, cfg):
+    """Uzmansiz tur (kod kapisi: degisiklik yok): 1m mumlarla deftere yetisme, gevsek defter, ozsermaye, raporlar."""
+    import defter as D
+    import kontrol as K
+    with O.Kilit(wait_s=180) as k:
+        if not k.ok:
+            say("ledger lock busy: gated ledger tick skipped")
+            return
+        st = D.load_state()
+        ev, note = K.run(st)
+        say(f"catch-up: events={ev} {note}")
+        loose_step(snap, stamp, cfg, [], run_round=False)
+        D.refresh_paper(st)
+        D.append_equity(st)
+        D.write_reports(st)
+        D.save_state(st)
+
+
 # ---------------- ana akis ----------------
 def main():
     ap = argparse.ArgumentParser()
@@ -394,6 +439,7 @@ def main():
     ap.add_argument("--evren", action="store_true", help="evren+tarayiciyi ayardan bagimsiz ac (deneme)")
     ap.add_argument("--stale-ok", action="store_true", help="4h kapanisindan 90 dk sonra da kos (elle telafi)")
     ap.add_argument("--no-retry", action="store_true", help="altyapi hatasinda 30 dk bekleyip yeniden deneme")
+    ap.add_argument("--no-gate", action="store_true", help="kod kapisini atla (tum secilen coinler uzmana)")
     a = ap.parse_args()
     cfg = O.ayar()
     R = cfg["risk"]
@@ -449,6 +495,31 @@ def main():
             say("no selected asset in snapshot: stop")
             return 2
 
+    # 1b. kod kapisi (kapi.py, ofis-ayar.json gate; TASARIM.md 15): son tam analizden beri degisiklik yoksa uzman yok
+    gate = None
+    if (cfg.get("gate") or {}).get("enabled") and not (a.no_gate or a.only):
+        try:
+            import kapi as KP
+            import defter as D0
+            gate = KP.karar(cfg, snap, sel, D0.load_state(), asof, log=say)
+            KP.kayit(gate, stamp, test=a.no_ledger)
+        except Exception as e:  # noqa: BLE001  kapi bozulursa tam tur
+            say(f"gate FAILED -> full round: {type(e).__name__} {e}")
+            gate = None
+    if gate and gate["gated"]:
+        n = KP.gated_rows(cfg, gate["gated"], stamp, asof, sha)
+        say(f"gate: {n} 'no change' rows (auto, gated, not scored) for {gate['gated']}")
+        if not gate["run"]:
+            if not a.no_ledger:
+                ledger_tick(snap, stamp, cfg)
+            O.write_json(rundir / "ozet.json", {"_total": {"cost_usd": 0.0, "secs": elapsed(), "gated": True,
+                                                           "errored": []}, "kapi": gate})
+            say(f"=== round {stamp} gated: no change, experts not called (est saving {gate['est_saving_usd']} USD)")
+            return 0
+        snap = KP.trim(snap, gate["gated"])
+        cfg["assets"] = gate["run"]
+        say(f"gate: round assets={cfg['assets']}")
+
     # 2. gorunumler
     views = {}
     for role in set(VIEW_OF.values()):
@@ -482,7 +553,7 @@ def main():
     lim = limits_line(R)
     for e in call:
         ex = e["id"]
-        prev = last_blocks(ex, stamp)
+        prev = last_blocks(ex, stamp, cfg["assets"])
         prev_f = "none"
         if prev:
             prev_f = rundir / f"prev_{ex}.json"
@@ -551,6 +622,13 @@ def main():
                                   f"{(x['block'] or {}).get('bias', '?')}{'' if x['valid'] else '(INVALID: ' + '; '.join(x['errors'])[:160] + ')'}"
                                   for x in rows]}
         say(f"{ex}: {summary[ex]}")
+    if not total_fail:   # kod kapisi durumu: bu tur analiz edilen coinler (+ tam turda rejim)
+        try:
+            import kapi as KP
+            KP.kaydet(gate, snap, cfg["assets"], asof, stamp, full=not (gate and gate["gated"]),
+                      test=bool(a.no_ledger or a.only))
+        except Exception as e:  # noqa: BLE001
+            say(f"gate state save failed: {type(e).__name__} {e}")
     reused = []
     for e in reuse:
         prev = [b for b in last_blocks(e["id"], stamp) if b.get("asset") in cfg["assets"]]   # tarayici: bu turun coinleri
@@ -583,9 +661,16 @@ def main():
         sc = D.scores(st)
         O.write_json(scores_f, {k: {x: v[x] for x in ("closed", "hit_rate", "avg_r", "ev_r_ci90", "brier")} for k, v in sc.items()})
         rlim = " ".join(f"{k}={v}" for k, v in R.items() if isinstance(v, (int, float)) and not isinstance(v, bool))
+        try:
+            import durdurma as DD
+            off = sorted(DD.disabled(cfg))
+        except Exception:  # noqa: BLE001
+            off = []
         prompt = "\n".join([f"EXPERTS={experts_f}", f"SNAPSHOT={views['risk']}", gundem_line(),
                             f"OPEN={open_f if D.open_summary(st) else 'none'}", f"LEDGER={ledger_f}",
                             f"SCORES={scores_f}", f"LIMITS={rlim}", *(km.risk_lines() if km else []),
+                            *([f"DISABLED_SETUPS={','.join(off)} (pre-registered stop rule: votes with these setups do "
+                               "not count; code rejects opens relying on them)"] if off else []),
                             f"ASSETS={','.join(cfg['assets'])}. Follow your agent instructions. "
                             "Your final message must be only the ```json array (one decision per asset)."])
         (rundir / "prompt_trader-risk.txt").write_text(prompt, encoding="utf-8")
@@ -652,9 +737,11 @@ def main():
                 res = D.apply_decisions(st, ok_dec, snap, stamp, dec_blocks) if dec_ok else []
                 say(f"applied: {res}")
                 # hata veren uzmanin bekleyen golge emri sure dolmus sayilmaz (altyapi hatasi != dolmayan emir)
-                D.add_shadow(st, valid_blocks, called, stamp, snap, errored=errored)
+                D.add_shadow(st, valid_blocks, called, stamp, snap, errored=errored,
+                             hold_assets=tuple(gate["gated"]) if gate else ())
                 if km:
                     km.shadow(D, st, stamp, snap)
+                loose_step(snap, stamp, cfg, dec_blocks, run_round=not total_fail)
                 for d in decisions:
                     st["last_decisions"][d["asset"]] = {"asof_utc": asof, "decision": d["decision"], "neco_tr": d["neco_tr"]}
                 D.refresh_paper(st)
@@ -665,6 +752,8 @@ def main():
     tot = {k: sum((s.get(k) or 0) for s in summary.values()) for k in ("tok_in", "tok_cache_w", "tok_cache_r", "tok_out", "cost_usd")}
     summary["_total"] = {**tot, "secs": round(time.time() - T0)}
     summary["_total"]["errored"] = errored
+    if gate:
+        summary["kapi"] = gate
     O.write_json(rundir / "ozet.json", summary)
     try:
         n = cleanup_old()
@@ -692,6 +781,15 @@ def elliott_ileri_hook():
         say(f"elliott_ileri FAILED (round unaffected): {type(e).__name__} {e}")
 
 
+def rapor_hook():
+    """Haftalik rapor (rapor.py): son pazar 21:00 TR'den sonraki ilk turda bir kez. Turu asla bozmaz."""
+    try:
+        import rapor
+        rapor.zamani_geldiyse(log=say)
+    except Exception as e:  # noqa: BLE001
+        say(f"weekly report FAILED (round unaffected): {type(e).__name__} {e}")
+
+
 if __name__ == "__main__":
     os.chdir(O.ROOT)
     sys.path.insert(0, str(O.ROOT))
@@ -709,4 +807,5 @@ if __name__ == "__main__":
             say("CRASH " + traceback.format_exc().replace("\n", " | ")[:2000])
             rc = 3
         elliott_ileri_hook()
+        rapor_hook()
         sys.exit(rc)

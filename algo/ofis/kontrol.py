@@ -1,7 +1,7 @@
 """Trader ofisi izleyicisi (LLM yok). Zamanlayici her 5 dakikada calistirir.
 
 Son kontrolden bu yana kapanmis 1m spot mumlarini (data-api.binance.vision) ceker; bekleyen emir dolumu, stop,
-hedef, sure dolumu ve fonlamayi ofis + golge defterine isler (kurallar defter.process_candles; ayni mumda stop once).
+hedef, sure dolumu ve fonlamayi ofis + golge defterine (ve gevsek defter gevsek.json'a) isler (kurallar defter.process_candles; ayni mumda stop once).
 Acik/bekleyen islem yoksa ag cagrisi yapmaz.
 Kullanim: python algo/ofis/kontrol.py [--quiet]
 """
@@ -70,8 +70,20 @@ def main():
             return
         st = D.load_state()
         ev, note = run(st, quiet)
-        if ev:
-            D.append_equity(st)
+        lev = 0
+        try:   # gevsek golge defter (gevsek.py, ayri durum dosyasi): ayni kurallarla 1m isleme
+            import gevsek as G
+            lz = G.load_if_exists()
+            if lz is not None:
+                lev, lnote = run(lz, quiet)
+                G.save(lz)
+                if lev or "error" in lnote:
+                    O.log(LOGF, f"loose events={lev} {lnote}")
+        except Exception as e:  # noqa: BLE001
+            O.log(LOGF, f"loose book failed: {type(e).__name__} {e}")
+        if ev or lev:
+            if ev:
+                D.append_equity(st)
             D.write_reports(st)
         D.save_state(st)
         if ev or "error" in note or not quiet or O.now_utc().minute < 5:   # sessizde saatte bir canli satiri

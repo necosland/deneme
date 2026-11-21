@@ -90,7 +90,7 @@ def event(st, t, ev, note=""):
     """Ofis emir olaylari emirler.csv'ye (golge islemler yalniz golge.csv'de)."""
     if t["book"] != "ofis":
         return
-    f = O.DEFTER / "emirler.csv"
+    f = O.DEFTER / st.get("events_file", "emirler.csv")   # gevsek defter: gevsek_emirler.csv
     new = not f.exists()
     O.DEFTER.mkdir(parents=True, exist_ok=True)
     with open(f, "a", newline="", encoding="utf-8") as fh:
@@ -302,6 +302,9 @@ def vote_check(b, asset, asof, cfg, snap):
     R = cfg["risk"]
     if not isinstance(b, dict) or b.get("asset") != asset:
         return False, "other asset"
+    import durdurma as DD   # onceden yazilan durdurma kurali: kapanan kurulum turu oy sayilmaz (TASARIM.md 5)
+    if b.get("bias") in ("long", "short") and DD.norm(b.get("setup")) in DD.disabled(cfg):
+        return False, f"{b.get('expert')}: setup {DD.norm(b.get('setup'))} disabled by stop rule"
     if b.get("bias") not in ("long", "short") or b.get("action") not in ("new", "keep"):
         return False, f"{b.get('expert')}: not a directional new/keep block"
     age = _age_h(asof, b.get("asof_utc"))
@@ -390,7 +393,8 @@ def validate_open(decision, blocks, cfg, snap=None, log=True):
     return True, info
 
 
-def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg):
+def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg, strict=True):
+    """strict=False: gevsek defter (gevsek.py); Riza kurallari (validate_open) atlanir, diger sinirlar ayni."""
     R = cfg["risk"]
     side, entry, stop, targets = d.get("side"), d.get("entry"), d.get("stop"), d.get("targets") or []
     ctx = ((snap.get("assets") or {}).get(asset) or {}).get("ctx") or {}
@@ -404,7 +408,7 @@ def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg):
         g = O.geometry_errors(side, entry, stop, targets, last, atr4, R)
         if g:
             rej = "; ".join(g)
-    if not rej:   # Riza'nin kurallari kodla (tur.py ayrica cagirmasa da)
+    if not rej and strict:   # Riza'nin kurallari kodla (tur.py ayrica cagirmasa da)
         ok, why = validate_open(d, blocks, cfg, snap, log=False)
         if not ok:
             rej = why
@@ -467,7 +471,7 @@ def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg):
         t = {"id": None, "book": "ofis", "asset": asset, "side": side, "entry_type": (entry or {}).get("type"),
              "entry_price": (entry or {}).get("price"), "stop": stop, "targets": targets, "risk_usdt": 0}
         event(st, t, "red", rej)
-        O.log("defter.log", f"open REJECT {asset} {side}: {rej}")
+        O.log("defter.log", f"open REJECT{' [' + st['label'] + ']' if st.get('label') else ''} {asset} {side}: {rej}")
         return False, rej, None
     hz = [b["horizon_h"] for b in blocks if b["asset"] == asset and b["bias"] == side and b["expert"] in d.get("supporting", [])]
     horizon = max(hz) if hz else R.get("default_horizon_h", 72)
@@ -490,10 +494,11 @@ def errored_experts(stamp):
     return {ex for ex, rs in by.items() if rs and all(not r.get("valid") and is_infra_error(r.get("errors")) for r in rs)}
 
 
-def add_shadow(st, blocks, called, stamp, snap, errored=None):
+def add_shadow(st, blocks, called, stamp, snap, errored=None, hold_assets=()):
     """blocks: bu tur uretilen gecerli bloklar; called: bu tur cagrilan uzmanlar (gecersiz/zaman asimi dahil).
     errored: cagrisi altyapi hatasiyla dusen uzmanlar (tur.py: results[ex]['error'] dolu olanlar); bunlarin bekleyen
-    golge emirlerinin sayaci dusmez. None ise sinyaller.jsonl'den cikarilir (errored_experts)."""
+    golge emirlerinin sayaci dusmez. None ise sinyaller.jsonl'den cikarilir (errored_experts).
+    hold_assets: kod kapisinin bu tur atladigi coinler (uzmana sorulmadi): bekleyen golge emir sayaci dusmez."""
     R = O.ayar()["risk"]
     if errored is None:
         errored = errored_experts(stamp)
@@ -530,7 +535,7 @@ def add_shadow(st, blocks, called, stamp, snap, errored=None):
         if ex in errored:                     # altyapi hatasi uzmanin emri sayilmaz (DENETIM 2026-11-21 #4)
             continue
         for t in live(st, ex, statuses=("pending",)):
-            if (ex, t["asset"]) not in seen:
+            if (ex, t["asset"]) not in seen and t["asset"] not in hold_assets:
                 t["runs_left"] -= 1
                 if t["runs_left"] <= 0:
                     cancel(st, t, "expired (no valid block)")
@@ -1073,6 +1078,11 @@ def write_reports(st):
     except Exception as e:  # noqa: BLE001
         O.log("defter.log", f"block scoring failed: {type(e).__name__} {e}")
     prune_last_decisions(st)
+    try:   # onceden yazilan durdurma kurali (durdurma.py): yeni 60'lik katlari degerlendirir
+        import durdurma as DD
+        DD.check(st)
+    except Exception as e:  # noqa: BLE001
+        O.log("defter.log", f"stop rule check failed: {type(e).__name__} {e}")
     cfg = O.ayar()
     L = ledger_summary(st)
     start_eq = cfg["risk"]["start_equity_usdt"]
@@ -1082,6 +1092,13 @@ def write_reports(st):
         lines += [fl, ""]
     lines += [f"Son güncelleme: {O.fmt(O.now_utc())} UTC. Başlangıç: {st['start_utc'] or '-'} UTC, "
               f"{tr(start_eq, 0)} sahte USDT. Gerçek emir yok, borsa anahtarı yok.", ""]
+    try:   # kod kapisi (kapi.py): son tur atlandiysa tek satir
+        import kapi as KP
+        gl = KP.durum_satiri()
+        if gl:
+            lines += [gl, ""]
+    except Exception:  # noqa: BLE001
+        pass
     lines += ["## Ofis", "", "| Öz sermaye | Getiri | Tepeden düşüş | Açık risk | Bugün stop | Kapanan işlem |",
               "|---|---|---|---|---|---|"]
     closed = [t for t in st["trades"] if t["book"] == "ofis" and t["status"] == "closed"]
@@ -1158,6 +1175,26 @@ def write_reports(st):
         lines += ["", f"Elliott 3. dalga ileri testi (kod, 1R, ofisten ayrı): kapanan {es['closed_n']}, açık "
                   f"{es['open_n']}, ort. R {tr(es['mean_R'], 3)}, toplam R {tr(es['total_R'])}, durum {es['verdict']}. "
                   "Ayrıntı: elliott_ileri.md.", ""]
+    except Exception:  # noqa: BLE001
+        pass
+    try:   # siki (gercek) ve gevsek golge defter karsilastirmasi (gevsek.py); karar loose.compare_after
+        import gevsek as G
+        lz = G.load_if_exists()
+        if lz is not None:
+            lines += ["## Sıkı ve gevşek defter (gevşek: tek oy yeter, rejim yasağı yok; yalnız ölçüm)", "",
+                      "| Defter | Öz sermaye | Getiri | Kapanan | İsabet | Ort. R | Açık/bekleyen | Başlangıç |",
+                      "|---|---|---|---|---|---|---|---|"]
+            for nm, x in (("Sıkı (gerçek)", G.ozet(st)), ("Gevşek", G.ozet(lz))):
+                lines.append(f"| {nm} | {tr(x['equity'])} | %{tr(x['ret_pct'])} | {x['closed']} | {pct(x['hit'])} | "
+                             f"{tr(x['avg_r'])} | {x['live']} | {x['start_utc'] or '-'} |")
+            lines += ["", f"Karşılaştırma kararı: {(cfg.get('loose') or {}).get('compare_after', '-')} (önceden yazıldı).", ""]
+    except Exception as e:  # noqa: BLE001
+        O.log("defter.log", f"loose section failed: {type(e).__name__} {e}")
+    try:   # durdurma kurali: kapanan kurulum turleri
+        import durdurma as DD
+        off = sorted(DD.disabled(cfg))
+        if off:
+            lines += [f"Durdurma kuralı ile kapalı kurulum türleri (oy sayılmaz): {', '.join(off)}. Ayrıntı: haftalık rapor.", ""]
     except Exception:  # noqa: BLE001
         pass
     p = O.ROOT / "DURUM.md"

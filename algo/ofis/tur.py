@@ -28,6 +28,7 @@ import ortak as O
 
 NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 T_DATA, T_EXPERT, T_RISK, T_TOTAL = 240, 300, 240, 15 * 60
+T_DATA_RETRY = 180   # veri_topla zaman asiminda emir akissiz tek tekrar
 # denetim 2026-11-21: altyapi hatasi (kullanim limiti, cli) -> 30 dk sonra tek yeniden deneme; 4h kapanisindan
 # 90 dk sonrasi bayat (gec baslayan telafi turu atlanir, yeniden deneme bu siniri asmaz)
 RETRY_WAIT_S, STALE_MAX_S = 30 * 60, 90 * 60
@@ -493,9 +494,20 @@ def main():
     if a.skip_data:
         snap_path = O.VERI / "son.json"
     else:
-        p = subprocess.run([str(O.PY), str(O.ROOT / "veri_topla.py"),
-                            *(["--assets", ",".join(sel["fetch"])] if sel else [])], cwd=str(O.REPO), capture_output=True,
-                           text=True, encoding="utf-8", errors="replace", timeout=T_DATA, creationflags=NOWIN)
+        # 2026-11-21: zaman asimi turu dusurmez; bir kez emir akissiz (--no-orderflow) ve kisa sureyle tekrar,
+        # o da asarsa basarisiz tur isareti (mark_failed) ile cikar
+        args = [str(O.PY), str(O.ROOT / "veri_topla.py"), *(["--assets", ",".join(sel["fetch"])] if sel else [])]
+        p = None
+        for extra, tmo in (([], T_DATA), (["--no-orderflow"], T_DATA_RETRY)):
+            try:
+                p = subprocess.run(args + extra, cwd=str(O.REPO), capture_output=True, text=True, encoding="utf-8",
+                                   errors="replace", timeout=tmo, creationflags=NOWIN)
+                break
+            except subprocess.TimeoutExpired:
+                say(f"veri_topla timeout {tmo}s {' '.join(extra)}".rstrip() + ("" if extra else "; retry once --no-orderflow"))
+        if p is None:
+            mark_failed(stamp, None, f"veri_topla timeout ({T_DATA}s, retry {T_DATA_RETRY}s)")
+            return 2
         say(f"veri_topla rc={p.returncode} {p.stdout.strip()[-300:]}")
         if p.returncode != 0:
             say("veri_topla FAILED: " + p.stderr.strip()[-800:])

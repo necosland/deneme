@@ -50,6 +50,9 @@ def main():
                 rows.append(row(t, sym, mkt, book))
             except Exception as e:  # noqa: BLE001
                 errs.append(f"{mkt} {sym}: {type(e).__name__} {e}")
+    secs = time.time() - t0.timestamp()
+    if secs > 90:   # gorev siniri 180 sn: yarisini asan calisma hata.log'a (2026-11-21)
+        errs.append(f"slow run {round(secs)}s")
     if rows:
         K.append_csv_gz(DIR / f"{t0.strftime('%Y-%m-%d')}.csv.gz", HEADER, rows)
     if errs:

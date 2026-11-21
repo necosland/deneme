@@ -799,6 +799,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--asof", help="ISO UTC; verilirse yeniden oynatma (turev/makro bos)")
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--no-orderflow", action="store_true", help="emir akisi blogu yok (tur.py zaman asimi sonrasi tekrar)")
     ap.add_argument("--assets", help="virgullu sembol listesi; verilirse ofis-ayar.json assets yerine (evren/tarayici secimi)")
     a = ap.parse_args()
     replay = a.asof is not None
@@ -835,6 +836,9 @@ def main():
     import veri_ek as X
     import akis as AK   # emir akisi (footprint/delta, balon, duvar), 2026-11-21; replay'de de (kayit yoksa yaklasik)
     C, now = X.cfg(), pd.Timestamp.now(tz="UTC").to_pydatetime()
+    of_left = [float(AK.cfg()["budget_s"])]   # tum varliklarin emir akisina ortak sert sure, yalniz akista gecen zaman sayilir
+    if a.no_orderflow:
+        ERR.append("orderflow: skipped (--no-orderflow, retry after veri_topla timeout)")
     btc = frames.get("BTCUSDT")
     for s in assets:
         fr = frames.get(s)
@@ -872,7 +876,12 @@ def main():
             snap["assets"][s] = None
             continue
         snap["assets"][s] = x
-        x["orderflow"] = opt("orderflow", AK.orderflow, s, asof)
+        if a.no_orderflow:
+            x["orderflow"] = None
+        else:
+            t_of = time.time()
+            x["orderflow"] = opt("orderflow", AK.orderflow, s, asof, t_of + max(0.0, of_left[0]))
+            of_left[0] -= time.time() - t_of
         if not replay:   # canli-ozel: cekildigi anin degeri (TASARIM.md 14 "Ek veri ve kayitcilar")
             cur = s.replace("USDT", "")
             px = x["ctx"]["last_close"]

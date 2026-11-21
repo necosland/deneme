@@ -13,9 +13,12 @@ Esikler ofis-ayar.json veri.orderflow (denenmemis varsayim). Hata snapshot'i dus
 """
 import datetime as dt
 import json
+import time
 
 import numpy as np
 import pandas as pd
+
+import requests
 
 import kayit_ortak as K
 import veri_topla as V
@@ -23,7 +26,8 @@ import veri_topla as V
 FK = "https://fapi.binance.com/fapi/v1/klines"
 DEF = {"n_1h": 6, "n_15m": 8, "cells_1h": 4, "cells_15m": 3, "cell_levels": 10, "tick_pct": 0.05, "vp_h": 24, "va_pct": 70,
        "thin_frac": 0.3, "thin_min_ticks": 3, "thin_max": 3, "bubble_pct": 90, "bubbles_h": 6, "bubbles_top": 5,
-       "walls_h": 12, "walls_min_min": 60, "walls_top": 3, "wall_pct": 0.1, "rec_tol": 0.03}
+       "walls_h": 12, "walls_min_min": 60, "walls_top": 3, "wall_pct": 0.1, "rec_tol": 0.03,
+       "budget_s": 60, "req_timeout_s": 8}
 # alan aciklamasi: veri_topla.LEGEND_EK['orderflow'] (yalniz Bora'nin gorunumune gider)
 _CACHE = {}
 
@@ -49,11 +53,29 @@ def m3(x):
 
 
 # ---------------- mumlar ----------------
-def kl(sym, iv, asof, limit):
-    """Kapanmis mumlar, asof'a kadar. -> (df[o,h,l,c,qv,n,tbq], 'fut'|'spot') ya da (None, None)."""
+def _get(url, p, deadline, tmo):
+    """Tek deneme, sure sinirli (V.get'in 3 deneme + bekleme yolu turu uzatir; 2026-11-21 tur zaman asimi)."""
+    left = deadline - time.time()
+    if left < 2:
+        raise TimeoutError("orderflow time budget used up")
+    r = requests.get(url, params=p, headers=V.UA, timeout=min(tmo, left))
+    r.raise_for_status()
+    return r.json()
+
+
+def kl(sym, iv, asof, limit, deadline=None, tmo=8):
+    """Kapanmis mumlar, asof'a kadar. -> (df[o,h,l,c,qv,n,tbq], 'fut'|'spot') ya da (None, None).
+    Vadeli yoksa spot; her istek tek deneme, deadline'a kadar."""
+    deadline = deadline or time.time() + 60
     p = dict(symbol=sym, interval=iv, limit=limit, endTime=int(asof.timestamp() * 1000) - 1)
     for mkt, url in (("fut", FK), ("spot", V.SPOT)):
-        d = V.get(url, p)
+        try:
+            d = _get(url, p, deadline, tmo)
+        except TimeoutError:
+            raise
+        except Exception as e:  # noqa: BLE001
+            V.ERR.append(f"orderflow {sym} {iv} {mkt}: {type(e).__name__} {str(e)[:80]}")
+            continue
         if d:
             df = pd.DataFrame([[r[0], r[1], r[2], r[3], r[4], r[7], r[8], r[10]] for r in d],
                               columns=["t", "o", "h", "l", "c", "qv", "n", "tbq"])
@@ -251,11 +273,18 @@ def walls(sym, last, asof, C):
 
 
 # ---------------- blok ----------------
-def orderflow(sym, asof):
+def orderflow(sym, asof, deadline=None):
+    """deadline: veri_topla'nin tum varliklar icin verdigi ortak son an (budget_s). Asilirsa varlik None + errors;
+    kayit (kayit/akis) yoksa API'den geri doldurma yapilmaz, hucreler 1m mumdan yaklasik (t_pct=0)."""
     C = cfg()
-    m1, mkt = kl(sym, "1m", asof, min(1500, int(C["vp_h"] * 60)))
-    h1, _ = kl(sym, "1h", asof, C["n_1h"] + 1)
-    q15, _ = kl(sym, "15m", asof, C["n_15m"] + 1)
+    deadline = deadline or time.time() + C["budget_s"]
+    try:
+        m1, mkt = kl(sym, "1m", asof, min(1500, int(C["vp_h"] * 60)), deadline, C["req_timeout_s"])
+        h1, _ = kl(sym, "1h", asof, C["n_1h"] + 1, deadline, C["req_timeout_s"])
+        q15, _ = kl(sym, "15m", asof, C["n_15m"] + 1, deadline, C["req_timeout_s"])
+    except (TimeoutError, requests.Timeout):
+        V.ERR.append(f"orderflow {sym}: skipped, time budget {C['budget_s']}s used up")
+        return None
     if m1 is None or h1 is None or q15 is None or not len(m1):
         return None
     last = float(m1.c.iloc[-1])

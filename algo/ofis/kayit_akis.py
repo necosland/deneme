@@ -212,6 +212,8 @@ def main():
                 break
             except Exception as e:  # noqa: BLE001
                 errs.append(f"{sym}: {type(e).__name__} {str(e)[:100]}")
+        if time.time() - t0 > 120 and not (a.backfill_h or a.fill_h):   # gorev siniri 240 sn (2026-11-21)
+            errs.append(f"slow run {round(time.time() - t0)}s")
         if errs:
             DIR.mkdir(parents=True, exist_ok=True)
             with open(DIR / "hata.log", "a", encoding="utf-8") as f:

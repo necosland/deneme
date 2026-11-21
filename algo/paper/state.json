@@ -2,7 +2,7 @@
  "systems": {
   "donchian_4h": {
    "baslangic": "2026-11-17 09:41",
-   "son_mum": "2026-11-21 00:00",
+   "son_mum": "2026-11-21 04:00",
    "tepe": 1000.0,
    "baslangic_fiyat": {
     "BTCUSDT": 64468.46,
@@ -67,7 +67,7 @@
   },
   "btc_filter_ema_4h": {
    "baslangic": "2026-11-17 09:41",
-   "son_mum": "2026-11-21 00:00",
+   "son_mum": "2026-11-21 04:00",
    "tepe": 1000.0,
    "baslangic_fiyat": {
     "BTCUSDT": 64468.46,

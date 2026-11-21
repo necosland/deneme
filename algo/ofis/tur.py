@@ -883,6 +883,17 @@ def rapor_hook():
         say(f"weekly report FAILED (round unaffected): {type(e).__name__} {e}")
 
 
+def grafik_hook():
+    """Islem grafikleri sayfasi (islem_grafik.py -> islemler.html). Turu asla bozmaz; en fazla 90 sn."""
+    try:
+        p = subprocess.run([str(O.PY), "-W", "ignore", str(O.ROOT / "islem_grafik.py")], cwd=str(O.REPO),
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=90,
+                           creationflags=NOWIN)
+        say(f"islem_grafik rc={p.returncode}" + ("" if p.returncode == 0 else f" {p.stderr.strip()[-300:]}"))
+    except Exception as e:  # noqa: BLE001
+        say(f"islem_grafik FAILED (round unaffected): {type(e).__name__} {e}")
+
+
 if __name__ == "__main__":
     os.chdir(O.ROOT)
     sys.path.insert(0, str(O.ROOT))
@@ -901,4 +912,5 @@ if __name__ == "__main__":
             rc = 3
         elliott_ileri_hook()
         rapor_hook()
+        grafik_hook()
         sys.exit(rc)

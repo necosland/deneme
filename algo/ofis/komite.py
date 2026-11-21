@@ -121,6 +121,32 @@ class Toplanti:
     def directional(self, d=None):
         return [b for b in (d or self.cur).values() if b["bias"] in DIRS]
 
+    def vote_ok(self, b, bump=0):
+        """Oy esigini geciyor mu (bump: guvene eklenen puan, 'esige 3 puan yakin' icin)."""
+        R = self.cfg["risk"]
+        conf = (b.get("confidence") or 0) + bump
+        try:
+            last = (((self.snap.get("assets") or {}).get(b["asset"]) or {}).get("ctx") or {}).get("last_close")
+            if hasattr(O, "vote_passes") and hasattr(O, "rr_cost") and b.get("targets"):
+                rr, cost_r, _ = O.rr_cost(b["bias"], b["entry"], b["stop"], b["targets"][0], last, R)
+                return O.vote_passes(conf, rr, cost_r, R)[0]
+        except Exception:  # noqa: BLE001
+            pass
+        return conf >= R.get("min_confidence", 55)
+
+    def can_change(self):
+        """Toplanti sonucu degistirebilir mi (denetim 2026-11-21): bir coinde ayni yonde >=2 oy esikte ya da
+        esige 3 puan yakin, veya gecerli (esigi gecen) oylar arasinda gercek long/short catismasi. Degilse sonuc
+        zaten 'none': toplanti yapilmaz (~%16 tasarruf)."""
+        dirs = self.directional()
+        for a in {b["asset"] for b in dirs}:
+            for s in DIRS:
+                if sum(1 for b in dirs if b["asset"] == a and b["bias"] == s and self.vote_ok(b, 3)) >= 2:
+                    return f"{a} {s}: >=2 votes at/near threshold"
+            if all(any(b["asset"] == a and b["bias"] == s and self.vote_ok(b) for b in dirs) for s in DIRS):
+                return f"{a}: long/short conflict between valid votes"
+        return None
+
     # ---------- tur 2: gundem ----------
     def agenda(self):
         c = self.c
@@ -236,6 +262,12 @@ class Toplanti:
         if not self.directional():
             self.skipped = "all flat, no conflict"
             return self
+        why = self.can_change()
+        if not why:
+            self.skipped = "cannot change outcome (<2 votes near threshold per asset/side, no valid-vote conflict)"
+            self.say(f"komite skipped: {self.skipped}")
+            return self
+        self.say(f"komite held: {why}")
         self._tstart = 0
         self.w(f"# Committee {self.stamp} asof {self.asof} (internal, English)")
         self.w("## Round 1 blind views\n" + self.views_table(self.pre))

@@ -170,14 +170,51 @@ def geometry_errors(side, entry, stop, targets, last_close, atr4h, lim, check_rr
         return errs
     risk = abs(e - stop)
     if check_rr:
-        rr = abs(targets[0] - e) / risk
-        if rr < lim["min_rr_t1"] - 1e-9:
+        rr, cost_r, rr_net = rr_cost(side, entry, stop, targets[0], last_close, lim)
+        if lim.get("rr_cost_aware"):
+            if rr_net < lim["min_rr_t1"] - 1e-9:
+                errs.append(f"R:R to T1 after costs {rr_net:.2f} (gross {rr:.2f}, cost {cost_r:.2f}R) < {lim['min_rr_t1']}")
+        elif rr < lim["min_rr_t1"] - 1e-9:
             errs.append(f"R:R to T1 {rr:.2f} < {lim['min_rr_t1']}")
         if atr4h and risk < lim["min_stop_atr4h"] * atr4h - 1e-9:
             errs.append(f"stop distance {risk:.4g} < {lim['min_stop_atr4h']}xATR4h {atr4h}")
-        if atr4h and abs(e - last_close) > 2 * atr4h + 1e-9:
-            errs.append(f"entry {e} farther than 2xATR4h from last close {last_close}")
+        if lim.get("min_stop_pct") and risk < lim["min_stop_pct"] / 100 * e - 1e-12:
+            errs.append(f"stop distance {100 * risk / e:.3f}% < min_stop_pct {lim['min_stop_pct']}%")
+        k = lim.get("entry_max_atr4h", 2.0)
+        if atr4h and abs(e - last_close) > k * atr4h + 1e-9:
+            errs.append(f"entry {e} farther than {k}xATR4h from last close {last_close}")
     return errs
+
+
+def rr_cost(side, entry, stop, t1, last_close, lim):
+    """(brut R:R, maliyet R, net R:R) T1'e. Maliyet: giris ucreti (limit maker, market/stop taker+kayma),
+    T1 cikisi maker, stop cikisi taker+kayma. Net R:R = (odul - giris/T1 maliyeti) / (risk + giris/stop maliyeti)."""
+    e = entry_px(entry, last_close)
+    risk = abs(e - stop)
+    if not risk:
+        return 0.0, float("inf"), 0.0
+    ft, fm, sl = lim.get("fee_taker", 0.0), lim.get("fee_maker", 0.0), lim.get("slippage", 0.0)
+    cin = e * (fm if (entry or {}).get("type") == "limit" else ft + sl)
+    reward_net = abs(t1 - e) - cin - t1 * fm
+    risk_net = risk + cin + stop * (ft + sl)
+    cost_r = (cin + t1 * fm) / risk           # T1'e giden islemin maliyeti, R cinsinden
+    return abs(t1 - e) / risk, cost_r, reward_net / risk_net
+
+
+def vote_passes(conf, rr_gross, cost_r, lim):
+    """Oy esigi ayardan: vote_rule 'min_conf' (conf >= min_confidence) ya da 'ev'
+    (conf/100*RR - (1-conf/100) - cost_R >= min_ev_r). Donus (gecti_mi, aciklama)."""
+    if conf is None:
+        return False, "no confidence"
+    if conf > lim.get("max_confidence", 80):
+        return False, f"confidence {conf} > max_confidence {lim.get('max_confidence', 80)}"
+    if lim.get("vote_rule", "min_conf") == "ev":
+        p = conf / 100
+        ev = p * rr_gross - (1 - p) - cost_r
+        thr = lim.get("min_ev_r", 0.15)
+        return ev >= thr - 1e-9, f"EV {ev:.2f}R vs min_ev_r {thr} (conf {conf}, RR {rr_gross:.2f}, cost {cost_r:.2f}R)"
+    thr = lim.get("min_confidence", 55)
+    return conf >= thr, f"confidence {conf} vs min_confidence {thr}"
 
 
 def find_claude():

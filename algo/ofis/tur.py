@@ -18,15 +18,24 @@ import concurrent.futures as cf
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 import ortak as O
 
 NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 T_DATA, T_EXPERT, T_RISK, T_TOTAL = 240, 300, 240, 15 * 60
-VIEW_OF = {"trader-likidite": "fiyat", "trader-elliott": "fiyat", "trader-seviye": "fiyat", "trader-senaryo": "senaryo",
+# denetim 2026-11-21: altyapi hatasi (kullanim limiti, cli) -> 30 dk sonra tek yeniden deneme; 4h kapanisindan
+# 90 dk sonrasi bayat (gec baslayan telafi turu atlanir, yeniden deneme bu siniri asmaz)
+RETRY_WAIT_S, STALE_MAX_S = 30 * 60, 90 * 60
+INFRA_PAT = ("session limit", "usage limit", "rate limit", "overloaded", "cli error", "claude cli not found",
+             "non-json output", "credit balance", "api error", "529", "503")
+LOG_KEEP_DAYS = 30
+TUR_KILIT = O.LOG / ".tur_kilit"
+VIEW_OF = {"trader-likidite": "fiyat", "trader-elliott": "elliott", "trader-seviye": "fiyat", "trader-senaryo": "senaryo",
            "trader-turev": "turev", "trader-makro": "makro", "trader-risk": "risk", "trader-harmonik": "harmonik"}
 # ek veri (TASARIM.md 14 "Ek veri ve kayitcilar"): varlik alanlari ve hangi rolun hangi aciklamayi gordugu
 EK_ASSET = ("options", "onchain", "orderbook", "recorded")
@@ -55,8 +64,10 @@ def make_view(snap, role):
         if a is None or a.get("_context_only"):   # tarayici: secilmeyen BTC yalniz kucuk baglam blogu
             v["assets"][sym] = a
             continue
-        if role in ("fiyat", "senaryo"):
-            x = {k: val for k, val in a.items() if k not in ("derivs", "harmonics") + EK_ASSET}
+        if role in ("fiyat", "senaryo", "elliott"):
+            # elliott_say.py output only to Ekrem (role "elliott" = fiyat view + elliott field)
+            drop = ("derivs", "harmonics") + EK_ASSET + (() if role == "elliott" else ("elliott",))
+            x = {k: val for k, val in a.items() if k not in drop}
             x["candles"] = {k: val for k, val in a["candles"].items() if k != "15m"}
             omitted = ["assets.*.derivs", "assets.*.harmonics", "assets.*.candles.15m", "sentiment",
                        "macro except calendar_usd_high", "assets.*.options/onchain/orderbook/recorded"]
@@ -102,7 +113,7 @@ def make_view(snap, role):
         v["sentiment"], v["macro"] = snap.get("sentiment"), snap.get("macro")
     elif role == "turev":
         v["sentiment"], v["macro"] = snap.get("sentiment"), {**cal, "stablecoin_supply": macro.get("stablecoin_supply")}
-    elif role in ("fiyat", "risk", "harmonik", "senaryo"):
+    elif role in ("fiyat", "risk", "harmonik", "senaryo", "elliott"):
         v["macro"] = cal
     else:
         v["sentiment"], v["macro"] = snap.get("sentiment"), snap.get("macro")
@@ -154,10 +165,123 @@ def run_claude(agent, prompt, timeout, rundir, tools="Read", allowed=("Read",)):
     return res
 
 
+def infra_error(r):
+    """Altyapi hatasi mi (uzmanin isi degil): kullanim limiti, cli hatasi, json disi cikti."""
+    e = str((r or {}).get("error") or "").lower()
+    return bool(e) and any(p in e for p in INFRA_PAT)
+
+
+def can_retry(asof, a):
+    """Bekleme sonunda hala 4h kapanisindan STALE_MAX_S icinde miyiz (test/--no-retry turunda hayir)."""
+    if getattr(a, "no_retry", False):
+        return False
+    return (time.time() + RETRY_WAIT_S - O.parse_utc(asof).timestamp()) <= STALE_MAX_S
+
+
+def run_parallel(jobs, outdir):
+    results = {}
+    if not jobs:
+        return results
+    with cf.ThreadPoolExecutor(max_workers=max(1, len(jobs))) as pool:
+        futs = {pool.submit(run_claude, ex, p, T_EXPERT, outdir, t, al): ex for ex, (p, t, al) in jobs.items()}
+        for f in cf.as_completed(futs):
+            results[futs[f]] = f.result()
+    return results
+
+
+def harmonic_candidates(snap, assets):
+    """Kodun buldugu PRZ'de ya da tepki vermis harmonik aday var mi (yoksa Hakan cagrilmaz)."""
+    for s in assets:
+        for h in (((snap.get("assets") or {}).get(s) or {}).get("harmonics") or []):
+            if isinstance(h, dict) and h.get("status") in ("at_prz", "reacted"):
+                return True
+    return False
+
+
+def auto_flat(expert, asof, asset, why):
+    """Uzmanin flat bloguyla ayni sema; kod yazdi (AUTO), LLM cagrilmadi."""
+    return {"expert": expert, "asof_utc": asof, "asset": asset, "action": "none", "bias": "flat", "timeframe": "4h",
+            "setup": None, "entry": None, "stop": None, "targets": [], "invalidation": "n/a", "confidence": 50,
+            "horizon_h": 4, "rationale": [f"AUTO (code, expert not called): {why}"], "data_gaps": []}
+
+
+def stale_macro(b):
+    """Onceki turdan yeniden kullanilan blok: event-risk etiketi yasak etkisi tasimaz (yalniz bu turun taze blogu)."""
+    b = json.loads(json.dumps(b))
+    rat = b.get("rationale") or []
+    for i, x in enumerate(rat):
+        if isinstance(x, str) and "event-risk" in x:
+            rat[i] = x.replace("CONTEXT: event-risk", f"CONTEXT: regime-risk (REUSED from {b.get('asof_utc')}, "
+                                                      "not this round: context only, no event ban)")[:200]
+    return b
+
+
+def mark_failed(stamp, asof, reason):
+    """Basarisiz tur isareti: DURUM.md ust satiri defter.py'de (diger ajan); burada log + son_hata.json."""
+    say(f"ROUND FAILED: {reason}")
+    try:
+        import defter as D
+        D.mark_failed_round(reason, stamp=stamp)   # DURUM.md ust satiri
+    except Exception as e:  # noqa: BLE001
+        say(f"mark_failed_round failed: {type(e).__name__} {e}")
+    try:
+        O.write_json(O.LOG / "son_hata.json", {"run": stamp, "asof_utc": asof, "utc": O.fmt(O.now_utc()),
+                                               "reason": reason})
+    except Exception:  # noqa: BLE001
+        pass
+
+
+def cleanup_old(days=LOG_KEEP_DAYS):
+    """log/<stamp> ve grafik/<stamp> klasorlerinden `days` gunden eski olanlari sil (mtime; replay grafikleri dahil)."""
+    lim, n = time.time() - days * 86400, 0
+    for base in (O.LOG, O.ROOT / "grafik"):
+        try:
+            for d in base.iterdir():
+                if d.is_dir() and d.name[:8].isdigit() and d.stat().st_mtime < lim:
+                    shutil.rmtree(d, ignore_errors=True)
+                    n += 1
+        except Exception:  # noqa: BLE001
+            pass
+    return n
+
+
+class TurKilit:
+    """Tur duzeyi kilit: elle ve zamanli tur ic ice gecmesin. Bayat sayma 2 saat (30 dk bekleme dahil tur < 1 saat)."""
+    def __init__(self, stale_s=7200):
+        self.stale_s, self.ok = stale_s, False
+
+    def __enter__(self):
+        TUR_KILIT.parent.mkdir(parents=True, exist_ok=True)
+        for _ in range(2):
+            try:
+                fd = os.open(TUR_KILIT, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.write(fd, f"{os.getpid()} {O.fmt(O.now_utc())}".encode())
+                os.close(fd)
+                self.ok = True
+                break
+            except FileExistsError:
+                try:
+                    if time.time() - TUR_KILIT.stat().st_mtime > self.stale_s:
+                        TUR_KILIT.unlink()
+                        continue
+                except FileNotFoundError:
+                    continue
+                break
+        return self
+
+    def __exit__(self, *x):
+        if self.ok:
+            try:
+                TUR_KILIT.unlink()
+            except FileNotFoundError:
+                pass
+
+
 # ---------------- dosyalar ----------------
 def last_blocks(expert, before_run):
     rows = [r for r in O.read_jsonl(O.DEFTER / "sinyaller.jsonl")
-            if r.get("expert") == expert and r.get("valid") and not r.get("reused") and r.get("run") != before_run]
+            if r.get("expert") == expert and r.get("valid") and not r.get("reused") and not r.get("auto")
+            and r.get("run") != before_run]
     if not rows:
         return []
     last = rows[-1]["run"]
@@ -268,9 +392,17 @@ def main():
     ap.add_argument("--komite", action="store_true", help="komiteyi ayardan bagimsiz ac (deneme)")
     ap.add_argument("--no-komite", action="store_true")
     ap.add_argument("--evren", action="store_true", help="evren+tarayiciyi ayardan bagimsiz ac (deneme)")
+    ap.add_argument("--stale-ok", action="store_true", help="4h kapanisindan 90 dk sonra da kos (elle telafi)")
+    ap.add_argument("--no-retry", action="store_true", help="altyapi hatasinda 30 dk bekleyip yeniden deneme")
     a = ap.parse_args()
     cfg = O.ayar()
     R = cfg["risk"]
+    now = O.now_utc()
+    close4h = now.replace(hour=now.hour - now.hour % 4, minute=0, second=0, microsecond=0)
+    if not (a.force or a.stale_ok or a.skip_data) and (now - close4h).total_seconds() > STALE_MAX_S:
+        say(f"stale start: {int((now - close4h).total_seconds() // 60)} min after 4h close {O.fmt(close4h)} > "
+            f"{STALE_MAX_S // 60}: skip (use --stale-ok)")
+        return 0
     stamp = O.now_utc().strftime("%Y%m%d_%H%M")
     rundir = O.LOG / stamp
     rundir.mkdir(parents=True, exist_ok=True)
@@ -295,6 +427,7 @@ def main():
         say(f"veri_topla rc={p.returncode} {p.stdout.strip()[-300:]}")
         if p.returncode != 0:
             say("veri_topla FAILED: " + p.stderr.strip()[-800:])
+            mark_failed(stamp, None, f"veri_topla rc={p.returncode}")
             return 2
         snap_path = O.pathlib.Path(p.stdout.strip().splitlines()[-1].split(" | ")[0])
     raw = snap_path.read_bytes()
@@ -338,6 +471,13 @@ def main():
     # sirasi gelmeyen uzman (makro) son blogu yoksa ya da bayatsa yine cagrilir (ilk tur, kacirilan tur)
     call = [e for e in experts if due(e, asof) or not fresh_prev(e["id"])]
     reuse = [e for e in experts if e not in call]
+    # Hakan: kodda PRZ'de/tepki vermis aday yoksa cagrilmaz, kod ayni semada flat blok yazar (denetim: tur basi ~%9)
+    auto = []
+    if any(e["id"] == "trader-harmonik" for e in call) and not harmonic_candidates(snap, cfg["assets"]):
+        call = [e for e in call if e["id"] != "trader-harmonik"]
+        auto = [auto_flat("trader-harmonik", asof, s, "no at_prz/reacted harmonic candidate in snapshot")
+                for s in cfg["assets"]]
+        say("trader-harmonik: no at_prz/reacted candidate -> auto flat blocks, not called")
     jobs = {}
     lim = limits_line(R)
     for e in call:
@@ -370,15 +510,30 @@ def main():
                                                "WebFetch(domain:www.coindesk.com)",       # manset kontrolu (beklenmeyen sok)
                                                "WebFetch(domain:feeds.bbci.co.uk)")       # manset yedegi
         jobs[ex] = (prompt, tools, allowed)
-    results = {}
-    with cf.ThreadPoolExecutor(max_workers=max(1, len(jobs))) as pool:
-        futs = {pool.submit(run_claude, ex, p, T_EXPERT, rundir, t, al): ex for ex, (p, t, al) in jobs.items()}
-        for f in cf.as_completed(futs):
-            results[futs[f]] = f.result()
+    # kor tur: uzman ciktilari tur bitene dek ofis klasoru disinda (uzmanlar --add-dir ile ROOT'u okuyabilir)
+    priv = O.pathlib.Path(tempfile.gettempdir()) / "trader-ofis-kor" / stamp
+    priv.mkdir(parents=True, exist_ok=True)
+    results = run_parallel(jobs, priv)
+    bad = [ex for ex, r in results.items() if infra_error(r)]
+    if bad and can_retry(asof, a):
+        say(f"infra error {bad}: {results[bad[0]].get('error')}; retry once in {RETRY_WAIT_S // 60} min")
+        time.sleep(RETRY_WAIT_S)
+        global T0   # bekleme tur butcesinden (T_TOTAL) sayilmaz; yoksa Riza'ya 60 sn kalir
+        T0 += RETRY_WAIT_S
+        results.update(run_parallel({ex: jobs[ex] for ex in bad}, priv))
+    for f in priv.iterdir():
+        shutil.move(str(f), str(rundir / f.name))
+    shutil.rmtree(priv, ignore_errors=True)
 
     # 4. dogrulama + sinyaller.jsonl
     vb = O.validator("expert_block")
     valid_blocks, called, summary = [], [e["id"] for e in call], {}
+    errored = [ex for ex in called if results.get(ex, {"error": "no result"}).get("error")]
+    total_fail = bool(called) and len(errored) == len(called)
+    for b in auto:
+        O.append_jsonl(O.DEFTER / "sinyaller.jsonl", {"run": stamp, "asof_utc": asof, "expert": b["expert"],
+                                                     "asset": b["asset"], "valid": True, "errors": [], "block": b,
+                                                     "reused": False, "auto": True, "snapshot_sha256": sha})
     for ex in called:
         r = results.get(ex, {"error": "no result"})
         parsed = O.extract_json(r.get("text")) if not r.get("error") else None
@@ -400,7 +555,7 @@ def main():
     for e in reuse:
         prev = [b for b in last_blocks(e["id"], stamp) if b.get("asset") in cfg["assets"]]   # tarayici: bu turun coinleri
         if prev:
-            reused += prev
+            reused += [stale_macro(b) for b in prev]   # yalniz kapsadigi coinler; yasak etkisi yok (R5 taze ister)
             for b in prev:
                 O.append_jsonl(O.DEFTER / "sinyaller.jsonl", {"run": stamp, "asof_utc": asof, "expert": e["id"],
                                                              "asset": b["asset"], "valid": True, "errors": [],
@@ -408,14 +563,19 @@ def main():
             say(f"{e['id']}: reused blocks from {prev[0]['asof_utc']}")
 
     # 4b. komite (TASARIM.md 12, ofis-ayar.json committee): kapaliysa km None, kor bloklar aynen
+    reused += auto   # kodun yazdigi Hakan flat'i: Riza gorur, golge defteri etkilemez
     import komite as KM
-    km = KM.toplanti(cfg, a, snap, stamp, rundir, valid_blocks, reused, views, VIEW_OF, run_claude,
-                     lambda ex, p: validate_blocks(ex, p, snap, cfg, vb), say)
+    km = None
+    if total_fail:
+        mark_failed(stamp, asof, f"all {len(called)} experts errored: {results.get(errored[0], {}).get('error')}")
+    else:
+        km = KM.toplanti(cfg, a, snap, stamp, rundir, valid_blocks, reused, views, VIEW_OF, run_claude,
+                         lambda ex, p: validate_blocks(ex, p, snap, cfg, vb), say)
     dec_blocks = km.blocks() if km and km.held else valid_blocks + reused
 
     # 5. risk
-    decisions, dec_ok = [], False
-    if not a.no_risk:
+    decisions, dec_ok, risk_fail = [], False, False
+    if not a.no_risk and not total_fail:
         experts_f = rundir / "experts.json"
         O.write_json(experts_f, dec_blocks)
         ledger_f, scores_f = rundir / "ledger.json", rundir / "scores.json"
@@ -431,6 +591,13 @@ def main():
         (rundir / "prompt_trader-risk.txt").write_text(prompt, encoding="utf-8")
         left = max(60, min(T_RISK, T_TOTAL - (time.time() - T0) - 60))
         r = run_claude("trader-risk", prompt, left, rundir)
+        if infra_error(r) and can_retry(asof, a):
+            say(f"trader-risk infra error: {r.get('error')}; retry once in {RETRY_WAIT_S // 60} min")
+            time.sleep(RETRY_WAIT_S)
+            r = run_claude("trader-risk", prompt, T_RISK, rundir)
+        risk_fail = bool(r.get("error"))
+        if risk_fail:
+            mark_failed(stamp, asof, f"trader-risk errored: {r.get('error')}")
         vd = O.validator("decision")
         parsed = O.extract_json(r.get("text")) if not r.get("error") else None
         errs = []
@@ -474,9 +641,18 @@ def main():
                     st["start_px"] = {s: (x or {}).get("ctx", {}).get("last_close") for s, x in snap["assets"].items()}
                 ev, note = K.run(st)
                 say(f"catch-up: events={ev} {note}")
-                res = D.apply_decisions(st, decisions, snap, stamp, dec_blocks) if dec_ok else []
+                ok_dec = []
+                for d in decisions:   # kod Riza'nin 'open' kararini bu turun bloklariyla yeniden denetler
+                    if d.get("decision") == "open":
+                        ok, why = D.validate_open(d, dec_blocks, cfg, snap)
+                        if not ok:
+                            say(f"open REJECTED by code {d.get('asset')}: {why}")
+                            continue
+                    ok_dec.append(d)
+                res = D.apply_decisions(st, ok_dec, snap, stamp, dec_blocks) if dec_ok else []
                 say(f"applied: {res}")
-                D.add_shadow(st, valid_blocks, called, stamp, snap)
+                # hata veren uzmanin bekleyen golge emri sure dolmus sayilmaz (altyapi hatasi != dolmayan emir)
+                D.add_shadow(st, valid_blocks, called, stamp, snap, errored=errored)
                 if km:
                     km.shadow(D, st, stamp, snap)
                 for d in decisions:
@@ -488,17 +664,35 @@ def main():
 
     tot = {k: sum((s.get(k) or 0) for s in summary.values()) for k in ("tok_in", "tok_cache_w", "tok_cache_r", "tok_out", "cost_usd")}
     summary["_total"] = {**tot, "secs": round(time.time() - T0)}
+    summary["_total"]["errored"] = errored
     O.write_json(rundir / "ozet.json", summary)
-    say(f"=== round {stamp} done in {round(time.time() - T0)}s tokens={tot}")
-    return 0
+    try:
+        n = cleanup_old()
+        if n:
+            say(f"cleanup: removed {n} log/grafik dirs older than {LOG_KEEP_DAYS} days")
+    except Exception as e:  # noqa: BLE001
+        say(f"cleanup failed: {e}")
+    if not (total_fail or risk_fail) and not a.no_ledger:
+        try:
+            D.clear_failed_round()
+        except Exception as e:  # noqa: BLE001
+            say(f"clear_failed_round failed: {e}")
+    say(f"=== round {stamp} done in {round(time.time() - T0)}s tokens={tot} errored={errored}")
+    return 4 if (total_fail or risk_fail) else 0
 
 
 if __name__ == "__main__":
     os.chdir(O.ROOT)
     sys.path.insert(0, str(O.ROOT))
-    try:
-        sys.exit(main())
-    except Exception:  # noqa: BLE001
-        import traceback
-        say("CRASH " + traceback.format_exc().replace("\n", " | ")[:2000])
-        sys.exit(3)
+    with TurKilit() as _k:
+        if not _k.ok:
+            say(f"round lock busy ({TUR_KILIT}): another round is running, skip")
+            sys.exit(5)
+        try:
+            sys.exit(main())
+        except SystemExit:
+            raise
+        except Exception:  # noqa: BLE001
+            import traceback
+            say("CRASH " + traceback.format_exc().replace("\n", " | ")[:2000])
+            sys.exit(3)

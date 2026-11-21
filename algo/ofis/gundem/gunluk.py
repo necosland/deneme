@@ -16,7 +16,13 @@ import topla  # noqa: E402
 if __name__ == "__main__":
     try:
         topla.main([])
-        sys.exit(ozetle.main([]))
+        rc = ozetle.main([])
+        try:   # yorumcu cagrilarinin puani (LLM yok); hata gunluk isi bozmaz
+            import cagri_puan
+            cagri_puan.main()
+        except Exception as e:  # noqa: BLE001
+            O.log("gundem.log", f"cagri_puan failed: {type(e).__name__} {e}")
+        sys.exit(rc)
     except Exception:  # noqa: BLE001
         import traceback
         O.log("gundem.log", "gunluk CRASH " + traceback.format_exc().replace("\n", " | ")[:2000])

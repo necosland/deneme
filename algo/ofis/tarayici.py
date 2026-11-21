@@ -9,7 +9,10 @@ Puan (0-100, agirliklar ofis-ayar.json universe.weights):
   bos   taze yapi kirilimi ya da likidite supurmesi (4h pivot: ilk kapanis otesi / fitil supurmesi son 2 mumda 1, son 6 mumda 0,6;
         1h supurme son 4 mumda 0,5)
   harm  veri_topla.harmonics adayi: at_prz fit, reacted 0,8 x fit, PRZ'ye <= 1 ATR forming 0,5 x fit
-  brk   son kapali 4h mum 20 mumluk araligin disinda kapandi + hacim >= 1,5x ort. (hacimsiz 0,4); 1d icin 1,3x
+  brk   kirilim-GERI TEST yakinligi (2026-11-21 denetim; eskiden bitmis kirilimi odullendiriyordu): son 12 mumda 20 mumluk
+        araliktan kapanisla cikis varsa kirilan seviyeye <= 0,75 ATR = 1 - d/0,75 (hacimsiz x0,6); kirilim son mumdaysa 0,15
+  Beta kopyasi: k secimin hepsi beta>1 ve ayni yondeyse sonuncusu en iyi dusuk korelasyonlu coinle degisir.
+  Olcum: veri/tarama_izle.csv = secilen/secilmeyen her coinin sonraki 24s hareketi (LLM yok).
   ew    Elliott'a uygun salinim tamamlanmasi: 4h zigzag'da kurallara uyan 5 dalga itki (3 en kisa degil, 4 ile 1 ortusmez)
         son pivotu <= 8 mum once onaylandi = 1; 1d trendine karsi ABC (C, A'nin otesinde) = 0,6
   div   RSI uyumsuzlugu: son iki ayni tip 4h pivotta fiyat yeni uc, RSI14 degil, son pivot <= 10 mum = 1 (1d: <= 5 mum = 1)
@@ -103,18 +106,36 @@ def c_harm(V, fr):
     return best, why
 
 
-def c_brk(fr):
+def c_brk(V, fr, look=12, near_atr=0.75):
+    """Kirilim-geri test yakinligi (denetim 2026-11-21: bitmis kirilim kovalamaz). Son `look` mumda 20 mumluk araliktan
+    kapanisla cikan mum varsa kirilan seviye (aralik ucu) geri test bolgesidir: fiyat seviyeye <= near_atr ATR ise
+    1 - d/near_atr (hacimli kirilim x1, hacimsiz x0,6). Kirilim son kapali mumun kendisiyse (hala uzaklasiyor) 0,15."""
     best, why = 0.0, None
     for iv, df, vm in (("4h", fr["4h"], 1.5), ("1d", fr["1d"], 1.3)):
-        prev = df.iloc[-21:-1]
-        c, v = df.close.iloc[-1], df.qvol.iloc[-1]
-        hi, lo, va = prev.high.max(), prev.low.min(), prev.qvol.mean()
-        side = "up" if c > hi else "down" if c < lo else None
-        if not side:
+        n = len(df)
+        if n < 25:
             continue
-        s = 1.0 if va > 0 and v >= vm * va else 0.4
-        if s > best:
-            best, why = s, f"{iv} close {side} out of 20-bar range, vol x{v / va:.1f}" if va > 0 else f"{iv} breakout {side}"
+        a = float(V.atr(df).iloc[-1])
+        last = float(df.close.iloc[-1])
+        for j in range(n - 1, max(20, n - look) - 1, -1):   # en yeni kirilim once
+            prev = df.iloc[j - 20:j]
+            c, v = df.close.iloc[j], df.qvol.iloc[j]
+            hi, lo, va = prev.high.max(), prev.low.min(), prev.qvol.mean()
+            side = "up" if c > hi else "down" if c < lo else None
+            if not side:
+                continue
+            lvl = hi if side == "up" else lo
+            volf = 1.0 if va > 0 and v >= vm * va else 0.6
+            if j == n - 1:
+                s, w = 0.15 * volf, f"{iv} breakout {side} on last bar (chase, no retest yet)"
+            else:
+                d = abs(last - lvl) / a if a else 9
+                held = (last >= lvl - 0.5 * a) if side == "up" else (last <= lvl + 0.5 * a)
+                s = max(0.0, 1 - d / near_atr) * volf if held else 0.0
+                w = f"{iv} retest of {side} breakout level {V.r5(lvl)} ({n - 1 - j} bars ago) at {d:.2f} ATR"
+            if s > best:
+                best, why = s, w
+            break
     return best, why
 
 
@@ -165,13 +186,16 @@ def c_div(V, fr):
     return 0.0, None
 
 
-def beta(fr, btc):
+def beta(fr, btc, with_corr=False):
     a = np.log(fr["4h"].close).diff().tail(180)
     b = np.log(btc["4h"].close).diff().reindex(a.index)
     m = a.notna() & b.notna()
     if m.sum() < 60 or b[m].var() <= 0:
-        return None
-    return round(float(np.cov(a[m], b[m])[0, 1] / b[m].var()), 2)
+        return (None, None) if with_corr else None
+    bt = round(float(np.cov(a[m], b[m])[0, 1] / b[m].var()), 2)
+    if with_corr:
+        return bt, round(float(np.corrcoef(a[m], b[m])[0, 1]), 2)
+    return bt
 
 
 def score_coin(V, sym, fr, btc, asof, u):
@@ -179,14 +203,16 @@ def score_coin(V, sym, fr, btc, asof, u):
     last, a4 = float(h4.close.iloc[-1]), float(V.atr(h4).iloc[-1])
     qv = float(h4.qvol.tail(20).mean()) / 1e6
     atr_pct = 100 * a4 / last
+    bt, cr = (1.0, 1.0) if sym == "BTCUSDT" else beta(fr, btc, with_corr=True)
+    ret24 = 100 * (last / float(h4.close.iloc[-7]) - 1) if len(h4) > 7 else 0.0
     out = {"last_close": V.r5(last), "atr4h_pct": round(atr_pct, 2), "qvol_4h_musd": round(qv, 1),
-           "beta_btc_30d": 1.0 if sym == "BTCUSDT" else beta(fr, btc), "parts": {}, "why": []}
+           "beta_btc_30d": bt, "corr_btc_30d": cr, "ret24h_pct": round(ret24, 2), "parts": {}, "why": []}
     sane = qv >= u["min_qvol_4h_musd"] and u["min_atr_pct"] <= atr_pct <= u["max_atr_pct"]
     out["sane"] = bool(sane)
     if not sane:
         out["why"].append(f"sanity fail: qvol4h {qv:.1f}M, ATR {atr_pct:.2f}%")
     comps = {"sr": lambda: c_sr(V, fr, last, a4, asof, u["sr_atr"]), "bos": lambda: c_bos(V, fr),
-             "harm": lambda: c_harm(V, fr), "brk": lambda: c_brk(fr), "ew": lambda: c_ew(V, fr),
+             "harm": lambda: c_harm(V, fr), "brk": lambda: c_brk(V, fr), "ew": lambda: c_ew(V, fr),
              "div": lambda: c_div(V, fr)}
     tot = 0.0
     for k, f in comps.items():
@@ -203,6 +229,87 @@ def score_coin(V, sym, fr, btc, asof, u):
 
 
 # ---------------- secim ----------------
+def beta_clone_swap(pick, rank, sc, u):
+    """Denetim 2026-11-21: k secimin hepsi beta>1 ve ayni yonde (24s getiri isareti) ise BTC'nin kopyasi: ucuncusu
+    (sonuncusu), esigi gecen en iyi dusuk korelasyonlu (corr <= clone_corr_max ya da beta <= 1) coinle degisir."""
+    k = u.get("k", 3)
+    if len(pick) < max(3, k):
+        return None
+    bs = [sc[s].get("beta_btc_30d") for s in pick]
+    sg = {1 if (sc[s].get("ret24h_pct") or 0) >= 0 else -1 for s in pick}
+    if any(b is None or b <= 1 for b in bs) or len(sg) != 1:
+        return None
+    cmax = u.get("clone_corr_max", 0.7)
+    alt = [s for s in rank if s not in pick and sc[s]["score"] >= u["min_score"]
+           and ((sc[s].get("corr_btc_30d") is not None and sc[s]["corr_btc_30d"] <= cmax)
+                or (sc[s].get("beta_btc_30d") is not None and sc[s]["beta_btc_30d"] <= 1))]
+    if not alt:
+        return {"pick": pick, "note": f"all picks beta>1 same direction, no low-corr alternative >= min_score; kept {pick}"}
+    new = pick[:-1] + [alt[0]]
+    return {"pick": new, "note": f"{pick[-1]} (beta {sc[pick[-1]]['beta_btc_30d']}) -> {alt[0]} "
+                                 f"(beta {sc[alt[0]].get('beta_btc_30d')}, corr {sc[alt[0]].get('corr_btc_30d')})"}
+
+
+IZLE_F = O.VERI / "tarama_izle.csv"
+IZLE_COLS = ["scan_asof", "sym", "picked", "rank", "score", "beta", "close0", "close24", "ret24_pct", "btc_ret24_pct",
+             "excess_pct", "abs_ret_atr"]
+
+
+def izle(frames, asof, max_age_days=7):
+    """LLM'siz olcum: 24 saat once taranan her coinin (secilen/secilmeyen) sonraki 24s hareketi -> veri/tarama_izle.csv.
+    Kapanis: tarama aninin 24s sonrasinda kapanan 4h mum. Ayni tarama iki kez yazilmaz."""
+    import csv
+    done = set()
+    if IZLE_F.exists():
+        with IZLE_F.open(encoding="utf-8") as f:
+            done = {r["scan_asof"] for r in csv.DictReader(f)}
+    rows = []
+    btc = frames.get("BTCUSDT")
+    for p in sorted(O.VERI.glob("tarama_2*.json")):
+        try:
+            t0 = pd.Timestamp(p.stem.split("_", 1)[1].replace("_", ""), tz="UTC")
+        except Exception:  # noqa: BLE001
+            continue
+        t1 = t0 + pd.Timedelta(hours=24)
+        if t1 > asof or (asof - t0).days > max_age_days:
+            continue
+        old = json.loads(p.read_text(encoding="utf-8"))
+        if old.get("asof_utc") in done:
+            continue
+        sc, picked = old.get("scores") or {}, set(old.get("picked") or [])
+        rk = {s: i + 1 for i, (s, _) in enumerate(old.get("ranking") or [])}
+
+        def close_at(fr):   # acilisi t1-4h olan mum t1'de kapanir
+            if fr is None:
+                return None
+            h4 = fr["4h"]
+            i = t1 - pd.Timedelta(hours=4)
+            return float(h4.close.loc[i]) if i in h4.index else None
+        bc1, bc0 = close_at(btc), (sc.get("BTCUSDT") or {}).get("last_close")
+        btc_ret = 100 * (bc1 / bc0 - 1) if bc1 and bc0 else None
+        for s, x in sc.items():
+            c0, c1 = x.get("last_close"), close_at(frames.get(s))
+            if not c0 or not c1:
+                continue
+            ret = 100 * (c1 / c0 - 1)
+            b = x.get("beta_btc_30d")
+            exc = ret - b * btc_ret if (b is not None and btc_ret is not None) else None
+            atrp = x.get("atr4h_pct")
+            rows.append({"scan_asof": old.get("asof_utc"), "sym": s, "picked": int(s in picked), "rank": rk.get(s),
+                         "score": x.get("score"), "beta": b, "close0": c0, "close24": c1, "ret24_pct": round(ret, 3),
+                         "btc_ret24_pct": None if btc_ret is None else round(btc_ret, 3),
+                         "excess_pct": None if exc is None else round(exc, 3),
+                         "abs_ret_atr": round(abs(ret) / atrp, 2) if atrp else None})
+    if rows:
+        new = not IZLE_F.exists()
+        with IZLE_F.open("a", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=IZLE_COLS)
+            if new:
+                w.writeheader()
+            w.writerows(rows)
+    return len(rows)
+
+
 def live_assets():
     """Acik ya da bekleyen OFIS pozisyonu olan coinler (her zaman analiz edilir)."""
     try:
@@ -241,15 +348,26 @@ def secim(cfg=None, log=print, force_universe=False):
     base = ["BTCUSDT"] if u["btc_always_trade"] else []
     rank = sorted((s for s in sc if sc[s]["sane"] and s not in base), key=lambda s: -sc[s]["score"])
     pick = [s for s in rank if sc[s]["score"] >= u["min_score"]][:u["k"]] or rank[:1]
+    clone = beta_clone_swap(pick, rank, sc, u)
+    if clone:
+        pick = clone["pick"]
+        log(f"tarama: beta clones -> {clone['note']}")
     forced = [s for s in live_assets() if s not in pick + base]
     assets = base + pick + forced
     context = [] if "BTCUSDT" in assets else ["BTCUSDT"]
     res = {"asof_utc": V.ts(asof), "generated_utc": O.fmt(O.now_utc()), "universe": uni, "k": u["k"],
            "assets": assets, "picked": pick, "forced_open": forced, "context": context,
            "fetch": context + assets, "ranking": [[s, sc[s]["score"]] for s in sorted(sc, key=lambda s: -sc[s]["score"])],
-           "scores": sc, "secs": round(time.time() - t0, 1), "errors": list(V.ERR)}
+           "scores": sc, "secs": round(time.time() - t0, 1), "errors": list(V.ERR),
+           "clone_swap": clone["note"] if clone else None}
     O.write_json(O.VERI / "tarama_son.json", res)
     O.write_json(O.VERI / f"tarama_{asof.strftime('%Y%m%d_%H%M')}.json", res)
+    try:
+        n = izle(frames, asof)
+        if n:
+            log(f"tarama_izle: {n} rows (24h follow-up)")
+    except Exception as e:  # noqa: BLE001  olcum hatasi taramayi durdurmaz
+        log(f"tarama_izle failed: {type(e).__name__} {e}")
     log(f"tarama {res['secs']}s: picked={pick} forced={forced} context={context} ranking={res['ranking']}")
     return res
 

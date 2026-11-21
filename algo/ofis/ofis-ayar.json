@@ -18,7 +18,7 @@
   "risk": {
     "start_equity_usdt": 10000,
     "risk_pct_default": 1.0,
-    "risk_pct_max": 2.0,
+    "risk_pct_max": 1.0,
     "risk_pct_counter_regime": 0.5,
     "max_open_risk_pct": 3.0,
     "max_same_dir_alts": 2,
@@ -36,6 +36,26 @@
     "slippage": 0.0005,
     "t1_close_fraction": 0.5,
     "move_stop_to_entry_after_t1": true,
-    "pending_order_expiry_runs": 1
-  }
+    "pending_order_expiry_runs": 1,
+    "_rules_note": "defter.py enforces these in code (validate_open + open_order). Owner fixed: 1% risk/trade, 2x total leverage, 3% open risk, 2 same-direction alts (code also hard-caps at these).",
+    "vote_rule": "min_conf",
+    "_vote_rule_note": "min_conf = confidence >= min_confidence; ev = conf/100*RR - (1-conf/100) - cost_R >= min_ev_r (RR gross to T1, cost_R = fees+slippage in R)",
+    "min_ev_r": 0.15,
+    "min_votes": 2,
+    "min_votes_counter_regime": 3,
+    "level_experts": ["trader-likidite", "trader-elliott", "trader-seviye", "trader-senaryo", "trader-harmonik"],
+    "macro_vote_max_age_h": 12,
+    "level_tol_pct": 0.1,
+    "level_tol_atr4h": 0.1,
+    "rr_cost_aware": true,
+    "min_stop_pct": 0.0,
+    "entry_max_atr4h": 2.0,
+    "max_stops_per_day": 2,
+    "dd_halving_pct": 10.0,
+    "min_room_pct": 0.25,
+    "default_horizon_h": 72,
+    "beta_clip": [0.5, 2.0],
+    "calendar_required": true
+  },
+  "measure": {"_note": "defter.py olcum: guven kovalari, blok puani (bloklar.csv), yedek", "conf_buckets": [[55, 62], [63, 72], [73, 80]], "flat_band_atr4h": 1.0, "block_score_max_groups": 40, "last_decision_max_age_h": 24, "state_backups_keep": 30}
 }

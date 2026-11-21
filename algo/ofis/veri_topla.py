@@ -775,6 +775,16 @@ def load_assets():
         return ["BTCUSDT", "ETHUSDT"]
 
 
+def elliott(fr):
+    """Kod Elliott sayimi (elliott_say.py). Hata turu asla bozmaz."""
+    try:
+        import elliott_say
+        return elliott_say.analyze(fr)
+    except Exception as e:  # noqa: BLE001
+        ERR.append(f"elliott: {type(e).__name__}: {e}")
+        return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--asof", help="ISO UTC; verilirse yeniden oynatma (turev/makro bos)")
@@ -790,7 +800,11 @@ def main():
         assets = ["BTCUSDT"] + [x for x in assets if x != "BTCUSDT"]
     frames = {}
     for s in dict.fromkeys(["BTCUSDT"] + assets):
-        fr = {iv: klines(s, iv, asof) for iv in IV_MIN}
+        try:
+            fr = {iv: klines(s, iv, asof) for iv in IV_MIN}
+        except Exception as e:  # noqa: BLE001  tek varlik turu durdurmaz
+            ERR.append(f"{s}: klines error {type(e).__name__} {str(e)[:100]}")
+            continue
         if any(v is None or len(v) < 30 for v in fr.values()):
             ERR.append(f"{s}: klines missing")
             continue
@@ -804,6 +818,7 @@ def main():
                        "vp": "volume profile from Binance spot quote volume: poc/vah/val(70%)/hvn/lvn",
                        "candles": "closed candles only, times are open times UTC",
                        "paper_systems_now": "current position (1=long, 0=cash) of our 3 rule-based paper systems",
+                       "elliott": "code impulse count (elliott_say.py, 4h+1d multi-degree zigzag): state w3_setup/w3_in_progress/w5_setup/impulse_done/corrective_or_unclear, trigger, invalidation, targets, waves [label,time,price], alts; backtest: no edge, map not signal",
                        **LEGEND_EK},
             "assets": {}}
     sys.modules.setdefault("veri_topla", sys.modules[__name__])   # veri_ek ayni ERR/get'i kullansin
@@ -815,42 +830,59 @@ def main():
         if fr is None or btc is None:
             snap["assets"][s] = None
             continue
-        a4, a1 = atr(fr["4h"]).iloc[-1], atr(fr["1h"]).iloc[-1]
-        snap["assets"][s] = {
-            "ctx": context(fr, btc),
-            "levels": key_levels(fr["1d"], asof),
-            "structure": {"1d": structure(fr["1d"], "1d", 12), "4h": structure(fr["4h"], "4h", 12),
-                          "1h": structure(fr["1h"], "1h", 10)},
-            "fvg": {"4h": fvgs(fr["4h"], a4), "1h": fvgs(fr["1h"], a1)},
-            "equal_hl": {"4h": equal_levels(fr["4h"], a4, "4h"), "1h": equal_levels(fr["1h"], a1, "1h")},
-            "vp": {"4h_all": vprofile(fr["4h"]), "1h_30d": vprofile(fr["1h"]), "1d_180d": vprofile(fr["1d"].tail(180))},
-            "harmonics": harmonics(fr),
-            "avwap_1d": avwap(fr["1d"], fr["4h"]),
-            "candles": {"1w": weekly_rows(fr["1d"]), **{iv: rows(fr[iv], iv) for iv in ("1d", "4h", "1h", "15m")}},
-            "derivs": None if replay else derivs(s, fr["4h"]),
-        }
-        x = snap["assets"][s]
+        # denetim 2026-11-21: bir alan/varlik hatasi turu durdurmaz. Cekirdek (ctx/levels/structure/candles)
+        # bozulursa varlik None (hatali) olur; yan alan bozulursa yalniz o alan None, nedeni errors'a.
+        def opt(name, fn, *args):
+            try:
+                return fn(*args)
+            except Exception as e:  # noqa: BLE001
+                ERR.append(f"{s}: {name} error {type(e).__name__} {str(e)[:100]}")
+                return None
+        try:
+            a4, a1 = atr(fr["4h"]).iloc[-1], atr(fr["1h"]).iloc[-1]
+            x = {
+                "ctx": context(fr, btc),
+                "levels": key_levels(fr["1d"], asof),
+                "structure": {"1d": structure(fr["1d"], "1d", 12), "4h": structure(fr["4h"], "4h", 12),
+                              "1h": structure(fr["1h"], "1h", 10)},
+                "fvg": opt("fvg", lambda: {"4h": fvgs(fr["4h"], a4), "1h": fvgs(fr["1h"], a1)}),
+                "equal_hl": opt("equal_hl", lambda: {"4h": equal_levels(fr["4h"], a4, "4h"),
+                                                     "1h": equal_levels(fr["1h"], a1, "1h")}),
+                "vp": opt("vp", lambda: {"4h_all": vprofile(fr["4h"]), "1h_30d": vprofile(fr["1h"]),
+                                         "1d_180d": vprofile(fr["1d"].tail(180))}) or {},
+                "harmonics": opt("harmonics", harmonics, fr),
+                "elliott": opt("elliott", elliott, fr),
+                "avwap_1d": opt("avwap_1d", avwap, fr["1d"], fr["4h"]),
+                "candles": {"1w": weekly_rows(fr["1d"]), **{iv: rows(fr[iv], iv) for iv in ("1d", "4h", "1h", "15m")}},
+                "derivs": None if replay else opt("derivs", derivs, s, fr["4h"]),
+            }
+        except Exception as e:  # noqa: BLE001
+            ERR.append(f"{s}: asset errored (core fields) {type(e).__name__} {str(e)[:120]}")
+            snap["assets"][s] = None
+            continue
+        snap["assets"][s] = x
         if not replay:   # canli-ozel: cekildigi anin degeri (TASARIM.md 14 "Ek veri ve kayitcilar")
             cur = s.replace("USDT", "")
             px = x["ctx"]["last_close"]
             x["options"] = X.safe(f"options {cur}", X.options, cur, now) if cur in ("BTC", "ETH") else None
             x["onchain"] = X.safe(f"onchain {cur}", X.onchain, cur.lower(), asof) if cur in ("BTC", "ETH") else None
             x["orderbook"] = X.safe(f"orderbook {s}", X.orderbook, s)
-            x["recorded"] = X.recorded(s, px, now, C)
-        x["charts"] = charts(s, fr, x["levels"], x["vp"]["4h_all"],
-                             ROOT / "grafik" / (asof.strftime("%Y%m%d_%H%M") + ("_replay" if replay else "")))
+            x["recorded"] = opt("recorded", X.recorded, s, px, now, C)
+        x["charts"] = opt("charts", charts, s, fr, x["levels"], x["vp"].get("4h_all"),
+                          ROOT / "grafik" / (asof.strftime("%Y%m%d_%H%M") + ("_replay" if replay else "")))
     if replay:
         snap["sentiment"] = snap["macro"] = "omitted in replay mode (live-only data)"
     else:
-        snap["sentiment"] = {"fear_greed": fng()}
-        snap["macro"] = {"dxy": yahoo("DX-Y.NYB"), "us10y_yield": yahoo("^TNX"), "spx": yahoo("^GSPC"),
-                         "vix": yahoo("^VIX"), "gold": yahoo("GC=F"),
-                         "fed_funds_eff": fred("DFF", asof), "ust2y": fred("DGS2", asof),
-                         "fed_balance_sheet_musd": fred("WALCL", asof),
-                         "crypto_global": coingecko(), "calendar_usd_high": calendar(asof),
-                         "btc_etf_flows": etf_flows(),
-                         "ndx": yahoo("^NDX"), "usdjpy": yahoo("JPY=X"), "move": yahoo("^MOVE"),
-                         "hy_oas_pct": fred("BAMLH0A0HYM2", asof),
+        S = X.safe   # her makro alan ayri korunur: biri bozulursa yalniz o alan None (errors'a yazilir)
+        snap["sentiment"] = {"fear_greed": S("fng", fng)}
+        snap["macro"] = {"dxy": S("dxy", yahoo, "DX-Y.NYB"), "us10y_yield": S("us10y", yahoo, "^TNX"),
+                         "spx": S("spx", yahoo, "^GSPC"), "vix": S("vix", yahoo, "^VIX"), "gold": S("gold", yahoo, "GC=F"),
+                         "fed_funds_eff": S("DFF", fred, "DFF", asof), "ust2y": S("DGS2", fred, "DGS2", asof),
+                         "fed_balance_sheet_musd": S("WALCL", fred, "WALCL", asof),
+                         "crypto_global": S("coingecko", coingecko), "calendar_usd_high": S("calendar", calendar, asof),
+                         "btc_etf_flows": S("etf_flows", etf_flows),
+                         "ndx": S("ndx", yahoo, "^NDX"), "usdjpy": S("usdjpy", yahoo, "JPY=X"),
+                         "move": S("move", yahoo, "^MOVE"), "hy_oas_pct": S("hy_oas", fred, "BAMLH0A0HYM2", asof),
                          "stablecoin_supply": X.safe("stablecoins", X.stablecoins, asof)}
         if btc is not None:
             snap["macro"].update(X.safe("cross_asset", X.cross_asset, btc["1d"], C) or {})

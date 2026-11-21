@@ -52,7 +52,7 @@
         "entry": {"oneOf": [{"$ref": "#/$defs/entry"}, {"type": "null"}]},
         "stop": {"type": ["number", "null"]},
         "targets": {"type": "array", "items": {"type": "number"}, "maxItems": 2},
-        "risk_pct": {"type": "number", "minimum": 0, "maximum": 2.0},
+        "risk_pct": {"type": "number", "minimum": 0, "maximum": 1.0},
         "supporting": {"type": "array", "items": {"type": "string"}},
         "opposing": {"type": "array", "items": {"type": "string"}},
         "rule_hits": {"type": "array", "items": {"type": "string"}, "description": "rule ids from trader-risk rule file, e.g. R2-conflict"},

@@ -4,13 +4,13 @@
   "cadence": {"run_after_4h_close_utc": ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"], "delay_min": 20, "monitor_every_min": 5, "_schedule": "Windows Task Scheduler via kur-gorev.ps1: TraderOfisTur 03:20 07:20 11:20 15:20 19:20 23:20 TR, TraderOfisKontrol every 5 min"},
   "veri": {"_note": "veri_ek.py esikleri (TASARIM.md 14 Ek veri ve kayitcilar); denenmemis varsayimlar", "everything_down_pct": 3.0, "everything_down_obs": 5, "corr_break_abs_delta": 0.4, "corr_sign_min_abs": 0.1, "liq_min_hours_24h": 18, "liq_min_hours_7d": 120, "heatmap_min_hours": 6, "cluster_bucket_pct": 0.5},
   "experts": [
-    {"id": "trader-likidite", "name": "Tolga", "field": "price action & liquidity (SMC/ICT)", "runs": "every", "enabled": true, "scored_since": null},
+    {"id": "trader-likidite", "name": "Tolga", "field": "price action & liquidity (SMC/ICT)", "runs": "every", "enabled": false, "scored_since": null, "_frozen": "Neco 2026-11-21: frozen, no measurable output; revisit only on owner request"},
     {"id": "trader-elliott", "name": "Ekrem", "field": "Elliott wave + Fibonacci", "runs": "every", "enabled": true, "scored_since": null},
     {"id": "trader-seviye", "name": "Selin", "field": "support/resistance + volume profile", "runs": "every", "enabled": true, "scored_since": null},
     {"id": "trader-turev", "name": "Derya", "field": "derivatives positioning", "runs": "every", "enabled": true, "scored_since": null},
     {"id": "trader-makro", "name": "Kerem", "field": "macro & flows", "runs": ["08:00", "16:00"], "enabled": true, "scored_since": null},
     {"id": "trader-senaryo", "name": "Bora", "field": "range/liquidity two-scenario reading (inspired by Efe Bulduk's public approach)", "runs": "every", "enabled": true, "scored_since": null},
-    {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (course: trader-ofis-egitim/harmonik-kurs; detector in veri_topla.py harmonics)", "runs": "every", "enabled": true, "scored_since": null}
+    {"id": "trader-harmonik", "name": "Hakan", "field": "harmonic patterns XABCD (course: trader-ofis-egitim/harmonik-kurs; detector in veri_topla.py harmonics)", "runs": "every", "enabled": false, "scored_since": null, "_frozen": "Neco 2026-11-21: frozen, no measurable output; revisit only on owner request"}
   ],
   "universe": {"enabled": true, "_note": "evren.py (haftalik top-N, stable/sarili/stake haric, Binance spot+perp) + tarayici.py (LLM'siz kurulum yakinligi puani, BTC her tur islem adayi (btc_always_trade) + BTC disindan en iyi k coin + acik pozisyonlu coinler). Kapaliyken 'assets' kullanilir. TASARIM.md 13.", "btc_always_trade": true, "top_n": 10, "refresh_days": 7, "always": ["BTCUSDT"], "exclude_symbols": [], "k": 3, "min_score": 15, "sr_atr": 0.75, "min_qvol_4h_musd": 2.0, "min_atr_pct": 0.3, "max_atr_pct": 8.0, "weights": {"sr": 20, "bos": 20, "harm": 15, "brk": 20, "ew": 10, "div": 15}},
   "head": {"id": "trader-risk", "name": "Rıza"},

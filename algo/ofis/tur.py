@@ -297,7 +297,7 @@ def last_blocks(expert, before_run, assets=None):
 
 
 def limits_line(R):
-    return " ".join(f"{k}={R[k]}" for k in ("min_rr_t1", "min_stop_atr4h", "max_confidence", "event_blackout_h"))
+    return " ".join(f"{k}={R[k]}" for k in ("min_rr_t1", "min_stop_atr4h", "max_confidence", "event_blackout_h", "fee_taker", "fee_maker", "slippage"))
 
 
 def charts_line(snap):

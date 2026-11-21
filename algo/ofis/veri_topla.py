@@ -14,6 +14,7 @@ Kurallar
 - Hacim profili Binance SPOT hacmidir (quote, USDT); vadeli hacmi icermez.
 """
 import argparse
+import concurrent.futures as cf
 import io
 import json
 import math
@@ -810,9 +811,13 @@ def main():
     if "BTCUSDT" in assets:
         assets = ["BTCUSDT"] + [x for x in assets if x != "BTCUSDT"]
     frames = {}
-    for s in dict.fromkeys(["BTCUSDT"] + assets):
+    # 2026-11-21: 10 coinde sirali mum cekimi ~65 sn olculdu; paralel (tarayici.py ile ayni desen, 8 is parcacigi)
+    syms = list(dict.fromkeys(["BTCUSDT"] + assets))
+    with cf.ThreadPoolExecutor(max_workers=8) as pool:
+        futs = {(s, iv): pool.submit(klines, s, iv, asof) for s in syms for iv in IV_MIN}
+    for s in syms:
         try:
-            fr = {iv: klines(s, iv, asof) for iv in IV_MIN}
+            fr = {iv: futs[(s, iv)].result() for iv in IV_MIN}
         except Exception as e:  # noqa: BLE001  tek varlik turu durdurmaz
             ERR.append(f"{s}: klines error {type(e).__name__} {str(e)[:100]}")
             continue

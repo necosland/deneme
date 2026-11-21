@@ -184,7 +184,7 @@ def sec_screener(a, b):
     import defter as D
     rs = [r for r in _rows_csv(O.VERI / "tarama_izle.csv") if _in(r.get("scan_asof") or "", a, b)]
     lines = ["## 6. Tarayıcı: seçilen ve seçilmeyen coinler", "",
-             "Tarayıcı her tur coinleri puanlar, en iyi 3'ü uzmanlara gider. Burada seçilenler sonraki 24 saatte "
+             "Tarayıcı her tur coinleri puanlar, en iyi 3'ü 'seçilen' sayılır (2026-11-22'den beri 10 coinin hepsi uzmanlara gider, sıralama yalnız ölçüm). Burada seçilenler sonraki 24 saatte "
              "seçilmeyenlerden daha çok hareket etmiş mi (ATR cinsinden; kurulum yakınlığı hareketi öngörüyorsa seçilenler büyük olur).", ""]
     if not rs:
         return lines + ["Bu hafta ölçüm yok.", ""]

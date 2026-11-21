@@ -9,7 +9,8 @@ $user = "$env:USERDOMAIN\$env:USERNAME"
 $principal = New-ScheduledTaskPrincipal -UserId $user -LogonType Interactive -RunLevel Limited
 
 $s1 = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances IgnoreNew -AllowStartIfOnBatteries `
-      -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 20)
+      -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 75)
+# 75 dk (2026-11-21, tum evren 10 coin): tur.py T_TOTAL 40 dk + altyapi hatasinda 30 dk bekleme ve tekrar; eski 20 dk
 $a1 = New-ScheduledTaskAction -Execute $pyw -Argument "`"$dir\tur.py`"" -WorkingDirectory $dir
 $t1 = @('03:20','07:20','11:20','15:20','19:20','23:20') | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ }
 Register-ScheduledTask -TaskName 'TraderOfisTur' -Action $a1 -Trigger $t1 -Settings $s1 -Principal $principal `

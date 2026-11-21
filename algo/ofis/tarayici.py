@@ -31,7 +31,7 @@ import pandas as pd
 
 import ortak as O
 
-DEF = {"enabled": False, "k": 3, "btc_always_trade": True, "min_score": 15, "sr_atr": 0.75, "min_qvol_4h_musd": 2.0, "min_atr_pct": 0.3,
+DEF = {"enabled": False, "all_coins": False, "k": 3, "btc_always_trade": True, "min_score": 15, "sr_atr": 0.75, "min_qvol_4h_musd": 2.0, "min_atr_pct": 0.3,
        "max_atr_pct": 8.0, "weights": {"sr": 20, "bos": 20, "harm": 15, "brk": 20, "ew": 10, "div": 15}}
 
 
@@ -354,12 +354,18 @@ def secim(cfg=None, log=print, force_universe=False):
         log(f"tarama: beta clones -> {clone['note']}")
     forced = [s for s in live_assets() if s not in pick + base]
     assets = base + pick + forced
+    if u.get("all_coins"):   # Neco 2026-11-21 (canli 2026-11-22): tum evren her tur uzmana; tarama yalniz siralar,
+        # 'picked' eski k secimi olarak kalir (tarama_izle olcumu ve kapi rejim kaydi icin)
+        allc = [s for s in ["BTCUSDT"] + sorted(sc, key=lambda s: -sc[s]["score"]) if s in sc or s == "BTCUSDT"]
+        allc = [s for s in dict.fromkeys(allc) if s in frames]
+        forced = [s for s in live_assets() if s not in allc]
+        assets = allc + forced
     context = [] if "BTCUSDT" in assets else ["BTCUSDT"]
     res = {"asof_utc": V.ts(asof), "generated_utc": O.fmt(O.now_utc()), "universe": uni, "k": u["k"],
            "assets": assets, "picked": pick, "forced_open": forced, "context": context,
            "fetch": context + assets, "ranking": [[s, sc[s]["score"]] for s in sorted(sc, key=lambda s: -sc[s]["score"])],
            "scores": sc, "secs": round(time.time() - t0, 1), "errors": list(V.ERR),
-           "clone_swap": clone["note"] if clone else None}
+           "clone_swap": clone["note"] if clone else None, "all_coins": bool(u.get("all_coins"))}
     O.write_json(O.VERI / "tarama_son.json", res)
     O.write_json(O.VERI / f"tarama_{asof.strftime('%Y%m%d_%H%M')}.json", res)
     try:
@@ -368,7 +374,8 @@ def secim(cfg=None, log=print, force_universe=False):
             log(f"tarama_izle: {n} rows (24h follow-up)")
     except Exception as e:  # noqa: BLE001  olcum hatasi taramayi durdurmaz
         log(f"tarama_izle failed: {type(e).__name__} {e}")
-    log(f"tarama {res['secs']}s: picked={pick} forced={forced} context={context} ranking={res['ranking']}")
+    log(f"tarama {res['secs']}s: {'ALL COINS assets=' + str(assets) + ' (picked = rank-only) ' if res['all_coins'] else ''}"
+        f"picked={pick} forced={forced} context={context} ranking={res['ranking']}")
     return res
 
 

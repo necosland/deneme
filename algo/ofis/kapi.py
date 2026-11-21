@@ -9,6 +9,7 @@ deger alani kenarina <= level_atr x ATR(4h), harmonik PRZ, Elliott tetigi, son a
 son analizden beri |hareket| >= move_atr x ATR(4h).
 Hicbiri yoksa o coin icin uzman cagrilmaz: onceki bloklar 'auto/gated' satiri olarak yazilir (golge ve puana girmez).
 Hicbir coin gecmezse tur ucuz biter (veri + defter guncellemesi). Kararlar log/kapi.jsonl, durum defter/kapi.json.
+universe.all_coins (Neco 2026-11-21): coin atlama yok, her tur tum evren uzmana; tetikler yalniz kayit icin hesaplanir.
 """
 import datetime as dt
 import json
@@ -247,12 +248,14 @@ def karar(cfg, snap, sel, st, asof, log=print, klines=None):
         a = (snap.get("assets") or {}).get(s) or {}
         per[s] = asset_triggers(s, a, g, gst.get("assets") or {}, bool(D.live(st, "ofis", s)), asof)
     run = assets if glob else [s for s in assets if per[s]]
+    if (sel or {}).get("all_coins"):   # Neco 2026-11-21: tum evren her tur uzmana; tetikler yalniz kayit icin
+        run = assets
     gated = [s for s in assets if s not in run]
     avg = avg_round_cost(int(g["cost_lookback_rounds"]))
     est = round(avg * len(gated) / len(assets), 3) if avg and assets else None
     res = {"asof": asof, "run": run, "gated": gated, "global": glob, "assets": per, "regime": reg,
-           "est_saving_usd": est, "avg_round_cost_usd": avg}
-    log(f"gate: run={run} gated={gated} global={glob or '-'} per-asset="
+           "est_saving_usd": est, "avg_round_cost_usd": avg, "all_coins": bool((sel or {}).get("all_coins"))}
+    log(f"gate{' (all_coins: no per-asset skip, log only)' if res['all_coins'] else ''}: run={run} gated={gated} global={glob or '-'} per-asset="
         + "; ".join(f"{s}: {', '.join(t) if t else 'no change'}" for s, t in per.items())
         + f" est_saving_usd={est}")
     return res

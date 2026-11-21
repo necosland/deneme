@@ -9,7 +9,8 @@ Akis (TASARIM.md bolum 2):
  5. trader-risk (Riza) -> sema ile dogrulanir -> defter/kararlar.jsonl
  6. defter.py: once 1m mumlarla deftere yetisir, sonra karari KOD sinirlariyla uygular, golge islemleri acar,
     raporlari (defter/*.csv, puan.json, DURUM.md) yazar.
-Butce: veri 4 dk + uzmanlar 5 dk (paralel) + risk 4 dk < 15 dk.
+Butce (2026-11-21, tum evren 10 coin): veri 8 dk (+5 dk akissiz tekrar) + uzmanlar 10 dk (paralel) + komite 8 dk +
+risk 7 dk; tur siniri T_TOTAL 40 dk, zamanlanmis gorev siniri 75 dk (altyapi hatasinda 30 dk bekleme + tekrar dahil).
 
 Kullanim: python algo/ofis/tur.py [--force] [--skip-data] [--only trader-a,trader-b] [--no-risk] [--no-ledger]
 """
@@ -27,8 +28,9 @@ import time
 import ortak as O
 
 NOWIN = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-T_DATA, T_EXPERT, T_RISK, T_TOTAL = 240, 300, 240, 15 * 60
-T_DATA_RETRY = 180   # veri_topla zaman asiminda emir akissiz tek tekrar
+# 2026-11-21 tum evren (10 coin): veri_topla 10 coinde ~225 sn olculdu (4 coinde ~120 sn); uzman istemi ~2,5 kat
+T_DATA, T_EXPERT, T_RISK, T_TOTAL = 480, 600, 420, 40 * 60
+T_DATA_RETRY = 300   # veri_topla zaman asiminda emir akissiz tek tekrar
 # denetim 2026-11-21: altyapi hatasi (kullanim limiti, cli) -> 30 dk sonra tek yeniden deneme; 4h kapanisindan
 # 90 dk sonrasi bayat (gec baslayan telafi turu atlanir, yeniden deneme bu siniri asmaz)
 RETRY_WAIT_S, STALE_MAX_S = 30 * 60, 90 * 60
@@ -131,7 +133,7 @@ def make_view(snap, role):
 
 
 # ---------------- claude ----------------
-def run_claude(agent, prompt, timeout, rundir, tools="Read", allowed=("Read",)):
+def run_claude(agent, prompt, timeout, rundir, tools="Read", allowed=("Read",), tag=None):
     exe = O.find_claude()
     if not exe:
         return {"agent": agent, "error": "claude CLI not found"}
@@ -152,9 +154,9 @@ def run_claude(agent, prompt, timeout, rundir, tools="Read", allowed=("Read",)):
             out, err = b"", b""
         return {"agent": agent, "error": f"timeout {timeout}s", "secs": round(time.time() - t0)}
     out, err = out.decode("utf-8", "replace"), err.decode("utf-8", "replace")
-    (rundir / f"{agent}.out.json").write_text(out, encoding="utf-8")
+    (rundir / f"{tag or agent}.out.json").write_text(out, encoding="utf-8")
     if err.strip():
-        (rundir / f"{agent}.err.txt").write_text(err, encoding="utf-8")
+        (rundir / f"{tag or agent}.err.txt").write_text(err, encoding="utf-8")
     res = {"agent": agent, "secs": round(time.time() - t0), "rc": p.returncode}
     try:
         j = json.loads(out)
@@ -185,11 +187,13 @@ def can_retry(asof, a):
 
 
 def run_parallel(jobs, outdir):
+    """jobs: is anahtari ('trader-x' ya da parti 'trader-x#2') -> (istem, araclar, izinler)."""
     results = {}
     if not jobs:
         return results
     with cf.ThreadPoolExecutor(max_workers=max(1, len(jobs))) as pool:
-        futs = {pool.submit(run_claude, ex, p, T_EXPERT, outdir, t, al): ex for ex, (p, t, al) in jobs.items()}
+        futs = {pool.submit(run_claude, key.split("#")[0], p, T_EXPERT, outdir, t, al,
+                            key.replace("#", "_b") if "#" in key else None): key for key, (p, t, al) in jobs.items()}
         for f in cf.as_completed(futs):
             results[futs[f]] = f.result()
     return results
@@ -359,8 +363,29 @@ def wall_warnings(b, snap):
     return out
 
 
-def validate_blocks(expert, parsed, snap, cfg, v):
+def batches(assets, size):
+    """Uzman cagrisini coin partilerine boler (universe.expert_batch; 0 = tek cagri). 10 coin, 5 -> 5+5."""
+    if not size or len(assets) <= size:
+        return [list(assets)]
+    n = -(-len(assets) // size)
+    k = -(-len(assets) // n)
+    return [list(assets[i:i + k]) for i in range(0, len(assets), k)]
+
+
+def sub_snap(snap, chunk):
+    """Partinin snapshot'i: yalniz partinin coinleri; BTC partide yoksa kucuk baglam blogu (rejim/beta referansi)."""
+    import tarayici as TR
+    sa = snap.get("assets") or {}
+    sub = {s: sa.get(s) for s in chunk}
+    if "BTCUSDT" not in chunk and isinstance(sa.get("BTCUSDT"), dict):
+        b = sa["BTCUSDT"]
+        sub = {"BTCUSDT": b if b.get("_context_only") else TR.btc_context(b), **sub}
+    return {**snap, "assets": sub}
+
+
+def validate_blocks(expert, parsed, snap, cfg, v, assets=None):
     R = cfg["risk"]
+    assets = list(cfg["assets"] if assets is None else assets)
     rows, seen = [], set()
     if not isinstance(parsed, list):
         return [{"asset": None, "valid": False, "errors": ["no parseable json array"], "block": parsed}]
@@ -375,8 +400,8 @@ def validate_blocks(expert, parsed, snap, cfg, v):
                 errs.append(f"asof {b['asof_utc']} != {snap['asof_utc']}")
             if asset in seen:
                 errs.append("duplicate asset")
-            if asset not in cfg["assets"]:
-                errs.append(f"asset {asset} not in this round's ASSETS")
+            if asset not in assets:
+                errs.append(f"asset {asset} not in this call's ASSETS")
             if b["bias"] in ("long", "short"):
                 ctx = ((snap["assets"].get(asset) or {}).get("ctx") or {})
                 errs += O.geometry_errors(b["bias"], b["entry"], b["stop"], b["targets"], ctx.get("last_close"),
@@ -386,7 +411,7 @@ def validate_blocks(expert, parsed, snap, cfg, v):
                 say(f"WARNING unlisted wall (Bora): {wmsg}")
         seen.add(asset)
         rows.append({"asset": asset, "valid": not errs, "errors": errs, "block": b, "normalized": fixes})
-    for a in cfg["assets"]:
+    for a in assets:
         if a not in seen:
             rows.append({"asset": a, "valid": False, "errors": ["missing block"], "block": None})
     return rows
@@ -565,6 +590,22 @@ def main():
         f.write_text(make_view(snap, role), encoding="utf-8")
         views[role] = f
     say("views ~tokens: " + ", ".join(f"{r}={f.stat().st_size // 4}" for r, f in sorted(views.items())))
+    # uzman partileri (universe.expert_batch, 0 = tek cagri): istem cok buyurse uzman cagrisi coin partilerine
+    # bolunur; parti gorunumu yalniz o coinler (+ BTC baglami). Komite ve Riza tam gorunumu kullanir.
+    parts = batches(cfg["assets"], int((cfg.get("universe") or {}).get("expert_batch") or 0))
+    pviews = [views]
+    if len(parts) > 1:
+        pviews = []
+        for i, chunk in enumerate(parts, 1):
+            sub = sub_snap(snap, chunk)
+            pv = {}
+            for role in set(VIEW_OF.values()) - {"risk"}:
+                f = rundir / f"view_{role}_b{i}.json"
+                f.write_text(make_view(sub, role), encoding="utf-8")
+                pv[role] = f
+            pviews.append(pv)
+        say(f"expert batches: {parts} views ~tokens: " + "; ".join(
+            ", ".join(f"{r}={f.stat().st_size // 4}" for r, f in sorted(pv.items())) for pv in pviews))
 
     # 3. uzmanlar
     import defter as D
@@ -589,15 +630,17 @@ def main():
         say("trader-harmonik: no at_prz/reacted candidate -> auto flat blocks, not called")
     jobs = {}
     lim = limits_line(R)
-    for e in call:
+    for e, (bi, chunk) in [(e, x) for e in call for x in enumerate(parts, 1)]:
         ex = e["id"]
-        prev = last_blocks(ex, stamp, cfg["assets"])
+        key, sfx = (ex, "") if len(parts) == 1 else (f"{ex}#{bi}", f"_b{bi}")
+        pv, psnap = pviews[bi - 1], (snap if len(parts) == 1 else sub_snap(snap, chunk))
+        prev = last_blocks(ex, stamp, chunk)
         prev_f = "none"
         if prev:
-            prev_f = rundir / f"prev_{ex}.json"
+            prev_f = rundir / f"prev_{ex}{sfx}.json"
             O.write_json(prev_f, prev)
-        lines = [f"SNAPSHOT={views[VIEW_OF.get(ex, 'full')] if ex in VIEW_OF else snap_path}",
-                 f"CHARTS={charts_line(snap)}", f"PREV={prev_f}",
+        lines = [f"SNAPSHOT={pv[VIEW_OF.get(ex, 'full')] if ex in VIEW_OF else snap_path}",
+                 f"CHARTS={charts_line(psnap)}", f"PREV={prev_f}",
                  f"OPEN={open_f if D.open_summary(st) else 'none'}", f"LIMITS={lim}"]
         if ex == "trader-senaryo":
             rec = [t for t in st["trades"] if t["book"] == ex and t["status"] == "closed"][-5:]
@@ -608,28 +651,29 @@ def main():
             lines.append(f"RECENT={rec_f}")
         if ex == "trader-makro":
             lines.append(gundem_line())
-        lines.append(f"ASSETS={','.join(cfg['assets'])}. Follow your agent instructions. "
+        lines.append(f"ASSETS={','.join(chunk)}. Follow your agent instructions. "
                      "Your final message must be only the ```json array (one block per asset). "
+                     "Flat is the normal answer where your named setup is not fully met; never force a direction. "
                      "Every field is required (horizon_h too when flat); each rationale item <= 200 chars.")
         prompt = "\n".join(str(x) for x in lines)
-        (rundir / f"prompt_{ex}.txt").write_text(prompt, encoding="utf-8")
+        (rundir / f"prompt_{ex}{sfx}.txt").write_text(prompt, encoding="utf-8")
         tools, allowed = ("Read", ("Read",))
         if ex == "trader-makro":
             tools, allowed = "Read,WebFetch", ("Read", "WebFetch(domain:farside.co.uk)",   # ETF akisi yedegi
                                                "WebFetch(domain:www.coindesk.com)",       # manset kontrolu (beklenmeyen sok)
                                                "WebFetch(domain:feeds.bbci.co.uk)")       # manset yedegi
-        jobs[ex] = (prompt, tools, allowed)
+        jobs[key] = (prompt, tools, allowed)
     # kor tur: uzman ciktilari tur bitene dek ofis klasoru disinda (uzmanlar --add-dir ile ROOT'u okuyabilir)
     priv = O.pathlib.Path(tempfile.gettempdir()) / "trader-ofis-kor" / stamp
     priv.mkdir(parents=True, exist_ok=True)
     results = run_parallel(jobs, priv)
-    bad = [ex for ex, r in results.items() if infra_error(r)]
+    bad = [k for k, r in results.items() if infra_error(r)]
     if bad and can_retry(asof, a):
         say(f"infra error {bad}: {results[bad[0]].get('error')}; retry once in {RETRY_WAIT_S // 60} min")
         time.sleep(RETRY_WAIT_S)
         global T0   # bekleme tur butcesinden (T_TOTAL) sayilmaz; yoksa Riza'ya 60 sn kalir
         T0 += RETRY_WAIT_S
-        results.update(run_parallel({ex: jobs[ex] for ex in bad}, priv))
+        results.update(run_parallel({k: jobs[k] for k in bad}, priv))
     for f in priv.iterdir():
         shutil.move(str(f), str(rundir / f.name))
     shutil.rmtree(priv, ignore_errors=True)
@@ -637,17 +681,27 @@ def main():
     # 4. dogrulama + sinyaller.jsonl
     vb = O.validator("expert_block")
     valid_blocks, called, summary = [], [e["id"] for e in call], {}
-    errored = [ex for ex in called if results.get(ex, {"error": "no result"}).get("error")]
+    pkeys = {ex: ([ex] if len(parts) == 1 else [f"{ex}#{i}" for i in range(1, len(parts) + 1)]) for ex in called}
+    # uzmanin butun partileri hata verdiyse uzman 'errored'; tek parti hatasi yalniz o partinin coinlerini dusurur
+    errored = [ex for ex in called if all(results.get(k, {"error": "no result"}).get("error") for k in pkeys[ex])]
     total_fail = bool(called) and len(errored) == len(called)
     for b in auto:
         O.append_jsonl(O.ledger_file("sinyaller.jsonl"), {"run": stamp, "asof_utc": asof, "expert": b["expert"],
                                                      "asset": b["asset"], "valid": True, "errors": [], "block": b,
                                                      "reused": False, "auto": True, "snapshot_sha256": sha})
     for ex in called:
-        r = results.get(ex, {"error": "no result"})
-        parsed = O.extract_json(r.get("text")) if not r.get("error") else None
-        rows = validate_blocks(ex, parsed, snap, cfg, vb) if not r.get("error") else \
-            [{"asset": x, "valid": False, "errors": [r["error"]], "block": None} for x in cfg["assets"]]
+        rows, rs = [], []
+        for k, chunk in zip(pkeys[ex], parts):
+            r = results.get(k, {"error": "no result"})
+            rs.append(r)
+            parsed = O.extract_json(r.get("text")) if not r.get("error") else None
+            rows += validate_blocks(ex, parsed, snap, cfg, vb, chunk) if not r.get("error") else \
+                [{"asset": x, "valid": False, "errors": [r["error"]], "block": None} for x in chunk]
+        if len(rs) > 1:   # partiler paralel: sure en uzunu, maliyet ve token toplam
+            r = {"secs": max((x.get("secs") or 0) for x in rs),
+                 **{f: sum((x.get(f) or 0) for x in rs) for f in ("turns", "cost_usd", "tok_in", "tok_cache_w",
+                                                                 "tok_cache_r", "tok_out")},
+                 "error": "; ".join(f"b{i}: {x['error']}" for i, x in enumerate(rs, 1) if x.get("error")) or None}
         for row in rows:
             O.append_jsonl(O.ledger_file("sinyaller.jsonl"), {"run": stamp, "asof_utc": asof, "expert": ex, **row,
                                                          "reused": False, "snapshot_sha256": sha})
@@ -656,6 +710,7 @@ def main():
         summary[ex] = {"secs": r.get("secs"), "turns": r.get("turns"), "cost_usd": r.get("cost_usd"),
                        "tok_in": r.get("tok_in"), "tok_cache_w": r.get("tok_cache_w"), "tok_cache_r": r.get("tok_cache_r"),
                        "tok_out": r.get("tok_out"), "error": r.get("error"),
+                       **({"batches": [x.get("secs") for x in rs]} if len(rs) > 1 else {}),
                        "blocks": [f"{(x['block'] or {}).get('asset', x['asset'])}:"
                                   f"{(x['block'] or {}).get('bias', '?')}{'' if x['valid'] else '(INVALID: ' + '; '.join(x['errors'])[:160] + ')'}"
                                   for x in rows]}
@@ -683,7 +738,7 @@ def main():
     import komite as KM
     km = None
     if total_fail:
-        mark_failed(stamp, asof, f"all {len(called)} experts errored: {results.get(errored[0], {}).get('error')}")
+        mark_failed(stamp, asof, f"all {len(called)} experts errored: {summary.get(errored[0], {}).get('error')}")
     else:
         km = KM.toplanti(cfg, a, snap, stamp, rundir, valid_blocks, reused, views, VIEW_OF, run_claude,
                          lambda ex, p: validate_blocks(ex, p, snap, cfg, vb), say)

@@ -2,7 +2,7 @@
  "systems": {
   "donchian_4h": {
    "baslangic": "2026-11-17 09:41",
-   "son_mum": "2026-11-21 04:00",
+   "son_mum": "2026-11-21 08:00",
    "tepe": 1000.0,
    "baslangic_fiyat": {
     "BTCUSDT": 64468.46,
@@ -67,7 +67,7 @@
   },
   "btc_filter_ema_4h": {
    "baslangic": "2026-11-17 09:41",
-   "son_mum": "2026-11-21 04:00",
+   "son_mum": "2026-11-21 08:00",
    "tepe": 1000.0,
    "baslangic_fiyat": {
     "BTCUSDT": 64468.46,
@@ -193,6 +193,26 @@
      "deger": 166.66666666666666,
      "poz": 0.0
     }
+   }
+  },
+  "cekirdek_v1": {
+   "baslangic": "2026-11-21 12:17",
+   "son_mum": "2026-11-21 08:00",
+   "tepe": 1000.0,
+   "evren": "2026-11-15",
+   "baslangic_fiyat": {
+    "BTCUSDT": 58368.93,
+    "ETHUSDT": 1655.96,
+    "BNBUSDT": 531.89,
+    "SOLUSDT": 69.06,
+    "XRPUSDT": 0.9054,
+    "ADAUSDT": 0.1409
+   },
+   "nakit": 1000.0,
+   "adet": {},
+   "golge": {
+    "deger": 1000.0,
+    "h": {}
    }
   }
  }

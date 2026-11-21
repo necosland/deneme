@@ -47,3 +47,9 @@ evidence. This test checks it on data that did not exist when it was found.
 - Power note: with sd ~1 R, n=30 needs mean ~> +0.31 R to pass; the backtest mean (+0.06..0.2 R) would likely not pass.
   A FAIL at 30 does not prove no edge; a PASS would be strong. The secondary 100 look is the realistic one.
 - A pass does not make it a live office signal by itself; owner decides.
+
+## Data-validity fix 2026-11-21 (not a rule change)
+Short targets can go <= 0 or beyond a sane move when wave 1 is huge (seen: ZEC short T2 -561). `kod_test.cap_targets`
+now clamps a short target to a 90% move from entry (`TARGET_CAP_PCT`), marks the trade `target_capped` and logs it
+(`elliott_ileri.log`). Longs and normal targets are untouched; setup, entry, stop, scoring and evaluation are unchanged.
+Already-logged trades keep their frozen values (WARN on recompute diff).

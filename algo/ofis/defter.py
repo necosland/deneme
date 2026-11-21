@@ -20,6 +20,7 @@ import json
 import shutil
 import subprocess
 import sys
+import time
 
 import numpy as np
 import requests
@@ -487,7 +488,7 @@ def open_order(st, d, asset, last, atr4, snap, stamp, blocks, cfg, strict=True):
 # ---------------- golge islemler ----------------
 def errored_experts(stamp):
     """sinyaller.jsonl'den: bu turda tum satirlari altyapi hatasi (CLI/oturum siniri/zaman asimi) olan uzmanlar."""
-    rows = [r for r in O.read_jsonl(O.DEFTER / "sinyaller.jsonl") if r.get("run") == stamp and not r.get("reused")]
+    rows = [r for r in O.read_jsonl(O.ledger_file("sinyaller.jsonl")) if r.get("run") == stamp and not r.get("reused")]
     by = {}
     for r in rows:
         by.setdefault(r.get("expert"), []).append(r)
@@ -542,6 +543,27 @@ def add_shadow(st, blocks, called, stamp, snap, errored=None, hold_assets=()):
 
 
 # ---------------- 1m mum isleme ----------------
+def funding_interval_h(st, sym):
+    """Coinin gercek fonlama araligi (saat). Binance fundingInfo yalniz varsayilandan (8h) ayrilan coinleri listeler;
+    listede yoksa 8. Tablo st['funding_cache']['_int'] altinda 24 saat onbellekte; istek basarisizsa eski tablo / 8."""
+    c = st["funding_cache"].get("_int") or {}
+    now = time.time()
+    if not c or now - c.get("ts", 0) > 86400:
+        try:
+            r = requests.get(f"{O.FAPI}/fapi/v1/fundingInfo", headers=O.UA, timeout=15)
+            r.raise_for_status()
+            c = {"ts": now, "m": {x["symbol"]: float(x["fundingIntervalHours"]) for x in r.json()
+                                  if x.get("symbol") and x.get("fundingIntervalHours")}}
+            st["funding_cache"]["_int"] = c
+        except Exception as e:  # noqa: BLE001
+            O.log("defter.log", f"fundingInfo failed {type(e).__name__} {str(e)[:80]}: using cached/8h")
+            if c:
+                c = {"ts": now - 86400 + 600, "m": c.get("m") or {}}   # 10 dk sonra tekrar dene
+                st["funding_cache"]["_int"] = c
+    h = (c.get("m") or {}).get(sym, 8.0)
+    return h if h and h > 0 else 8.0
+
+
 def funding_rate(st, sym, fms):
     key = f"{sym}|{fms}"
     if key in st["funding_cache"]:
@@ -586,13 +608,14 @@ def process_candles(st, sym, candles, funding_ok=True):
     slip, ft, fm, frac = R["slippage"], R["fee_taker"], R["fee_maker"], R["t1_close_fraction"]
     n = 0
     trades = [t for t in st["trades"] if t["asset"] == sym and t["status"] in ("pending", "open")]
+    fint = funding_interval_h(st, sym) if funding_ok and trades else 8.0
     for om, o, h, l, c in candles:
         for t in trades:
             if t["status"] not in ("pending", "open"):
                 continue
             s = sgn(t["side"])
-            # fonlama (00/08/16 UTC), mumun acilisinda acik pozisyon
-            if t["status"] == "open" and om % (8 * 3600 * 1000) == 0 and t["fill_ms"] < om:
+            # fonlama (coinin gercek araligi: 8h ise 00/08/16 UTC; 4h/1h olabilir), mumun acilisinda acik pozisyon
+            if t["status"] == "open" and om % int(fint * 3600 * 1000) == 0 and t["fill_ms"] < om:
                 rate = funding_rate(st, sym, om) if funding_ok else None
                 if rate is None:
                     t["funding_missing"] = True
@@ -629,6 +652,13 @@ def process_candles(st, sym, candles, funding_ok=True):
                     cancel(st, t, f"fill {fill:.6g} beyond stop {t['stop']}")
                     n += 1
                     continue
+                if typ == "market" and t["book"] == "ofis":   # piyasa emri: dolum fiyatiyla maliyetli R:R'ye tekrar bak
+                    rr, cost_r, rr_net = O.rr_cost(t["side"], {"type": "market"}, t["stop"], t["targets"][0], fill, R)
+                    got, lim_rr = (rr_net if R.get("rr_cost_aware") else rr), R["min_rr_t1"]
+                    if got < lim_rr - 1e-9:
+                        cancel(st, t, f"R:R to T1 at fill {got:.2f} (gross {rr:.2f}, cost {cost_r:.2f}R) < {lim_rr}")
+                        n += 1
+                        continue
                 qty = t["risk_usdt"] / dist
                 if t["book"] == "ofis":   # toplam kaldirac: diger acik + bekleyen buyuklukler dusulur
                     lev = cap(R, "max_leverage")

@@ -27,6 +27,19 @@ MIN_SCORE = 50
 REPS = 200
 V2 = False          # 2026-11-21 v2 (kod_plan.md): w3 T1 = 1.618 x w1, T2 = 2.618 x w1; "gec kaldi" esigi 1.0 x w1
 SUF = ""
+TARGET_CAP_PCT = 90.0   # 2026-11-21 veri gecerliligi duzeltmesi (ileri_plan.md): short hedefi <=0 ya da >%90 hareket olamaz
+
+
+def cap_targets(Eu, T1, T2, d):
+    """Sadece short (d=-1): uzayda fiyat = d*gercek; gercek hedef <= (1-%90)*giris ise (negatif dahil) o seviyeye cekilir.
+    Donus (T1, T2, capped). Long ve normal hedefler aynen."""
+    if d != -1:
+        return T1, T2, False
+    cap = Eu * (1 - TARGET_CAP_PCT / 100)     # Eu<0: gercek giris = -Eu, gercek sinir = 0.1*gercek giris
+    capped = T1 > cap or T2 > cap
+    return min(T1, cap), min(T2, cap), capped
+
+
 
 
 def load(sym, iv="4h"):
@@ -119,6 +132,8 @@ def trades(sigs, S):
             continue
         Sd = S[s["sym"]][s["d"]]
         Eu = Sd["O"][i0]
+        T1c, T2c, capped = cap_targets(Eu, s["T1"], s["T2"], s["d"])
+        s = {**s, "T1": T1c, "T2": T2c, "target_capped": capped}
         if not (s["stop"] < Eu < s["T1"]):
             continue
         r, ex = sim(Sd, i0, Eu, s["stop"], s["T1"], s["T2"])

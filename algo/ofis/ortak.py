@@ -55,6 +55,14 @@ def log(name, msg):
         pass
 
 
+TESTDIR = None   # --no-ledger kosusunda tur.py bunu kosunun log klasorune cevirir: test satirlari canli defter/ dosyalarina yazilmaz
+
+
+def ledger_file(name):
+    """Yazma/ayni-tur okuma yolu: normalde defter/<name>, --no-ledger'da log/<stamp>/<name>."""
+    return (TESTDIR or DEFTER) / name
+
+
 def append_jsonl(path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "a", encoding="utf-8") as f:

@@ -137,6 +137,11 @@ def compute(frames):
             continue
         Sd = S[s["sym"]][s["d"]]
         Eu = Sd["O"][i0]
+        T1c, T2c, capped = KT.cap_targets(Eu, s["T1"], s["T2"], s["d"])
+        if capped:
+            O.log("elliott_ileri.log", f"target_capped {s['sym']} {O.fmt(frames[s['sym']].index[s['t']])} short: "
+                                       f"T1 {E.r5(-s['T1'])}->{E.r5(-T1c)} T2 {E.r5(-s['T2'])}->{E.r5(-T2c)}")
+        s = {**s, "T1": T1c, "T2": T2c}
         if not (s["stop"] < Eu < s["T1"]):
             continue
         r, ex, why, half = sim_live(Sd, i0, Eu, s["stop"], s["T1"], s["T2"])
@@ -149,7 +154,7 @@ def compute(frames):
                     "signal_bar_utc": O.fmt(idx[s["t"]]), "entry_bar_utc": O.fmt(idx[i0]),
                     "entry": E.r5(d * Eu), "stop": E.r5(d * s["stop"]), "T1": E.r5(d * s["T1"]),
                     "T2": E.r5(d * s["T2"]), "risk_pct": round(100 * risk / abs(Eu), 3),
-                    "status": "open" if why == "open" else "closed", "exit_reason": why, "half_at_T1": half,
+                    "status": "open" if why == "open" else "closed", "target_capped": capped, "exit_reason": why, "half_at_T1": half,
                     "exit_bar_utc": O.fmt(idx[ex]), "bars": int(ex - i0 + 1),
                     "R": round(float(r - cost_r), 4), "cost_R": round(float(cost_r), 4)})
     return res

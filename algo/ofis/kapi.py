@@ -290,7 +290,7 @@ def gated_rows(cfg, gated, stamp, asof, sha):
             r = prev_block(e["id"], s, stamp)
             if not r:
                 continue
-            O.append_jsonl(O.DEFTER / "sinyaller.jsonl", {"run": stamp, "asof_utc": asof, "expert": e["id"], "asset": s,
+            O.append_jsonl(O.ledger_file("sinyaller.jsonl"), {"run": stamp, "asof_utc": asof, "expert": e["id"], "asset": s,
                                                          "valid": True, "errors": [], "block": r["block"], "reused": True,
                                                          "auto": True, "gated": True, "prev_run": r.get("run"),
                                                          "snapshot_sha256": sha})

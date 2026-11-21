@@ -452,6 +452,8 @@ def main():
     stamp = O.now_utc().strftime("%Y%m%d_%H%M")
     rundir = O.LOG / stamp
     rundir.mkdir(parents=True, exist_ok=True)
+    if a.no_ledger:
+        O.TESTDIR = rundir   # test satirlari (sinyaller/kararlar) canli defter/ yerine bu kosunun log klasorune
     say(f"=== round {stamp} start (claude={O.find_claude()})")
 
     # 0. evren + tarayici (TASARIM.md 13; ofis-ayar.json universe): LLM'siz secim, uzmanlar yalniz secilenleri gorur
@@ -602,7 +604,7 @@ def main():
     errored = [ex for ex in called if results.get(ex, {"error": "no result"}).get("error")]
     total_fail = bool(called) and len(errored) == len(called)
     for b in auto:
-        O.append_jsonl(O.DEFTER / "sinyaller.jsonl", {"run": stamp, "asof_utc": asof, "expert": b["expert"],
+        O.append_jsonl(O.ledger_file("sinyaller.jsonl"), {"run": stamp, "asof_utc": asof, "expert": b["expert"],
                                                      "asset": b["asset"], "valid": True, "errors": [], "block": b,
                                                      "reused": False, "auto": True, "snapshot_sha256": sha})
     for ex in called:
@@ -611,7 +613,7 @@ def main():
         rows = validate_blocks(ex, parsed, snap, cfg, vb) if not r.get("error") else \
             [{"asset": x, "valid": False, "errors": [r["error"]], "block": None} for x in cfg["assets"]]
         for row in rows:
-            O.append_jsonl(O.DEFTER / "sinyaller.jsonl", {"run": stamp, "asof_utc": asof, "expert": ex, **row,
+            O.append_jsonl(O.ledger_file("sinyaller.jsonl"), {"run": stamp, "asof_utc": asof, "expert": ex, **row,
                                                          "reused": False, "snapshot_sha256": sha})
             if row["valid"]:
                 valid_blocks.append(row["block"])
@@ -635,7 +637,7 @@ def main():
         if prev:
             reused += [stale_macro(b) for b in prev]   # yalniz kapsadigi coinler; yasak etkisi yok (R5 taze ister)
             for b in prev:
-                O.append_jsonl(O.DEFTER / "sinyaller.jsonl", {"run": stamp, "asof_utc": asof, "expert": e["id"],
+                O.append_jsonl(O.ledger_file("sinyaller.jsonl"), {"run": stamp, "asof_utc": asof, "expert": e["id"],
                                                              "asset": b["asset"], "valid": True, "errors": [],
                                                              "block": b, "reused": True, "snapshot_sha256": sha})
             say(f"{e['id']}: reused blocks from {prev[0]['asof_utc']}")
@@ -699,9 +701,9 @@ def main():
             errs.append(r.get("error") or "no parseable json array")
         dec_ok = bool(decisions)
         for d in decisions:
-            O.append_jsonl(O.DEFTER / "kararlar.jsonl", {"run": stamp, "asof_utc": asof, "valid": True, **d})
+            O.append_jsonl(O.ledger_file("kararlar.jsonl"), {"run": stamp, "asof_utc": asof, "valid": True, **d})
         if errs:
-            O.append_jsonl(O.DEFTER / "kararlar.jsonl", {"run": stamp, "asof_utc": asof, "valid": False, "errors": errs})
+            O.append_jsonl(O.ledger_file("kararlar.jsonl"), {"run": stamp, "asof_utc": asof, "valid": False, "errors": errs})
         summary["trader-risk"] = {"secs": r.get("secs"), "turns": r.get("turns"), "cost_usd": r.get("cost_usd"),
                                   "tok_in": r.get("tok_in"), "tok_cache_w": r.get("tok_cache_w"),
                                   "tok_cache_r": r.get("tok_cache_r"), "tok_out": r.get("tok_out"),

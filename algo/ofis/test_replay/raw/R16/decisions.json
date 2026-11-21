@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-08-12 16:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes: all 7 expert blocks are flat/none (no long or short bias). No open position or pending order. R3 needs 2 same-direction valid votes; none exist. R4 short regime (below SMA200) has no short votes.",
+   "neco_tr": "BTC'de hiçbir uzman işlem önermedi, fiyat aralığın ortasında; işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-08-12 16:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes: all 7 expert blocks are flat/none. Likidite's short setup lacks the CHoCH trigger (no close below 1,885.8). Flat blocks are not votes; no CONTEXT against-direction tags. R3 fails.",
+   "neco_tr": "ETH'de uzmanlar henüz tetik görmedi, kısa işlem için kırılım bekleniyor; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

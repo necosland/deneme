@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-09-08 04:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so 0 valid long or short votes; R3 needs ≥2 same-direction votes. No open position or pending order. FOMC is 62h away, outside the 12h blackout.",
+   "neco_tr": "BTC'de hiçbir uzman yön vermedi, bu yüzden işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-09-08 04:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so 0 valid long or short votes; R3 needs ≥2 same-direction votes. Turev and makro blocks carry no against-direction tag that changes anything. No open position or pending order.",
+   "neco_tr": "ETH'de hiçbir uzman yön vermedi, bu yüzden işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

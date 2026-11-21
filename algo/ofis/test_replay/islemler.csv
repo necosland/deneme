@@ -1,0 +1,13 @@
+id,book,asset,side,status,entry_type,entry_price,fill_px,stop0,targets,horizon_h,confidence,created_utc,fill_utc,exit_utc,exit_reason,r_mult,hit,risk_usdt,note
+1,trader-likidite,BTCUSDT,short,cancelled,limit,63369,,64489.0,[61307.0],16,42,2026-07-13 16:20,,2026-07-14 00:20,,,,100.0,expired (time)
+2,trader-senaryo,BTCUSDT,long,closed,limit,64700,64697.55,64260.0,"[65600.0, 66655.0]",48,40,2026-07-19 00:20,2026-07-19 03:16,2026-07-20 05:12,stop,-1.2016,False,100.0,
+3,trader-senaryo,ETHUSDT,long,cancelled,limit,1848,,1827.5,"[1894.0, 1946.5]",48,42,2026-07-19 00:20,,2026-07-19 08:20,,,,100.0,expired (time)
+4,trader-seviye,BTCUSDT,long,cancelled,limit,65600,,65270.0,"[66956.0, 67292.0, 68162.0]",72,35,2026-07-22 04:20,,2026-07-22 12:20,,,,100.0,expired (time)
+5,trader-seviye,BTCUSDT,long,cancelled,limit,75000,,74250.0,"[77000.0, 79500.0]",48,40,2026-08-21 20:20,,2026-08-22 04:20,,,,100.0,expired (time)
+6,trader-senaryo,ETHUSDT,long,cancelled,limit,2470,,2433.0,"[2540.0, 2566.5]",48,47,2026-09-08 20:20,,2026-09-09 04:20,,,,100.0,expired (time)
+7,trader-seviye,BTCUSDT,long,cancelled,limit,82300,,81417.0,"[85114.0, 86033.0, 87396.0]",72,42,2026-09-23 16:20,,2026-09-24 00:20,,,,100.0,expired (time)
+8,trader-senaryo,BTCUSDT,short,cancelled,limit,85200,,85950.0,"[83763.0, 81951.0]",48,42,2026-09-23 16:20,,2026-09-24 00:20,,,,100.0,expired (time)
+9,trader-seviye,BTCUSDT,long,closed,limit,82400,82382.01,81990.0,"[83950.0, 84900.0]",48,36,2026-10-08 12:20,2026-10-08 12:31,2026-10-08 12:50,stop,-1.2511,False,100.0,
+10,trader-senaryo,BTCUSDT,short,cancelled,limit,82776,,83480.0,"[81349.0, 80436.0]",36,40,2026-10-08 12:20,,2026-10-08 20:20,,,,100.0,expired (time)
+11,trader-senaryo,ETHUSDT,short,cancelled,limit,2556,,2585.0,"[2475.9, 2455.9]",36,40,2026-10-08 12:20,,2026-10-08 20:20,,,,100.0,expired (time)
+12,trader-seviye,BTCUSDT,short,cancelled,limit,82425,,82900.0,"[81400.0, 80394.0]",24,42,2026-10-14 20:20,,2026-10-15 04:20,,,,100.0,expired (time)

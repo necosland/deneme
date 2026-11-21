@@ -1,0 +1,43 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-10-14 04:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so 0 valid long or short votes; R3 needs ≥2 same-direction votes. Makro CONTEXT against-long would cap long risk, but there is no setup. No open position or pending order.",
+   "neco_tr": "BTC'de tüm uzmanlar işlem yok dedi, fiyat bandın ortasında; bu yüzden işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-10-14 04:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so 0 valid votes; R3 needs ≥2 same-direction votes. Seviye's short fade at 2,440 is untriggered (no ret candle), so it is not a vote. Makro and turev CONTEXT against-long only restrict longs. No open position.",
+   "neco_tr": "ETH'de de tüm uzmanlar işlem yok dedi, tetik oluşmadı; bu yüzden işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

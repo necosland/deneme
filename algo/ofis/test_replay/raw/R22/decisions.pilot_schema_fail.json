@@ -1,0 +1,7 @@
+{
+ "decisions": [],
+ "errors": [
+  "BTCUSDT: .: 'asof_utc' is a required property; .: 'decision' is a required property; .: Additional properties are not allowed ('action', 'data_gaps' were unexpected)",
+  "ETHUSDT: .: 'asof_utc' is a required property; .: 'decision' is a required property; .: Additional properties are not allowed ('action', 'data_gaps' were unexpected)"
+ ]
+}

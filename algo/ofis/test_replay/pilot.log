@@ -1,0 +1,8 @@
+09:46:10 round R00 asof(real) 2026-07-01 00:00 regime range; spent $0.00
+09:46:57 R00 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+09:47:22 R00 riza ['BTC:none:None', 'ETH:none:None'] []
+09:47:22 R00 ok round $1.059; total $1.06
+09:47:22 round R22 asof(real) 2026-09-05 16:00 regime trend-up; spent $1.06
+09:48:48 R22 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+09:49:19 R22 riza [] ["BTCUSDT: .: 'asof_utc' is a required property; .: 'decision' is a required property; .: Additional properties are not allowed ('action', 'data_gaps' were unexpected)", "ETHUSDT: .: 'asof_utc' is a required property; .: 'decision' is a required property; .: Additional properties are not allowed ('action', 'data_gaps' were unexpected)"]
+09:49:19 R22 ok round $1.038; total $2.10

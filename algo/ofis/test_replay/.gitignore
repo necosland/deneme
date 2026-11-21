@@ -1,0 +1,9 @@
+_sandbox/
+cache/
+snaps/
+rounds/*/view_*.json
+rounds/*/charts/
+__pycache__/
+raw/*/*.out.json
+raw/*/experts_res.json
+score.log

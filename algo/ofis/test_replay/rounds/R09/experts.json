@@ -1,0 +1,320 @@
+[
+ {
+  "expert": "trader-likidite",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 70,
+  "horizon_h": 12,
+  "rationale": [
+   "1d pivots mixed (HH 04-30, LL 05-30, LH 06-09, LL 06-25): no 1d direction. Only a counter-trend sweep_choch is allowed, with confidence <=58.",
+   "Long-side sweep exists: PWL 63,100 wicked to 63,059 (1h 01:00); 4h 07-22 00:00 closed 63,344 inside. No 1h CHoCH yet: no close above LH 65,090 (1h 17:00).",
+   "Price 63,450 sits under the open bear FVGs at 63,827-64,518. No trigger, so no setup. FOMC 07-23 18:00 is outside the 12h blackout."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-likidite",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 70,
+  "horizon_h": 12,
+  "rationale": [
+   "1d pivots mixed (HH 04-11, LL 05-31, LH 06-09, HL 06-20): no 1d direction.",
+   "EQL 1,843.1 (4h) untaken; the 4h low of 1,866.3 did not reach it. The high side has no sweep either: the 1,981.2 high at 07-21 04:00 was already a close beyond. No sweep, no CHoCH, so no setup.",
+   "Price 1,876.7 sits between EQL 1,843.1 and PWH 1,967.4; mid-range, no edge."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-elliott",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "count dead on 4h close above 65,745 (wave 2 end)",
+  "confidence": 65,
+  "horizon_h": 24,
+  "rationale": [
+   "code w3_setup down 4h k=2.5... see: k=1.5, flag alt_diagonal_same_end: flat. R:R at last close 63,450 to T1 60,540 is 1.27 (<1.5). Price sits in a 57.8-67k range of about 2 months.",
+   "inval 65,745; code targets 60,540/57,324; t_min 62,528. Move is only 4.8% and w2 retrace 0.62 is slow, so it may be a diagonal or a range leg, not a sharp w1.",
+   "Watch: only a clean 4h close below 63,059 with a wide bar and no diagonal doubt could re-qualify. FOMC 07-23 18:00 is within 36h. replay: live-only data absent"
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-elliott",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "count dead on 4h close below 1,846 (wave 1 end); w4 zone 1,865.7-1,926.7",
+  "confidence": 65,
+  "horizon_h": 24,
+  "rationale": [
+   "code w3_in_progress up 4h k=2.5: flat, phase w4_forming (w3 already ended at 1,981.2), not a w3/w5 entry. Alts are 1d impulse_done down (correction expected), pointing the opposite way.",
+   "inval 1,846; code targets 1,926.7/1,893.0 are w4-zone info only. 1d stays below the 200 SMA and the 1d sequence is LH/LL, so an up count is likely a B/X wave. Watch for w5_setup after w4 completes...."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-seviye",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a; watch 4h close above 64,063 (POC) or a 1h/4h rejection candle at 63,100 with 4h range definition met",
+  "confidence": 60,
+  "horizon_h": 12,
+  "rationale": [
+   "Price 63,450 sits 350 above the PWL 63,100/weekly S1 63,348 zone; 4h 00:00 wick 63,059 only just swept it. Range definition not met (one 4h upper pivot, 65,745), so no range_edge_fade.",
+   "Down-momentum first touch, 1d below SMA200 72,037, RSI4h 36; a fade would be counter-trend (conf <=55) and sits 30h before FOMC 2031-07-23 18:00.",
+   "Nearest obstacles: HVN 63,562, bear FVG 63,827-64,518, POC 64,063; limit near 63,250 would give ~1.9R to POC, too thin vs a trend-against fade."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-seviye",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a; watch 4h close below 1,843 (PWL/EQL) or rejection at 1,981-1,967 (PWH)",
+  "confidence": 62,
+  "horizon_h": 12,
+  "rationale": [
+   "Price 1,876.7 is between PWL 1,843.1 and PWH 1,967.4, near 1h POC 1,873 and weekly S1 1,876: middle of the range, no edge at either border.",
+   "Long toward POC-side targets is capped by bear FVG 1,894.5-1,922.7, so R:R to T1 under 1.5 from here; PWL 1,843 is 33 away (~1.3 ATR4h) and unconfirmed.",
+   "FOMC 2031-07-23 18:00 is 30h out; after a -4.2% 24h drop, momentum is down, so no fade."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-turev",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a: flat; re-check if 24h OI falls to -8% or less with a 1h reclaim, or if funding rises above 0.0003 with OI up",
+  "confidence": 62,
+  "horizon_h": 8,
+  "rationale": [
+   "CONTEXT: neutral. Funding 1.25e-06 (7d avg 4.26e-05, below 0.0001 base) with perp premium -0.071% = no crowded long. Account L/S 1.86 is retail long, top-trader 1.65 mild, a weak counter signal.",
+   "24h price -2.54% with OI -2.12% (6.69bn, about 105.5k BTC) = long liquidation/fatigue. This misses the flush_reversal threshold of OI -8% or less, and there is no 1h reclaim.",
+   "Next FOMC is 2031-07-23 18:00, about 30h out, outside the 12h blackout. Fear&Greed 29. No fresh derivatives trigger, so stay flat."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "60d funding history absent (only 9 values)"
+  ]
+ },
+ {
+  "expert": "trader-turev",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a: flat; re-check if 24h OI falls to -8% or less and 1h closes back above the broken level, or if funding stays negative while price holds",
+  "confidence": 60,
+  "horizon_h": 8,
+  "rationale": [
+   "CONTEXT: neutral. Funding -3.66e-05 (7d avg 1.90e-05, below 0.0001) with premium -0.047% = shorts leaning, not crowded. Account L/S 2.41 retail long vs top-trader 1.27: a divergence, but no price t...",
+   "24h price -4.23% with OI -6.93% (4.37bn, about 2.33m ETH) = long liquidation. This is close to but above the -8% flush_reversal threshold, and 1h RSI 33 shows no reclaim yet, so the setup is incomp...",
+   "FOMC is about 30h out, outside the blackout. Taker buy/sell 0.99 is neutral. Wait for a 1h reclaim or a bigger OI flush."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "60d funding history absent (only 9 values)"
+  ]
+ },
+ {
+  "expert": "trader-makro",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1d",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a; re-read if HY OAS widens 20d or VIX jumps above 30, or after FOMC 2031-07-23 18:00 UTC",
+  "confidence": 62,
+  "horizon_h": 24,
+  "rationale": [
+   "CONTEXT: against-long | regime R (weak): 10y 4.68 +6.5% 20d (~+29bp), DXY 101.5 +0.5% 5d; VIX 18.7, HY 2.81 (+0.01), MOVE 76.8 (<90). BTC 63,450 < SMA200 72,037; no stress.",
+   "Analog: closest V2 (10y/DXY up) but HY flat vs 3.05→5.99, VIX 18.7 vs 28-36, DXY 20d +0.15%. Not V5: USDJPY 163.6 +1.1% 20d. 2y +24bp < 10y: no bear flattening.",
+   "Short trend setup fails: R2 weak and RR to 1d LL 57,800 vs stop above LH 67,292 ~1.45 < 1.5. FOMC 07-23 18:00 is 30h out (outside 12h); 07-23 08:00 round is inside. ETF -225/-240/-12m: concurrent o..."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-makro",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1d",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a; re-read after FOMC 2031-07-23 18:00 UTC or if stress.everything_down turns true",
+  "confidence": 62,
+  "horizon_h": 24,
+  "rationale": [
+   "CONTEXT: against-long | regime R (weak): 10y +6.5% 20d, DXY +0.5% 5d, VIX 18.7, HY flat 2.81, MOVE 76.8. BTC below SMA200; ETH 1,876.7 < SMA200 2,135; 24h -4.2%, rejected at 1,981.",
+   "Analog: closest V2, but HY flat and VIX calm vs 28-36 in 2022; no V1/V5 signature (USDJPY 163.6 up). BTC-NDX corr 0.42/0.44: macro carries crypto moderately, no corr_break.",
+   "No named setup: short needs clean 1d downtrend, but ETH 1d EMA20/50 1,857/1,840 sit below price, RSI 55.6. ETH/BTC and dominance not in snapshot. FOMC 30h out (outside 12h blackout)."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "BTC dominance / ETH/BTC not in snapshot"
+  ]
+ },
+ {
+  "expert": "trader-senaryo",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "Long idea dies on 4h close below 63,100; short idea needs that close first",
+  "confidence": 65,
+  "horizon_h": 12,
+  "rationale": [
+   "Bull: 4h close>64,063 (POC4h; then >65,213 AVWAP b1) → 65,745 | Bear: 4h close<63,100 (PWL) → 62,230 (week S2) then 61,825. Last 4h close 63,450 sits between, no trigger.",
+   "The 07-22 00:00 4h swept PWL 63,100 (low 63,059) and closed 63,344, but price stays below low_400d AVWAP 63,678, POC 64,063 and the bear 4h FVG 63,827-64,518. Long RR with stop ~62,900 is thin.",
+   "Below SMA200 1d 72,037, EMA20/50 1d above price, OI 24h -2.1% (no flush). FOMC 07-23 18:00 is 30h away, outside blackout, yet adds caution. Wait for a close beyond."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "RECENT none: mola rule not checkable"
+  ]
+ },
+ {
+  "expert": "trader-senaryo",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "Long needs 4h close above 1,981.2; short needs 4h close below 1,843.1",
+  "confidence": 65,
+  "horizon_h": 12,
+  "rationale": [
+   "Bull: 4h close>1,967.4 (PWH; confirm >1,981.2 HH) → 2,017.5 (day R2) then 2,045 | Bear: 4h close<1,843.1 (PWL/EQL) → 1,756.1 (1h VAL) then 1,750.2. Last close 1,876.7 mid-range, no trigger.",
+   "Price 33 above PWL (1.3x ATR4h 25.9), 4h pullback from 1,981.2 rejection; 1d above EMA20/50 but below SMA200 2,135. No sweep, no 3-candle acceptance at a level.",
+   "OI 24h -6.9% shows a flush, but price is not at a level, so no reversal entry. FOMC 07-23 18:00 is outside the 12h blackout. Wait for close or sweep-reclaim."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "RECENT none: mola rule not checkable"
+  ]
+ },
+ {
+  "expert": "trader-harmonik",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 50,
+  "horizon_h": 4,
+  "rationale": [
+   "AUTO (code, expert not called): no at_prz/reacted harmonic candidate in snapshot"
+  ],
+  "data_gaps": []
+ },
+ {
+  "expert": "trader-harmonik",
+  "asof_utc": "2031-07-22 12:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 50,
+  "horizon_h": 4,
+  "rationale": [
+   "AUTO (code, expert not called): no at_prz/reacted harmonic candidate in snapshot"
+  ],
+  "data_gaps": []
+ }
+]

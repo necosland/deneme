@@ -1,0 +1,57 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-07-19 08:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [
+    "trader-likidite",
+    "trader-elliott",
+    "trader-seviye",
+    "trader-turev",
+    "trader-makro",
+    "trader-senaryo",
+    "trader-harmonik"
+   ],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid directional votes: all 7 expert blocks are flat/none, so R1 leaves no vote and R3 (>=2 same-direction votes) fails. Regime is short (BTC below SMA200 1d), but no short setup exists. No open position or pending order.",
+   "neco_tr": "BTC'de yedi uzmanın hepsi işlem yok dedi, yön oyu çıkmadığı için işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-07-19 08:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [
+    "trader-likidite",
+    "trader-elliott",
+    "trader-seviye",
+    "trader-turev",
+    "trader-makro",
+    "trader-senaryo",
+    "trader-harmonik"
+   ],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid directional votes: all 7 expert blocks are flat/none, so R1 leaves no vote and R3 (>=2 same-direction votes) fails. The turev block's CONTEXT: against-long (R6) is mild and only caps long risk. No open position or pending order.",
+   "neco_tr": "ETH'de de bütün uzmanlar işlem yok dedi, yön oyu olmadığı için işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

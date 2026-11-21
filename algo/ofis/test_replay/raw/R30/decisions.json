@@ -1,0 +1,44 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-09-23 00:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R5-event",
+    "R6-context"
+   ],
+   "reason": "0 valid long/short votes: all 7 blocks are flat. Likidite long had RR 1.24 < 1.5 and is flat anyway. R3 needs ≥2 same-direction votes. JOLTS 14:00 is 14h out (outside 12h); macro against-long only caps risk.",
+   "neco_tr": "BTC'de hiçbir uzman alım ya da satım demedi, bu yüzden işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-09-23 00:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "0 valid long/short votes: all 7 blocks are flat, price mid-range (2,636-2,743) with no sweep or break. R3 needs ≥2 same-direction votes. Macro against-long only caps risk. JOLTS is outside the 12h blackout.",
+   "neco_tr": "ETH'de hiçbir uzman yön göstermedi, fiyat bölgenin ortasında; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

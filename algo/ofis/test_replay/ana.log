@@ -1,0 +1,143 @@
+09:50:09 round R22 asof(real) 2026-09-05 16:00 regime trend-up; spent $2.10
+09:50:09 R22 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+09:50:37 R22 riza ['BTC:none:None', 'ETH:none:None'] []
+09:50:37 R22 ok round $1.148; total $2.21
+09:50:37 round R11 asof(real) 2026-08-03 20:00 regime range; spent $2.21
+09:51:28 R11 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+09:51:54 R11 riza ['BTC:none:None', 'ETH:none:None'] []
+09:51:54 R11 ok round $1.034; total $3.24
+09:51:54 round R33 asof(real) 2026-10-08 12:00 regime trend-up; spent $3.24
+09:52:58 R33 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:long', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:short', 'senaryo:ETH:short', 'harmonik:BTC:flat', 'harmonik:ETH:flat']
+09:53:26 R33 riza ['BTC:none:None', 'ETH:none:None'] []
+09:53:26 R33 ok round $1.217; total $4.46
+09:53:26 round R05 asof(real) 2026-07-16 20:00 regime trend-up; spent $4.46
+09:54:24 R05 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:long(INVALID R:R to T1 after costs 1.46 (gross 1.64, cost 0.03R) < 1.5)', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+09:54:51 R05 riza ['BTC:none:None', 'ETH:none:None'] []
+09:54:51 R05 ok round $1.045; total $5.50
+09:54:51 round R28 asof(real) 2026-09-23 16:00 regime trend-up; spent $5.50
+09:55:49 R28 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:long', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:short', 'senaryo:ETH:flat']
+09:56:16 R28 riza ['BTC:none:None', 'ETH:none:None'] []
+09:56:16 R28 ok round $1.059; total $6.56
+09:56:16 round R16 asof(real) 2026-08-18 16:00 regime range; spent $6.56
+09:57:05 R16 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+09:57:32 R16 riza ['BTC:none:None', 'ETH:none:None'] []
+09:57:32 R16 ok round $1.047; total $7.61
+09:57:32 round R39 asof(real) 2026-10-26 12:00 regime range; spent $7.61
+09:58:31 R39 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat', 'harmonik:BTC:flat', 'harmonik:ETH:flat']
+09:58:58 R39 riza ['BTC:none:None', 'ETH:none:None'] []
+09:58:58 R39 ok round $1.187; total $8.80
+09:58:58 round R02 asof(real) 2026-07-07 08:00 regime range; spent $8.80
+09:59:50 R02 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:00:17 R02 riza ['BTC:none:None', 'ETH:none:None'] []
+10:00:17 R02 ok round $1.034; total $9.83
+10:00:17 round R25 asof(real) 2026-09-14 04:00 regime range; spent $9.83
+10:01:07 R25 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:01:34 R25 riza ['BTC:none:None', 'ETH:none:None'] []
+10:01:34 R25 ok round $1.047; total $10.88
+10:01:34 round R14 asof(real) 2026-08-12 08:00 regime range; spent $10.88
+10:02:19 R14 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:02:47 R14 riza ['BTC:none:None', 'ETH:none:None'] []
+10:02:47 R14 ok round $1.019; total $11.90
+10:02:47 round R36 asof(real) 2026-10-17 00:00 regime range; spent $11.90
+10:03:38 R36 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:04:05 R36 riza ['BTC:none:None', 'ETH:none:None'] []
+10:04:05 R36 ok round $1.052; total $12.95
+10:04:05 round R08 asof(real) 2026-07-25 08:00 regime range; spent $12.95
+10:04:52 R08 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:05:21 R08 riza ['BTC:none:None', 'ETH:none:None'] []
+10:05:21 R08 ok round $1.041; total $13.99
+10:05:21 round R30 asof(real) 2026-09-29 00:00 regime range; spent $13.99
+10:06:22 R30 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:06:52 R30 riza ['BTC:none:None', 'ETH:none:None'] []
+10:06:52 R30 ok round $1.043; total $15.03
+10:06:52 round R19 asof(real) 2026-08-27 04:00 regime trend-up; spent $15.03
+10:07:46 R19 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat', 'harmonik:BTC:flat', 'harmonik:ETH:flat']
+10:08:17 R19 riza ['BTC:none:None', 'ETH:none:None'] []
+10:08:17 R19 ok round $1.173; total $16.21
+10:08:17 round R42 asof(real) 2026-11-04 00:00 regime range; spent $16.21
+10:09:07 R42 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:09:35 R42 riza ['BTC:none:None', 'ETH:none:None'] []
+10:09:35 R42 ok round $1.041; total $17.25
+10:09:35 round R01 asof(real) 2026-07-04 04:00 regime range; spent $17.25
+10:10:22 R01 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:10:51 R01 riza ['BTC:none:None', 'ETH:none:None'] []
+10:10:51 R01 ok round $1.039; total $18.29
+10:10:51 time gate: minute 10, waiting until xx:35
+10:35:56 round R23 asof(real) 2026-09-08 20:00 regime trend-up; spent $18.29
+10:36:55 R23 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:long', 'harmonik:BTC:flat', 'harmonik:ETH:flat']
+10:37:26 R23 riza ['BTC:none:None', 'ETH:none:None'] []
+10:37:26 R23 ok round $1.205; total $19.49
+10:37:26 round R12 asof(real) 2026-08-06 00:00 regime range; spent $19.49
+10:38:15 R12 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat', 'harmonik:BTC:flat', 'harmonik:ETH:flat']
+10:38:45 R12 riza ['BTC:none:None', 'ETH:none:None'] []
+10:38:45 R12 ok round $1.177; total $20.67
+10:38:45 round R35 asof(real) 2026-10-14 20:00 regime range; spent $20.67
+10:39:40 R35 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:short', 'seviye:ETH:short(INVALID R:R to T1 after costs 1.48 (gross 1.71, cost 0.04R) < 1.5)', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:40:10 R35 riza ['BTC:none:None', 'ETH:none:None'] []
+10:40:10 R35 ok round $1.060; total $21.73
+10:40:10 round R07 asof(real) 2026-07-22 04:00 regime trend-up; spent $21.73
+10:40:59 R07 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:long', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:41:29 R07 riza ['BTC:none:None', 'ETH:none:None'] []
+10:41:29 R07 ok round $1.047; total $22.77
+10:41:30 round R29 asof(real) 2026-09-26 20:00 regime range; spent $22.77
+10:42:16 R29 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:42:47 R29 riza ['BTC:none:None', 'ETH:none:None'] []
+10:42:47 R29 ok round $1.042; total $23.82
+10:42:47 round R18 asof(real) 2026-08-24 00:00 regime trend-up; spent $23.82
+10:43:32 R18 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:44:02 R18 riza ['BTC:none:None', 'ETH:none:None'] []
+10:44:02 R18 ok round $1.035; total $24.85
+10:44:02 round R40 asof(real) 2026-10-29 16:00 regime range; spent $24.85
+10:44:50 R40 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:45:20 R40 riza ['BTC:none:None', 'ETH:none:None'] []
+10:45:20 R40 ok round $1.051; total $25.90
+10:45:20 round R04 asof(real) 2026-07-13 16:00 regime range; spent $25.90
+10:46:15 R04 blocks ['likidite:BTC:short', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:46:46 R04 riza ['BTC:none:None', 'ETH:none:None'] []
+10:46:46 R04 ok round $1.065; total $26.97
+10:46:46 round R26 asof(real) 2026-09-17 08:00 regime range; spent $26.97
+10:47:38 R26 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat', 'harmonik:BTC:flat', 'harmonik:ETH:flat']
+10:48:09 R26 riza ['BTC:none:None', 'ETH:none:None'] []
+10:48:09 R26 ok round $1.195; total $28.16
+10:48:09 round R15 asof(real) 2026-08-15 12:00 regime range; spent $28.16
+10:49:00 R15 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:49:30 R15 riza ['BTC:none:None', 'ETH:none:None'] []
+10:49:30 R15 ok round $1.033; total $29.19
+10:49:30 round R37 asof(real) 2026-10-20 04:00 regime range; spent $29.19
+10:50:23 R37 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:50:53 R37 riza ['BTC:none:None', 'ETH:none:None'] []
+10:50:53 R37 ok round $1.045; total $30.24
+10:50:53 round R09 asof(real) 2026-07-28 12:00 regime range; spent $30.24
+10:51:59 R09 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:52:28 R09 riza ['BTC:none:None', 'ETH:none:None'] []
+10:52:28 R09 ok round $1.065; total $31.30
+10:52:28 round R32 asof(real) 2026-10-05 08:00 regime trend-up; spent $31.30
+10:53:16 R32 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:53:45 R32 riza ['BTC:none:None', 'ETH:none:None'] []
+10:53:45 R32 ok round $1.041; total $32.35
+10:53:45 round R21 asof(real) 2026-09-02 12:00 regime trend-up; spent $32.35
+10:54:46 R21 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:short(INVALID R:R to T1 after costs 1.45 (gross 1.68, cost 0.04R) < 1.5)']
+10:55:15 R21 riza ['BTC:none:None', 'ETH:none:None'] []
+10:55:15 R21 ok round $1.069; total $33.41
+10:55:15 round R43 asof(real) 2026-11-07 04:00 regime range; spent $33.41
+10:56:07 R43 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:long(INVALID R:R to T1 after costs 1.46 (gross 1.64, cost 0.03R) < 1.5)', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:56:37 R43 riza ['BTC:none:None', 'ETH:none:None'] []
+10:56:37 R43 ok round $1.052; total $34.47
+10:56:37 round R34 asof(real) 2026-10-11 16:00 regime range; spent $34.47
+10:57:24 R34 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+10:57:54 R34 riza ['BTC:none:None', 'ETH:none:None'] []
+10:57:54 R34 ok round $1.040; total $35.51
+10:57:54 round R06 asof(real) 2026-07-19 00:00 regime trend-up; spent $35.51
+10:58:52 R06 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:long', 'senaryo:ETH:long']
+10:59:22 R06 riza ['BTC:none:None', 'ETH:none:None'] []
+10:59:22 R06 ok round $1.066; total $36.57
+10:59:22 round R17 asof(real) 2026-08-21 20:00 regime trend-up; spent $36.57
+11:00:20 R17 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:long', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+11:00:50 R17 riza ['BTC:none:None', 'ETH:none:None'] []
+11:00:50 R17 ok round $1.084; total $37.66
+11:00:50 round R03 asof(real) 2026-07-10 12:00 regime range; spent $37.66
+11:01:33 R03 blocks ['likidite:BTC:flat', 'likidite:ETH:flat', 'elliott:BTC:flat', 'elliott:ETH:flat', 'seviye:BTC:flat', 'seviye:ETH:flat', 'turev:BTC:flat', 'turev:ETH:flat', 'makro:BTC:flat', 'makro:ETH:flat', 'senaryo:BTC:flat', 'senaryo:ETH:flat']
+11:02:02 R03 riza ['BTC:none:None', 'ETH:none:None'] []
+11:02:02 R03 ok round $1.023; total $38.68
+11:02:02 cost cap: spent $38.68 + 1.3 x $1.22 > $40.0: stop
+rc=0

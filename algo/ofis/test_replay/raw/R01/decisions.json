@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-06-28 04:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 BTC expert blocks are flat/none, so there are 0 valid long or short votes. R3 needs at least 2 same-direction valid votes. No open position or pending order (OPEN none). Calendar is empty, so R5 does not apply.",
+   "neco_tr": "BTC'de hiçbir uzman yön vermedi, bu yüzden işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-06-28 04:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 ETH expert blocks are flat/none, so there are 0 valid long or short votes. R3 needs at least 2 same-direction valid votes. No open position or pending order (OPEN none). Calendar is empty, so R5 does not apply.",
+   "neco_tr": "ETH'de hiçbir uzman yön vermedi, bu yüzden işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

@@ -1,0 +1,317 @@
+[
+ {
+  "expert": "trader-likidite",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 65,
+  "horizon_h": 12,
+  "rationale": [
+   "1d labels HL,HH,LL,LH are mixed: no 1d direction. Last 4h sweep (low 57,800, 06-25 00:00) is far outside the last 6 4h candles, and no EQL/EQH is swept now.",
+   "Price 62,627 sits between prev_day_low 61,249 and PWH 65,623, near prev_day_high 62,980 (not yet swept). No sweep, no CHoCH: setup incomplete."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-likidite",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 65,
+  "horizon_h": 12,
+  "rationale": [
+   "1d labels HH,LL,LH,HL are mixed: no 1d direction. EQL 1,548.4/1,550.2 pool is untouched since 06-24; no sweep in the last 6 4h candles.",
+   "Price 1,753.9 sits just under PWH 1,779.9 (not swept; 1h high 1,775.8 stayed below). Mid-range, no sweep or CHoCH: no setup."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-elliott",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "Down count dead on 4h close above 74,290 (wave 1 end); 1d alt dead above 82,850",
+  "confidence": 75,
+  "horizon_h": 240,
+  "rationale": [
+   "code w3_in_progress down 4h k=4: flat, phase w4_forming, not an early w3 candidate. Alts: impulse_done 4h (flat); 1d w3 down trigger 60,000 is 2,627 behind price (chasing/past)",
+   "inval 74,290; code targets 62,586/65,547 (4h), 21,488 (1d alt). Price 62,627 is already at T1 and bouncing in a multi-week range under a falling 1d sequence (LH/LL)",
+   "Count is ambiguous (alt reads wave 5 done at 57,800). No clean 5 and no up candidate, so no trade"
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-elliott",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1d",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "Down count dead on 1d close above 2,464.9 (wave 2 end). Up alt dead below 1,512.0",
+  "confidence": 72,
+  "horizon_h": 240,
+  "rationale": [
+   "code w3_in_progress down 1d k=5: flat. Wave 3 low 1,505.7 is already made and price has bounced back to 1,754 (above the 1,747.8 trigger), so it is not an early w3. Targets empty, t_min 765",
+   "Opposite candidates: up w3_setup (4h/1d) is unconfirmed, trigger 1,849.5 is 95 away (>1 ATR4h 29.9), score 45-60. Opposite directions at similar degree = flat",
+   "inval 2,464.9; up alt inval 1,512.0, targets 2,068/2,412. Watch: long only on a 4h close above 1,849.5, and only if Step 3 passes. 1d is still LH/LL, so the bounce may be B/X"
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-seviye",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 62,
+  "horizon_h": 8,
+  "rationale": [
+   "Last close 62,627 sits between 1h_30d POC 62,641 and day P 62,271, mid-range of 57,800-65,623. Nearest strong edges are 60,556 HVN and PWH 65,623, a 2,996 gap (3.7 ATR4h), beyond the 2 ATR entry li...",
+   "The 4h bounce from 57,800 has RSI 67 and no rejection candle. A short fade at 63,812 (4h VAL) or 65,623 (PWH) needs a 4h/1h reject first; a long would need a retest of 61,692-62,072, where R:R to T..."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-seviye",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 60,
+  "horizon_h": 8,
+  "rationale": [
+   "Last close 1,753.9 is a first touch of the 1,775-1,791 resistance cluster (PWH 1,779.9, 4h HH, day R1 1,791, 1d_180d HVN 1,790) with strong momentum: 4h RSI 71.5, +11% in 7d. Breakout and rejection...",
+   "No 4h reject yet: the 1,775.8 wick on 1h closed 1,763 and the 4h closed 1,758. A breakout needs a 4h close >= 1,804 with qvol >= 120 (1.5 x 80.2), not yet seen. A long at 1,744 has no support of ra..."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-turev",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a: flat; re-check if 4h closes above 62,980 with funding 7d avg above 0.0003 (crowded long) or below 61,249 with OI rising",
+  "confidence": 62,
+  "horizon_h": 12,
+  "rationale": [
+   "CONTEXT: neutral. Funding_last 0.0001 is in the dead zone, 7d avg 5.8e-5 (<0.0001, mild short lean). Premium -0.039%. No crowd; OI 24h +1.2%, 7d +5.3% (far below +8%).",
+   "Price +1.94%/24h with OI +1.2% = mild new longs. Coin-OI 6.666bn/62,627 = 106.4k BTC. Account L/S falling 1.76 to 1.50 and top L/S 1.235: retail long weight is shrinking, not crowded.",
+   "No crowded_squeeze (no 4h close below a pivot against longs) or flush_reversal (OI not -8%). Price 62,627 is under SMA200 1d 74,996. 4h RSI 67 into high 62,980."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "60d funding history absent (9 values only)"
+  ]
+ },
+ {
+  "expert": "trader-turev",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a: flat; re-check if 4h closes below 1,694.7 (prior-day low) while OI keeps rising, which would turn it into a crowded_squeeze candidate",
+  "confidence": 60,
+  "horizon_h": 12,
+  "rationale": [
+   "CONTEXT: neutral. Funding_last 9.7e-5 (dead zone), 7d avg 3.3e-5 (<0.0001); premium -0.0375%. No crowded-long funding. Account L/S 1.59 and top L/S 1.44 are flat, not extreme.",
+   "Price +11.4%/7d with OI +11.0%/7d (24h: price +2.8%, OI +1.5%) = new longs fuelling the trend. Coin-OI 4.0699bn/1,753.9 = 2.32m ETH. Leverage is building but funding is not hot, so not yet fragile.",
+   "No fade trigger: 4h still making highs (1,775.8), no close below the last 4h HL 1,550.2. 4h RSI 71.5 is stretched, but with no price trigger it is context only."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "60d funding history absent (9 values only)"
+  ]
+ },
+ {
+  "expert": "trader-makro",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1d",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a: regime flips only if VIX >30 with HY widening and DXY up, or everything_down fires",
+  "confidence": 65,
+  "horizon_h": 24,
+  "rationale": [
+   "CONTEXT: neutral | regime N. VIX 16.15 (5d -14.5%), MOVE 65.4, HY OAS 2.74 (20obs -0.02), 10y 4.485 (20d -0.13%), DXY 100.86 (20d +1.3%), everything_down false, corr_break none. No L/K/R/C signatur...",
+   "Analog: closest V4 (low VIX, MOVE<90, HY flat); differs: BTC below SMA200, DXY not rolling over, F&G 22 extreme fear, ETF flows -2.5bn over 8 days then +224m. BTC-NDX corr 0.34/0.41, no break. No t...",
+   "Calendar USD high rows empty for -24h..+72h, no event inside 12h blackout. Stablecoin supply -2.5% 30d is a mild drain, not an anomaly. macro_regime_trend not met (regime not B/R/K)."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent"
+  ]
+ },
+ {
+  "expert": "trader-makro",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "1d",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a: regime flips only if VIX >30 with HY widening and DXY up, or everything_down fires",
+  "confidence": 65,
+  "horizon_h": 24,
+  "rationale": [
+   "CONTEXT: neutral | regime N. Macro same as BTC: VIX 16.15, MOVE 65.4, HY 2.74, everything_down false. ETH 1,753.9 below SMA200 2,275.4 (7d +11.4%, BTC +4.1%); 1d RSI 55.",
+   "Analog: closest V4 (low VIX, MOVE<90, HY flat); differs: BTC below SMA200, DXY not turning, F&G extreme fear 22, stablecoin supply -2.5% 30d, ETH mvrv 0.89. No trend setup.",
+   "No ETH-specific macro setup. BTC.D and total market cap unknown, so the ETH against-long rule cannot be checked. Calendar empty, no event inside 12h."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "crypto_global null: BTC dominance and total market cap unavailable, ETH again..."
+  ]
+ },
+ {
+  "expert": "trader-senaryo",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 65,
+  "horizon_h": 8,
+  "rationale": [
+   "Bull: 4h close>62980 (prev-day high; low_400d b2 up 62825) → 64132 (last_1d_pivot_H b1 up), then 65623 PWH | Bear: 4h close<61815 (low_400d b1 up, 1d EMA20 62191) → 60806 AVWAP, then 59652",
+   "No trigger: last closed 4h (00:00) at 62627 is below 62825/62980. Acceptance fails because the 20:00 candle made a new high 62980. Rally off 57800 LL; 4h RSI 67, 1d below SMA200 74996.",
+   "OI 7d +5.3%, 24h +1.2%: filter clear. Calendar empty, but no trigger, so flat. Wait for a 4h close beyond 62980 or a sweep and reclaim."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "RECENT none: cooldown rule not checkable"
+  ]
+ },
+ {
+  "expert": "trader-senaryo",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 68,
+  "horizon_h": 8,
+  "rationale": [
+   "Bull: 4h close>1779.9 (PWH; 4h high 1775.8 not closed beyond) → 1805.9 (low_400d b2 up), then 1849.5 | Bear: 4h close<1722 (open 4h FVG 1722-1729) → 1686.5, then 1657.5 FVG",
+   "OI filter holds: oi_chg_7d +11.0% (>=10) after a rally from the 1512 low, so no crowded-leverage long. No close beyond a key level and no sweep_reclaim: last 4h closed 1753.9 below PWH.",
+   "Price is just under PWH 1779.9 with 1d below SMA200 2275 and 4h RSI 71.5: T1 to 1805.9 is under 1x ATR4h (29.9), too close for a long. Wait."
+  ],
+  "data_gaps": [
+   "replay: live-only data absent",
+   "RECENT none: cooldown rule not checkable"
+  ]
+ },
+ {
+  "expert": "trader-harmonik",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "BTCUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 50,
+  "horizon_h": 4,
+  "rationale": [
+   "AUTO (code, expert not called): no at_prz/reacted harmonic candidate in snapshot"
+  ],
+  "data_gaps": []
+ },
+ {
+  "expert": "trader-harmonik",
+  "asof_utc": "2031-06-28 04:00",
+  "asset": "ETHUSDT",
+  "action": "none",
+  "bias": "flat",
+  "timeframe": "4h",
+  "setup": null,
+  "entry": null,
+  "stop": null,
+  "targets": [],
+  "invalidation": "n/a",
+  "confidence": 50,
+  "horizon_h": 4,
+  "rationale": [
+   "AUTO (code, expert not called): no at_prz/reacted harmonic candidate in snapshot"
+  ],
+  "data_gaps": []
+ }
+]

@@ -1,0 +1,1051 @@
+{
+ "plan": "plan.md",
+ "rounds": 36,
+ "cost_usd": 38.68,
+ "regimes": {
+  "trend-up": 12,
+  "range": 24,
+  "trend-down": 0
+ },
+ "window_real": [
+  "2026-07-01 00:00",
+  "2026-11-11 04:00"
+ ],
+ "experts": {
+  "trader-likidite": {
+   "blocks": 72,
+   "dir_n": 1,
+   "dir_hit": 1.0,
+   "dir_hit_ci90": [
+    0.27,
+    1.0
+   ],
+   "always_long_same_windows": 0.0,
+   "dir_atr_mean": 0.1,
+   "dir_incl_geom_invalid_n": 1,
+   "dir_incl_geom_invalid_hit": 1.0,
+   "auto_flat_blocks": 0,
+   "t1_before_stop": null,
+   "flat_n": 71,
+   "flat_in_band": 0.746,
+   "ctx_n": 0,
+   "ctx_hit": null,
+   "vote_pass_rate": 1.0,
+   "shadow_n": 1,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_avg_r": null,
+   "shadow_total_r": 0.0,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "calibration": {},
+   "verdict": "inconclusive"
+  },
+  "trader-elliott": {
+   "blocks": 72,
+   "dir_n": 0,
+   "dir_hit": null,
+   "dir_hit_ci90": [
+    null,
+    null
+   ],
+   "always_long_same_windows": null,
+   "dir_atr_mean": null,
+   "dir_incl_geom_invalid_n": 0,
+   "dir_incl_geom_invalid_hit": null,
+   "auto_flat_blocks": 0,
+   "t1_before_stop": null,
+   "flat_n": 72,
+   "flat_in_band": 0.375,
+   "ctx_n": 0,
+   "ctx_hit": null,
+   "vote_pass_rate": null,
+   "shadow_n": 0,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_avg_r": null,
+   "shadow_total_r": 0.0,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "verdict": "inconclusive"
+  },
+  "trader-seviye": {
+   "blocks": 69,
+   "dir_n": 5,
+   "dir_hit": 0.6,
+   "dir_hit_ci90": [
+    0.272,
+    0.857
+   ],
+   "always_long_same_windows": 0.8,
+   "dir_atr_mean": -0.495,
+   "dir_incl_geom_invalid_n": 8,
+   "dir_incl_geom_invalid_hit": 0.375,
+   "auto_flat_blocks": 0,
+   "t1_before_stop": 0.6,
+   "flat_n": 64,
+   "flat_in_band": 0.766,
+   "ctx_n": 0,
+   "ctx_hit": null,
+   "vote_pass_rate": 1.0,
+   "shadow_n": 5,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_avg_r": -1.251,
+   "shadow_total_r": -1.25,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "calibration": {
+    "0-54": {
+     "n": 5,
+     "t1_first": 0.6,
+     "breakeven": 0.247
+    }
+   },
+   "verdict": "inconclusive"
+  },
+  "trader-turev": {
+   "blocks": 72,
+   "dir_n": 0,
+   "dir_hit": null,
+   "dir_hit_ci90": [
+    null,
+    null
+   ],
+   "always_long_same_windows": null,
+   "dir_atr_mean": null,
+   "dir_incl_geom_invalid_n": 0,
+   "dir_incl_geom_invalid_hit": null,
+   "auto_flat_blocks": 0,
+   "t1_before_stop": null,
+   "flat_n": 58,
+   "flat_in_band": 0.81,
+   "ctx_n": 14,
+   "ctx_hit": 0.286,
+   "vote_pass_rate": null,
+   "shadow_n": 0,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_avg_r": null,
+   "shadow_total_r": 0.0,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "verdict": "inconclusive"
+  },
+  "trader-makro": {
+   "blocks": 72,
+   "dir_n": 0,
+   "dir_hit": null,
+   "dir_hit_ci90": [
+    null,
+    null
+   ],
+   "always_long_same_windows": null,
+   "dir_atr_mean": null,
+   "dir_incl_geom_invalid_n": 0,
+   "dir_incl_geom_invalid_hit": null,
+   "auto_flat_blocks": 0,
+   "t1_before_stop": null,
+   "flat_n": 46,
+   "flat_in_band": 0.761,
+   "ctx_n": 26,
+   "ctx_hit": 0.346,
+   "vote_pass_rate": null,
+   "shadow_n": 0,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_avg_r": null,
+   "shadow_total_r": 0.0,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "verdict": "inconclusive"
+  },
+  "trader-senaryo": {
+   "blocks": 71,
+   "dir_n": 6,
+   "dir_hit": 0.667,
+   "dir_hit_ci90": [
+    0.347,
+    0.883
+   ],
+   "always_long_same_windows": 0.5,
+   "dir_atr_mean": 0.632,
+   "dir_incl_geom_invalid_n": 7,
+   "dir_incl_geom_invalid_hit": 0.571,
+   "auto_flat_blocks": 0,
+   "t1_before_stop": 0.667,
+   "flat_n": 65,
+   "flat_in_band": 0.785,
+   "ctx_n": 0,
+   "ctx_hit": null,
+   "vote_pass_rate": 1.0,
+   "shadow_n": 6,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_avg_r": -1.202,
+   "shadow_total_r": -1.2,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "calibration": {
+    "0-54": {
+     "n": 6,
+     "t1_first": 0.667,
+     "breakeven": 0.32
+    }
+   },
+   "verdict": "inconclusive"
+  },
+  "trader-harmonik": {
+   "blocks": 12,
+   "dir_n": 0,
+   "dir_hit": null,
+   "dir_hit_ci90": [
+    null,
+    null
+   ],
+   "always_long_same_windows": null,
+   "dir_atr_mean": null,
+   "dir_incl_geom_invalid_n": 0,
+   "dir_incl_geom_invalid_hit": null,
+   "auto_flat_blocks": 60,
+   "t1_before_stop": null,
+   "flat_n": 12,
+   "flat_in_band": 0.75,
+   "ctx_n": 0,
+   "ctx_hit": null,
+   "vote_pass_rate": null,
+   "shadow_n": 0,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_avg_r": null,
+   "shadow_total_r": 0.0,
+   "shadow_r_ci90": [
+    null,
+    null
+   ],
+   "verdict": "inconclusive"
+  }
+ },
+ "base_rates": {
+  "up_share_all_blocks": 0.558
+ },
+ "office": {
+  "orders": 0,
+  "filled": 0,
+  "closed": 0,
+  "r_list": [],
+  "total_r": 0.0,
+  "equity_end": 10000.0,
+  "return_pct": 0.0,
+  "time_in_market_pct": 0.0,
+  "btc_buyhold_pct": 25.83,
+  "btc_exposure_matched_pct": 0.0,
+  "verdict": "inconclusive"
+ },
+ "rounds_detail": [
+  {
+   "round": "R00",
+   "asof": "2026-07-01 00:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R01",
+   "asof": "2026-07-04 04:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R02",
+   "asof": "2026-07-07 08:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R03",
+   "asof": "2026-07-10 12:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R04",
+   "asof": "2026-07-13 16:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R05",
+   "asof": "2026-07-16 20:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R06",
+   "asof": "2026-07-19 00:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R07",
+   "asof": "2026-07-22 04:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R08",
+   "asof": "2026-07-25 08:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R09",
+   "asof": "2026-07-28 12:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R11",
+   "asof": "2026-08-03 20:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R12",
+   "asof": "2026-08-06 00:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R14",
+   "asof": "2026-08-12 08:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R15",
+   "asof": "2026-08-15 12:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R16",
+   "asof": "2026-08-18 16:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R17",
+   "asof": "2026-08-21 20:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R18",
+   "asof": "2026-08-24 00:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R19",
+   "asof": "2026-08-27 04:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R21",
+   "asof": "2026-09-02 12:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R22",
+   "asof": "2026-09-05 16:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R23",
+   "asof": "2026-09-08 20:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R25",
+   "asof": "2026-09-14 04:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R26",
+   "asof": "2026-09-17 08:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R28",
+   "asof": "2026-09-23 16:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R29",
+   "asof": "2026-09-26 20:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R30",
+   "asof": "2026-09-29 00:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R32",
+   "asof": "2026-10-05 08:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R33",
+   "asof": "2026-10-08 12:00",
+   "regime": "trend-up",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R34",
+   "asof": "2026-10-11 16:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R35",
+   "asof": "2026-10-14 20:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R36",
+   "asof": "2026-10-17 00:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R37",
+   "asof": "2026-10-20 04:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R39",
+   "asof": "2026-10-26 12:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R40",
+   "asof": "2026-10-29 16:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R42",
+   "asof": "2026-11-04 00:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  },
+  {
+   "round": "R43",
+   "asof": "2026-11-07 04:00",
+   "regime": "range",
+   "decisions": [
+    "BTCUSDT:none:None",
+    "ETHUSDT:none:None"
+   ],
+   "applied": [
+    [
+     "BTCUSDT",
+     "none",
+     ""
+    ],
+    [
+     "ETHUSDT",
+     "none",
+     ""
+    ]
+   ],
+   "decision_errors": []
+  }
+ ]
+}

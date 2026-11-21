@@ -1,0 +1,72 @@
+{
+ "trader-likidite": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ },
+ "trader-elliott": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ },
+ "trader-seviye": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ },
+ "trader-turev": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ },
+ "trader-makro": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ },
+ "trader-senaryo": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ },
+ "trader-harmonik": {
+  "closed": 0,
+  "hit_rate": null,
+  "avg_r": null,
+  "ev_r_ci90": [
+   null,
+   null
+  ],
+  "brier": null
+ }
+}

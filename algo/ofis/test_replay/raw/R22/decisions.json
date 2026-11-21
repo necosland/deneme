@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-08-30 16:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so there are 0 valid long or short votes. R3 needs at least 2 same-direction votes. No open position or pending order. Regime is long (above SMA200) but no setup exists.",
+   "neco_tr": "BTC'de bütün uzmanlar kenarda durmayı önerdi, fiyat aralığın ortasında olduğu için işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-08-30 16:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so there are 0 valid long or short votes. R3 needs at least 2 same-direction votes. Price sits mid-range (2,356-2,547) and R:R to T1 is below 1.5. No open position or pending order.",
+   "neco_tr": "ETH'de hiçbir uzman yön vermedi, fiyat aralığın ortasında kaldığı için işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

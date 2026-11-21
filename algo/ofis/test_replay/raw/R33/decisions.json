@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "decision": "none",
+   "asset": "BTCUSDT",
+   "asof_utc": "2031-10-02 12:00",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes. seviye long (conf 36) and senaryo short (conf 40) are under min_confidence 55, so neither is a vote and R2 does not trigger. likidite, elliott, turev, makro and harmonik are flat. R3 not met.",
+   "neco_tr": "BTC'de iki uzman işlem önerdi ama güvenleri çıtanın altında kaldığı için oy sayılmadı; işlem açılmadı."
+  },
+  {
+   "decision": "none",
+   "asset": "ETHUSDT",
+   "asof_utc": "2031-10-02 12:00",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes. senaryo short (conf 40) is under min_confidence 55, so it is not a vote. All other experts are flat. R3 not met. Makro and turev carry CONTEXT against-long, which is irrelevant with no setup.",
+   "neco_tr": "ETH'de tek uzman short önerdi ama güveni çıtanın altında kaldı ve başka destek yoktu; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

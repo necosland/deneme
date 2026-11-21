@@ -1,0 +1,42 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-09-11 08:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so there are 0 valid directional votes and R3 (needs >=2 same-side votes) fails. Makro CONTEXT against-long (R6) would only cap long risk. No open position or pending order.",
+   "neco_tr": "BTC'de yedi uzmanın hiçbiri yön vermedi, bu yüzden işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-09-11 08:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "All 7 expert blocks are flat/none, so there are 0 valid directional votes and R3 fails. Makro and turev both tag CONTEXT against-long, so R6 also gives none for a long. No open position or pending order.",
+   "neco_tr": "ETH'de hiçbir uzman yön vermedi, makro ve türev de alıma karşı uyardığı için işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

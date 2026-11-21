@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-07-10 20:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes: all expert blocks are flat (liquidity, elliott, level, derivatives, macro, scenario, harmonic). R3 needs >=2 same-direction valid votes. No open position or pending order. Regime is short (BTC below SMA200), but no setup exists.",
+   "neco_tr": "BTC'de hiçbir uzman işlem önermedi, fiyat aralığın ortasında; işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-07-10 20:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes: all expert blocks are flat. Liquidity expert says no CHoCH yet, scenario expert says no trigger, and OI +10.3% over 7d bars a short from the top. R3 needs >=2 same-direction valid votes. No open position or pending order.",
+   "neco_tr": "ETH'de hiçbir uzman işlem önermedi, kurulum henüz hazır değil; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

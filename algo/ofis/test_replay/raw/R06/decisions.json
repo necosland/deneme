@@ -1,0 +1,43 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-07-13 00:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R4-regime"
+   ],
+   "reason": "0 valid votes. Only trader-senaryo gave a long (conf 40 < min_confidence 55), so it is not a vote (R1). All other experts are flat. R3 needs 2 same-side votes. A long would also be counter-regime (BTC below SMA200), which needs 3 votes (R4).",
+   "neco_tr": "BTC'de geçerli oy yok; tek long fikrinin güveni %40 ile çıtanın altında kaldığından işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-07-13 00:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R4-regime"
+   ],
+   "reason": "0 valid votes. Only trader-senaryo gave a long (conf 42 < min_confidence 55), so it is not a vote (R1). All other experts are flat. R3 needs 2 same-side votes. A long would also be counter-regime (BTC below SMA200), which needs 3 votes (R4).",
+   "neco_tr": "ETH'de geçerli oy yok; tek long fikrinin güveni %42 ile çıtanın altında kaldığından işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

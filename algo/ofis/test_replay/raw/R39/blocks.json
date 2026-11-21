@@ -1,0 +1,439 @@
+{
+ "asof_shifted": "2031-10-20 12:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; long becomes ready only after a fresh wick sweep of a low pool plus a 1h close above 80,952/81,034",
+    "confidence": 70,
+    "horizon_h": 12,
+    "rationale": [
+     "1d is up (HL 74,968, HH 87,396) but price is in a pullback. The 4h 79,800 low was closed beyond at 10-20 00:00; its 10-18 12:00 sweep is outside the last 6 candles.",
+     "4h LL 79,221 (10-18 12:00) has no sweep field. 1h has no close above LH 80,952 or EQH 81,034, so there is no CHoCH, no 1h FVG and no entry zone.",
+     "Price 80,416 sits between 79,221 and 81,034 with no fresh sweep. FOMC 10-22 18:00 is ahead. No setup."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; long becomes ready only after a fresh wick sweep of a low pool plus a 1h close above 2,365.4/2,371.5",
+    "confidence": 70,
+    "horizon_h": 12,
+    "rationale": [
+     "1d is up (HL 2,358.9, HH 2,807.3) but price is in a pullback. 4h LL 2,282.5 (10-18 12:00) has no sweep field; 4h 2,318.0 was closed beyond at 10-18 12:00.",
+     "1h has no close above LH 2,365.4 or 2,371.5, so there is no CHoCH, no 1h FVG and no entry zone.",
+     "Price 2,334.1 sits between 2,282.5 and 2,371.5 with no fresh sweep. FOMC 10-22 18:00 is ahead. No setup."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-elliott",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Down w3 count dead above 84,898 (wave 2 end); 1d up count dead below 66,956",
+    "confidence": 68,
+    "horizon_h": 48,
+    "rationale": [
+     "code w3_in_progress up 1d k=3: flat, w4_forming (not a w3 start). Alt w3_setup down 4h k=2.5: flat, alt_diagonal_same_end flag, w1-w2 choppy overlapping bars, 1d still HH (87,396), range 79.2-84.9k",
+     "inval 84,898 (down count); code targets 73,250/66,051 (down alt); up count 81,467/77,800 (info only)",
+     "Conflicting degrees (1d up vs 4h down) = structure unclear. FOMC 2031-10-22 18:00 ahead."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-elliott"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-elliott",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1d",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Down w3 count dead above 2,526.6 (wave 2 end); 4h w5 alt stop_tight 2,526.6",
+    "confidence": 66,
+    "horizon_h": 48,
+    "rationale": [
+     "code w3_setup down 1d k=2: flat, unconfirmed (trigger 2,318 not closed beyond) and w1 2,807->2,318 is slow, choppy with a rally back to 2,777, not a sharp leg. Alt 4h w5_setup carries diagonal flag",
+     "inval 2,526.6; code targets 1,734.9/1,245.5 (t_min 2,037.3); 4h alt 2,319.4/2,224.2 (info only)",
+     "1d not yet LL/LH sequence (HL 2,358.9 intact, price near SMA200 2,158 / EMA200 2,334); count not clean. FOMC 2031-10-22 18:00."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-elliott"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; long watch needs a 4h/1h wick below 79,221 with a close back above it; short break needs a 4h close below 78,850 with volume above 136 musd",
+    "confidence": 62,
+    "horizon_h": 12,
+    "rationale": [
+     "Range 79,221-84,898 (width 5,677 = 7.7 ATR4h, 2 touches each side), EQ 82,060. Price 80,416 is 1.6 ATR above the low, not at the edge; the last 4h low 79,369 did not sweep 79,221.",
+     "Between levels: S 79,221 (PWL, 4h LL) and 79,800-79,997 (1d HVN, 4h LL). Above: 81,034 EQH/POC-less zone, then 81,181 HVN. No ret candle yet, so range_edge_fade is not valid.",
+     "1d lower highs, price below the 1d EMA20/50 and 4h EMA20/50, 3 paper systems flat; a fade against the 1d direction caps confidence at 55. FOMC 10-22 18:00 is 54h away, outside blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; long watch needs a ret candle at 2,282 (wick below, close inside); short break needs a 4h close below 2,265 with volume above 70 musd",
+    "confidence": 60,
+    "horizon_h": 12,
+    "rationale": [
+     "Range 2,282.5-2,526.6 (width 244 = 7.2 ATR4h, 3 touches at the low). Price 2,334 is 1.5 ATR above the low, and the 4h swing low 2,293 did not reach the 2,282.5 edge. No ret candle, so no fade.",
+     "Overhead: 2,371 (4h LH), 2,380 (weekly P), 2,417 (EQH), 2,448-2,470 (bear FVG); stops placed under 2,282 plus 0.3 ATR make T1 at 2,371 weaker than 1.5R.",
+     "1d RSI 34, price below 1d EMA20/50; the 4h VAL 2,330 is being retested from below. Downside break not confirmed (no 4h close under 2,265). FOMC 54h away."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-turev",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 65,
+    "horizon_h": 24,
+    "rationale": [
+     "CONTEXT: neutral. Funding 7.9e-5 (7d avg 5.5e-5, below 1e-4 dead zone, premium -0.05%); no crowded long. Accounts L/S 2.22 (<2.5), top positions 1.69. FOMC 2031-10-22 18:00 is 54h out.",
+     "Price -0.2% 24h, OI +0.36% 24h (7.52bn = ~93.5k BTC at 80,416), OI -4.1% 7d: no leverage build-up. Taker buy/sell 4h 1.01. No crowded_squeeze or flush_reversal (OI -8% needed).",
+     "4h LL 79,221 then LH 81,034; price 80,416 mid-range. No derivs-based price trigger. YT: 7d funding avg below 1e-4 hints mild short drift only; not tradable."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-turev"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-turev",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 63,
+    "horizon_h": 24,
+    "rationale": [
+     "CONTEXT: neutral. Funding 4.9e-5 (7d avg 4.8e-5, below 1e-4, premium -0.06%) shows no crowded longs. Accounts L/S 3.38 (>2.5, retail long heavy, weak contrarian) vs top positions 1.76.",
+     "Price -0.25% 24h, OI +0.64% 24h (5.42bn = ~2.32m ETH at 2,334.1), OI -0.8% 7d: no leverage build-up. No flush (OI -8%) and no 4h close beyond opposing pivot.",
+     "4h L? 2,293.1 holding above LL 2,282.5; price 2,334.1 mid. Retail long skew without funding or OI confirmation is not a crowded_squeeze. FOMC 54h out."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-turev"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-makro",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1d",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; re-read if VIX >30 or HY OAS jumps, or everything_down turns true",
+    "confidence": 60,
+    "horizon_h": 24,
+    "rationale": [
+     "CONTEXT: neutral | regime N: VIX 19.45 (20d +30.8%), HY 3.38 (+0.45 over 20 obs), DXY 101.8 flat, 10y 4.99 (20d -3.8%), USDJPY -1.0% 5d, MOVE 103, everything_down false, corr_break none",
+     "Analog: none close; V4 shares 10y off its peak but VIX is rising and HY widening, not narrowing; V5 shares nothing (USDJPY -1.5% 20d, not -5% 3w); V1 absent (VIX 19 not >30)",
+     "FOMC 2031-10-22 18:00 UTC is 54h out, outside the 12h blackout, so it is not event-risk. BTC-NDX corr 30d 0.65 vs 90d 0.34 is rising. No trend setup conditions met."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "week_open null"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-makro"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-makro",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1d",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; re-read if VIX >30 or HY OAS jumps, or everything_down turns true",
+    "confidence": 60,
+    "horizon_h": 24,
+    "rationale": [
+     "CONTEXT: neutral | regime N: same macro table as BTC (VIX 19.45, HY 3.38 +0.45/20 obs, DXY flat, 10y -3.8% 20d); ETH 1d RSI 34, below EMA20/50, 7d -3.3%",
+     "Analog: none close; V4 only partly (10y off peak) but VIX rising and HY widening; no V2/V5 signature (no DXY and 10y climb, USDJPY -1.5% 20d)",
+     "FOMC 2031-10-22 18:00 UTC is 54h out, outside the blackout. BTC dominance and total market cap are not in the snapshot, so the ETH against-long rule was not checked. No macro_regime_trend setup."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "crypto_global null: BTC dominance and total market cap unchecked for ETH rule"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-makro"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; bull trigger is a 4h close above 81,034, bear trigger is a 4h close below 79,221",
+    "confidence": 70,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>81,034 (LH/EQH, prev-day high) → 81,181 HVN then 82,295 | Bear: 4h close<79,221 (PWL, swing low) → 77,951 week S1, then 76,457 VAL",
+     "No trigger: last closed 4h (08:00) is 80,416, inside 79,221-81,034; no close_beyond, no sweep_reclaim; 79,221 not re-swept (4h low 79,369). Acceptance needs level within 370 and 3 narrow candles: n...",
+     "1d lower highs below 20/50 EMA, RSI 41.7, but above SMA200 72,988. FOMC 10-22 18:00 is 54h away, outside the 12h blackout. OI 7d -4.1%: filter clear. Waiting for a trigger."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checked"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 204->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; bull trigger is a 4h close above 2,371.5, bear trigger is a 4h close below 2,282.5",
+    "confidence": 70,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>2,371.5 (LH, prev-day high) → 2,417.8 EQH then 2,448-2,470 bear FVG | Bear: 4h close<2,282.5 (PWL, swing low) → 2,232.7 week S1, then 2,149 LVN",
+     "No trigger: last closed 4h (08:00) is 2,334.1, inside 2,282.5-2,371.5; 4h low 2,293.1 did not reach 2,282.5, so no sweep. Acceptance not met (level 51 away but candles not narrow/3 in a row).",
+     "1d RSI 34, below ATH and 365d AVWAP, near SMA200 2,158 and EMA200 2,334. OI 7d -0.8%: filter clear. FOMC 54h away, outside the 12h blackout. Waiting for a trigger."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checked"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-harmonik",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 70,
+    "horizon_h": 24,
+    "rationale": [
+     "Only candidate: Shark bull 4h is overshot (dist_prz_atr -1.69, D 79,221 below PRZ 80,469-81,391, fit 8, bc_confluence false). Overshot = skip; not a counter-direction signal.",
+     "Watch: Shark bull 4h overshot, watch Crab/Butterfly if code gives a new candidate. FOMC 2031-10-22 18:00 is outside the 12h blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-harmonik"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-harmonik",
+    "asof_utc": "2031-10-20 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 72,
+    "horizon_h": 24,
+    "rationale": [
+     "Gartley bull 1h reacted but fit 20 < 60 and no confirm (last_candle null, tdi false, rsi_div false). Last close 2,334.1 is 41 above D 2,293.1, over 0.5 x ATR 16.9 (late entry). Flat.",
+     "Watch: Shark bear 1h PRZ 2,365.4-2,381.2, 1.6 ATR away, forming, fit 38 (below 60); no order without confirmation. FOMC 2031-10-22 18:00 is outside the 12h blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-harmonik"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-likidite",
+  "trader-elliott",
+  "trader-seviye",
+  "trader-turev",
+  "trader-makro",
+  "trader-senaryo",
+  "trader-harmonik"
+ ]
+}

@@ -1,0 +1,9 @@
+{
+ "equity_usdt": 10000.0,
+ "cash_usdt": 10000.0,
+ "open_risk_pct": 0.0,
+ "stops_today_utc": 0,
+ "drawdown_from_peak_pct": 0.0,
+ "gross_leverage_x": 0.0,
+ "start_utc": null
+}

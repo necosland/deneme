@@ -1,0 +1,16 @@
+{
+ "structure.pivots": "[time, price, HH/HL/LH/LL, first_close_beyond_time, first_wick_sweep_time(before any close beyond), rsi14_at_pivot]; confirmed by k*ATR14 reversal (1d k=3, 4h/1h k=2)",
+ "current_leg_extreme": "unconfirmed extreme of the running leg (H?/L?)",
+ "fvg": "[middle_candle_time, bull/bear, low, high, open/partial]; filled ones dropped",
+ "equal_hl": "untaken equal highs/lows (tolerance 0.25*ATR14 of that tf)",
+ "vp": "volume profile from Binance spot quote volume: poc/vah/val(70%)/hvn/lvn",
+ "candles": "closed candles only, times are open times UTC",
+ "paper_systems_now": "current position (1=long, 0=cash) of our 3 rule-based paper systems",
+ "elliott": "code impulse count (elliott_say.py, 4h+1d multi-degree zigzag): state w3_setup/w3_in_progress/w5_setup/impulse_done/corrective_or_unclear, trigger, invalidation, targets, waves [label,time,price], alts; backtest: no edge, map not signal",
+ "options": "Deribit, per asset: atm_iv_cm/rr25_cm = constant-maturity ATM IV and 25-delta risk reversal (call25 IV - put25 IV, vol pts; + = calls richer), deltas Black-76 from mark_iv; pc_oi = put/call OI (contracts); monthly = nearest last-Friday expiry: max_pain, top OI strikes [strike, coins]; dvol = Deribit vol index (last, 7d chg pts, 30d min/max)",
+ "onchain": "Coin Metrics community, daily, latest days may be 'flash' (preliminary): mvrv (market/realized cap), active_addr, ex_netflow_musd (exchange inflow-outflow USD m; + = net to exchanges), ex_supply_chg_pct",
+ "orderbook": "Binance book at snapshot time (~20 min after asof): bands_musd {pct: [bid_usd_m, ask_usd_m]} within +-pct of mid, null = book depth did not reach (see reach_pct; futures REST <=1000 levels); walls_bid/ask = largest [bucket_price, usd_m] in ~0.1% buckets within 5%",
+ "recorded": "from our own recorders (kayit/), 'insufficient history' until enough coverage. liq_clusters: observed Binance USD-M liquidations, longs_liq = SELL orders (longs liquidated), shorts_liq = BUY; top = [bucket_price, usd_m, n]; stream sends max 1/sec/symbol so totals are a lower bound. depth_heatmap: 24h avg resting spot+futures liquidity, buckets >1 bucket (~0.5%) away from price [bucket_price, avg_usd_m, persist_pct = share of 5-min samples >=2x median bucket]; futures book reaches only ~0.3% (BTC)/0.8% (ETH), far buckets are spot",
+ "macro.stablecoin_supply": "DefiLlama total stablecoin circulation, USD bn, 7d/30d % change",
+ "macro.extra": "ndx, usdjpy, move (Yahoo; ^MOVE), hy_oas_pct (FRED BAMLH0A0HYM2, ICE BofA US HY OAS %), btc_corr rows [vs, corr 30 obs, corr 90 obs, break] on BTC daily vs US daily returns (us10y: level change), stress.everything_down and stress.corr_break (|c30-c90|>0.4 or sign flip with both |c|>=0.1); thresholds in ofis-ayar.json veri"
+}

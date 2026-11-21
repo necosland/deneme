@@ -1,0 +1,43 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-10-11 00:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "0 valid votes: all 7 experts flat/none. No open position or pending order. R3 needs 2 same-direction votes, so no open. makro CONTEXT against-long is noted but has no effect without a trade.",
+   "neco_tr": "BTC'de bütün uzmanlar işlem yok dedi, geçerli oy çıkmadı; bu yüzden yeni işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-10-11 00:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "0 valid votes: all 7 experts flat/none. No open position or pending order. R3 needs 2 same-direction votes, so no open. turev and makro both tag CONTEXT against-long (R6), which only caps long risk and adds no vote.",
+   "neco_tr": "ETH'de bütün uzmanlar işlem yok dedi, geçerli oy çıkmadı; bu yüzden yeni işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

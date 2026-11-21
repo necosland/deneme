@@ -1,0 +1,9 @@
+REPLAY TEST (paper research): this is a past market moment. All dates are shifted by a whole number of weeks (weekday and hour kept); prices and symbols are real. Use only the files given, not any memory of market history. Answer in your usual decision schema (decision, asof_utc = SNAPSHOT asof_utc, ...), exactly as in a live round.
+EXPERTS=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R29\experts.json
+SNAPSHOT=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R29\view_risk.json
+GUNDEM=none
+OPEN=none
+LEDGER=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R29\ledger.json
+SCORES=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R29\scores.json
+LIMITS=start_equity_usdt=10000 risk_pct_default=1.0 risk_pct_max=1.0 risk_pct_counter_regime=0.5 max_open_risk_pct=3.0 max_same_dir_alts=2 max_net_beta_risk_pct=3.0 max_positions_per_asset=1 max_leverage=2.0 min_confidence=55 max_confidence=80 min_rr_t1=1.5 min_stop_atr4h=0.5 event_blackout_h=12 fee_taker=0.0005 fee_maker=0.0002 slippage=0.0005 t1_close_fraction=0.5 pending_order_expiry_runs=1 min_ev_r=0.15 min_votes=2 min_votes_counter_regime=3 macro_vote_max_age_h=12 level_tol_pct=0.1 level_tol_atr4h=0.1 min_stop_pct=0.0 entry_max_atr4h=2.0 max_stops_per_day=2 dd_halving_pct=10.0 min_room_pct=0.25 default_horizon_h=72
+ASSETS=BTCUSDT,ETHUSDT. Follow your agent instructions. Your final message must be only the ```json array (one decision per asset).

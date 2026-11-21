@@ -1,0 +1,41 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-07-07 16:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "Only trader-likidite gave a perp short (conf 42 < min_confidence 55), so it is not a valid vote. The other 5 blocks are flat. 0 valid votes, R3 needs 2.",
+   "neco_tr": "BTC'de tek uzman short dedi ama güveni %42 ile eşiğin altında kaldı, diğerleri beklemede; işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-07-07 16:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "All 6 expert blocks are flat. trader-likidite's short setup has R:R 1.1-1.39, below min_rr_t1 1.5, and it was already withdrawn. 0 valid votes, R3 fails.",
+   "neco_tr": "ETH'de tüm uzmanlar beklemede ve tek short fikrinin kazanç/risk oranı yetersiz; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

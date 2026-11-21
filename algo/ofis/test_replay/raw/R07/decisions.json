@@ -1,0 +1,42 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-07-16 04:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R4-regime"
+   ],
+   "reason": "0 valid votes. Only trader-seviye proposed a long (breakout_retest), but confidence 35 < min_confidence 55, so it is not a vote (R1). R3 needs 2 same-direction votes. Regime is short (BTC below SMA200), so a long would also need 3 votes (R4). All other experts are flat.",
+   "neco_tr": "BTC'de tek uzman alım önerdi ama güveni çok düşüktü; ikinci oy olmadığı için işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-07-16 04:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support"
+   ],
+   "reason": "0 valid votes. All 6 experts are flat (likidite: sweep with no CHoCH; elliott: rr_t1 1.21 < 1.5; seviye: no breakout). R3 needs 2 same-direction votes.",
+   "neco_tr": "ETH'de hiçbir uzman işlem önermedi; kurallar gereği işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

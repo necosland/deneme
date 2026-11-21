@@ -1,0 +1,43 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-08-06 08:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R5-event"
+   ],
+   "reason": "0 valid votes: all 7 blocks flat/none. R3 unmet (needs 2 same-side votes). R5: CPI 2031-08-06 12:30 is 4.5h away, inside 12h blackout, and fresh blocks tagged event-risk. No open position.",
+   "neco_tr": "BTC'de hiçbir uzman yön vermedi ve 4,5 saat sonra enflasyon verisi (CPI) açıklanacak; işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-08-06 08:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R5-event"
+   ],
+   "reason": "0 valid votes: all 7 blocks flat/none. R3 unmet (needs 2 same-side votes). R5: CPI 2031-08-06 12:30 is inside 12h blackout, and fresh blocks tagged event-risk. No open position.",
+   "neco_tr": "ETH'de hiçbir uzman yön vermedi ve 4,5 saat sonra enflasyon verisi (CPI) açıklanacak; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

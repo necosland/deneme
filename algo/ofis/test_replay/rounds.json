@@ -1,0 +1,321 @@
+{
+ "order": [
+  "R00",
+  "R22",
+  "R11",
+  "R33",
+  "R05",
+  "R28",
+  "R16",
+  "R39",
+  "R02",
+  "R25",
+  "R14",
+  "R36",
+  "R08",
+  "R30",
+  "R19",
+  "R42",
+  "R01",
+  "R23",
+  "R12",
+  "R35",
+  "R07",
+  "R29",
+  "R18",
+  "R40",
+  "R04",
+  "R26",
+  "R15",
+  "R37",
+  "R09",
+  "R32",
+  "R21",
+  "R43",
+  "R34",
+  "R06",
+  "R17",
+  "R03",
+  "R31",
+  "R20",
+  "R24",
+  "R13",
+  "R41",
+  "R27",
+  "R38",
+  "R10",
+  "R44"
+ ],
+ "slots": {
+  "R00": {
+   "slot": 0,
+   "asof": "2026-07-01 00:00",
+   "btc_ret20d_pct": -4.69,
+   "regime": "range"
+  },
+  "R01": {
+   "slot": 1,
+   "asof": "2026-07-04 04:00",
+   "btc_ret20d_pct": -2.91,
+   "regime": "range"
+  },
+  "R02": {
+   "slot": 2,
+   "asof": "2026-07-07 08:00",
+   "btc_ret20d_pct": -2.49,
+   "regime": "range"
+  },
+  "R03": {
+   "slot": 3,
+   "asof": "2026-07-10 12:00",
+   "btc_ret20d_pct": -0.49,
+   "regime": "range"
+  },
+  "R04": {
+   "slot": 4,
+   "asof": "2026-07-13 16:00",
+   "btc_ret20d_pct": -0.37,
+   "regime": "range"
+  },
+  "R05": {
+   "slot": 5,
+   "asof": "2026-07-16 20:00",
+   "btc_ret20d_pct": 8.3,
+   "regime": "trend-up"
+  },
+  "R06": {
+   "slot": 6,
+   "asof": "2026-07-19 00:00",
+   "btc_ret20d_pct": 8.82,
+   "regime": "trend-up"
+  },
+  "R07": {
+   "slot": 7,
+   "asof": "2026-07-22 04:00",
+   "btc_ret20d_pct": 10.88,
+   "regime": "trend-up"
+  },
+  "R08": {
+   "slot": 8,
+   "asof": "2026-07-25 08:00",
+   "btc_ret20d_pct": 1.58,
+   "regime": "range"
+  },
+  "R09": {
+   "slot": 9,
+   "asof": "2026-07-28 12:00",
+   "btc_ret20d_pct": 0.62,
+   "regime": "range"
+  },
+  "R10": {
+   "slot": 10,
+   "asof": "2026-07-31 16:00",
+   "btc_ret20d_pct": 0.96,
+   "regime": "range"
+  },
+  "R11": {
+   "slot": 11,
+   "asof": "2026-08-03 20:00",
+   "btc_ret20d_pct": 1.98,
+   "regime": "range"
+  },
+  "R12": {
+   "slot": 12,
+   "asof": "2026-08-06 00:00",
+   "btc_ret20d_pct": 1.31,
+   "regime": "range"
+  },
+  "R13": {
+   "slot": 13,
+   "asof": "2026-08-09 04:00",
+   "btc_ret20d_pct": 0.37,
+   "regime": "range"
+  },
+  "R14": {
+   "slot": 14,
+   "asof": "2026-08-12 08:00",
+   "btc_ret20d_pct": -3.8,
+   "regime": "range"
+  },
+  "R15": {
+   "slot": 15,
+   "asof": "2026-08-15 12:00",
+   "btc_ret20d_pct": -2.07,
+   "regime": "range"
+  },
+  "R16": {
+   "slot": 16,
+   "asof": "2026-08-18 16:00",
+   "btc_ret20d_pct": 0.97,
+   "regime": "range"
+  },
+  "R17": {
+   "slot": 17,
+   "asof": "2026-08-21 20:00",
+   "btc_ret20d_pct": 16.12,
+   "regime": "trend-up"
+  },
+  "R18": {
+   "slot": 18,
+   "asof": "2026-08-24 00:00",
+   "btc_ret20d_pct": 22.38,
+   "regime": "trend-up"
+  },
+  "R19": {
+   "slot": 19,
+   "asof": "2026-08-27 04:00",
+   "btc_ret20d_pct": 22.85,
+   "regime": "trend-up"
+  },
+  "R20": {
+   "slot": 20,
+   "asof": "2026-08-30 08:00",
+   "btc_ret20d_pct": 20.54,
+   "regime": "trend-up"
+  },
+  "R21": {
+   "slot": 21,
+   "asof": "2026-09-02 12:00",
+   "btc_ret20d_pct": 21.99,
+   "regime": "trend-up"
+  },
+  "R22": {
+   "slot": 22,
+   "asof": "2026-09-05 16:00",
+   "btc_ret20d_pct": 26.27,
+   "regime": "trend-up"
+  },
+  "R23": {
+   "slot": 23,
+   "asof": "2026-09-08 20:00",
+   "btc_ret20d_pct": 22.23,
+   "regime": "trend-up"
+  },
+  "R24": {
+   "slot": 24,
+   "asof": "2026-09-11 00:00",
+   "btc_ret20d_pct": -2.26,
+   "regime": "range"
+  },
+  "R25": {
+   "slot": 25,
+   "asof": "2026-09-14 04:00",
+   "btc_ret20d_pct": -2.72,
+   "regime": "range"
+  },
+  "R26": {
+   "slot": 26,
+   "asof": "2026-09-17 08:00",
+   "btc_ret20d_pct": -5.04,
+   "regime": "range"
+  },
+  "R27": {
+   "slot": 27,
+   "asof": "2026-09-20 12:00",
+   "btc_ret20d_pct": 4.59,
+   "regime": "range"
+  },
+  "R28": {
+   "slot": 28,
+   "asof": "2026-09-23 16:00",
+   "btc_ret20d_pct": 11.47,
+   "regime": "trend-up"
+  },
+  "R29": {
+   "slot": 29,
+   "asof": "2026-09-26 20:00",
+   "btc_ret20d_pct": 5.35,
+   "regime": "range"
+  },
+  "R30": {
+   "slot": 30,
+   "asof": "2026-09-29 00:00",
+   "btc_ret20d_pct": 6.43,
+   "regime": "range"
+  },
+  "R31": {
+   "slot": 31,
+   "asof": "2026-10-02 04:00",
+   "btc_ret20d_pct": 9.91,
+   "regime": "trend-up"
+  },
+  "R32": {
+   "slot": 32,
+   "asof": "2026-10-05 08:00",
+   "btc_ret20d_pct": 10.67,
+   "regime": "trend-up"
+  },
+  "R33": {
+   "slot": 33,
+   "asof": "2026-10-08 12:00",
+   "btc_ret20d_pct": 9.04,
+   "regime": "trend-up"
+  },
+  "R34": {
+   "slot": 34,
+   "asof": "2026-10-11 16:00",
+   "btc_ret20d_pct": 2.23,
+   "regime": "range"
+  },
+  "R35": {
+   "slot": 35,
+   "asof": "2026-10-14 20:00",
+   "btc_ret20d_pct": -1.46,
+   "regime": "range"
+  },
+  "R36": {
+   "slot": 36,
+   "asof": "2026-10-17 00:00",
+   "btc_ret20d_pct": -3.34,
+   "regime": "range"
+  },
+  "R37": {
+   "slot": 37,
+   "asof": "2026-10-20 04:00",
+   "btc_ret20d_pct": -2.06,
+   "regime": "range"
+  },
+  "R38": {
+   "slot": 38,
+   "asof": "2026-10-23 08:00",
+   "btc_ret20d_pct": -3.67,
+   "regime": "range"
+  },
+  "R39": {
+   "slot": 39,
+   "asof": "2026-10-26 12:00",
+   "btc_ret20d_pct": -6.54,
+   "regime": "range"
+  },
+  "R40": {
+   "slot": 40,
+   "asof": "2026-10-29 16:00",
+   "btc_ret20d_pct": -0.5,
+   "regime": "range"
+  },
+  "R41": {
+   "slot": 41,
+   "asof": "2026-11-01 20:00",
+   "btc_ret20d_pct": -7.39,
+   "regime": "trend-down"
+  },
+  "R42": {
+   "slot": 42,
+   "asof": "2026-11-04 00:00",
+   "btc_ret20d_pct": -5.18,
+   "regime": "range"
+  },
+  "R43": {
+   "slot": 43,
+   "asof": "2026-11-07 04:00",
+   "btc_ret20d_pct": -6.93,
+   "regime": "range"
+  },
+  "R44": {
+   "slot": 44,
+   "asof": "2026-11-10 08:00",
+   "btc_ret20d_pct": -9.23,
+   "regime": "trend-down"
+  }
+ }
+}

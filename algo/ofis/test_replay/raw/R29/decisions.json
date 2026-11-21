@@ -1,0 +1,59 @@
+{
+ "decisions": [
+  {
+   "asof_utc": "2031-09-20 20:00",
+   "asset": "BTCUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [
+    "trader-likidite",
+    "trader-elliott",
+    "trader-seviye",
+    "trader-turev",
+    "trader-makro",
+    "trader-senaryo",
+    "trader-harmonik"
+   ],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "0 valid long/short votes: all 7 expert blocks are flat/none (harmonik AUTO). R3 needs >=2 same-direction votes. Makro flat block has CONTEXT: against-long, which would cap long risk at default, but there is no setup. No open position, no pending order.",
+   "neco_tr": "BTC'de hiçbir uzman alım ya da satım demedi, fiyat dar aralığın ortasında; işlem açılmadı."
+  },
+  {
+   "asof_utc": "2031-09-20 20:00",
+   "asset": "ETHUSDT",
+   "decision": "none",
+   "side": null,
+   "entry": null,
+   "stop": null,
+   "targets": [],
+   "risk_pct": 0,
+   "supporting": [
+    "trader-likidite",
+    "trader-elliott",
+    "trader-seviye",
+    "trader-turev",
+    "trader-makro",
+    "trader-senaryo",
+    "trader-harmonik"
+   ],
+   "opposing": [],
+   "rule_hits": [
+    "R1-valid",
+    "R3-support",
+    "R6-context"
+   ],
+   "reason": "0 valid long/short votes: all 7 expert blocks are flat/none (harmonik AUTO); seviye and senaryo cite R:R ~1.0-1.2 < 1.5 at current price. R3 needs >=2 same-direction votes. Makro flat block has CONTEXT: against-long. No open position, no pending order.",
+   "neco_tr": "ETH'de hiçbir uzman yön vermedi, ulaşılabilir hedef riske göre yetersiz kaldı; işlem açılmadı."
+  }
+ ],
+ "errors": []
+}

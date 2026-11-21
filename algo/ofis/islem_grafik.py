@@ -310,22 +310,23 @@ DATA.forEach(function(d){
           if(!cur.length)return;var ctx=sc.context,hr=sc.horizontalPixelRatio,vr=sc.verticalPixelRatio;
           function snap(t){var r=cur[0];for(var j=0;j<cur.length;j++){if(cur[j]<=t)r=cur[j]}return r}
           var xa=me.c.timeScale().timeToCoordinate(snap(K.t0));
-          var xb=me.c.timeScale().timeToCoordinate(K.t1?snap(K.t1):cur[cur.length-1]);
+          var xb=K.t1?me.c.timeScale().timeToCoordinate(snap(K.t1)):me.c.timeScale().logicalToCoordinate(cur.length-1+12);
           if(xa===null||xb===null)return;
-          xb=xb+6;if(xb-xa<4)xb=xa+4;
+          if(K.t1)xb=xb+6;var mw=5*me.c.timeScale().options().barSpacing;if(xb-xa<mw)xb=xa+mw;
           function y(p){var v=me.s.priceToCoordinate(p);return v===null?null:v*vr}
           var ye=y(K.e),ys=y(K.stop),y1=y(K.h1),y2=K.h2===null?null:y(K.h2);
           if(ye===null||ys===null||y1===null)return;
           var x0=Math.max(xa*hr,0),w=xb*hr-x0;
-          function box(ya,yb,col){ctx.fillStyle=col;ctx.fillRect(x0,Math.min(ya,yb),w,Math.abs(yb-ya))}
-          box(ye,y1,'rgba(34,197,94,0.16)');
-          if(y2!==null)box(y1,y2,'rgba(34,197,94,0.08)');
-          box(ye,ys,'rgba(239,68,68,0.18)');
-          if(w<110*hr)return;
+          function box(ya,yb,col,line){var yt=Math.min(ya,yb),hh=Math.abs(yb-ya);ctx.fillStyle=col;ctx.fillRect(x0,yt,w,hh);
+            if(line){ctx.strokeStyle=line;ctx.lineWidth=Math.max(1,Math.round(hr));ctx.strokeRect(x0+0.5,yt+0.5,w-1,hh-1)}}
+          box(ye,y1,'rgba(34,197,94,0.22)','rgba(34,197,94,0.6)');
+          if(y2!==null)box(y1,y2,'rgba(34,197,94,0.11)','rgba(34,197,94,0.35)');
+          box(ye,ys,'rgba(239,68,68,0.22)','rgba(239,68,68,0.6)');
+          if(w<90*hr)return;
           ctx.font=Math.round(11*hr)+'px system-ui,Arial';ctx.textBaseline='middle';
-          var tx=x0+4*hr;
-          ctx.fillStyle='#bbf7d0';var gy=(ye+y1)/2;ctx.fillText(K.yaz_g,tx,gy-7*vr);ctx.fillText(K.yaz_g2,tx,gy+7*vr);
-          ctx.fillStyle='#fecaca';ctx.fillText(K.yaz_k,tx,(ye+ys)/2);
+          ctx.textAlign='center';var tx=x0+w*0.6;
+          ctx.fillStyle='#dcfce7';var gy=(ye+y1)/2;ctx.fillText(K.yaz_g,tx,gy-7*vr);ctx.fillText(K.yaz_g2,tx,gy+7*vr);
+          ctx.fillStyle='#fee2e2';ctx.fillText(K.yaz_k,tx,(ye+ys)/2);
         })}}}}]}};
     s.attachPrimitive(prim);d._prim=prim}
   function goster(k){
@@ -333,13 +334,13 @@ DATA.forEach(function(d){
     s.setData(m.map(function(x){return{time:x[0],open:x[1],high:x[2],low:x[3],close:x[4]}}));
     var ts=m.map(function(x){return x[0]});cur=ts;
     var mk=d.isaret.map(function(i){var t=ts[0];for(var j=0;j<ts.length;j++){if(ts[j]<=i[0])t=ts[j]}
-      return{time:t,position:'atPriceMiddle',price:i[3],color:i[2],shape:'circle',size:0.5,text:i[1]}});
+      return{time:t,position:'atPriceMiddle',price:i[3],color:i[2],shape:'circle',size:0.5}});
     mk.sort(function(a,b){return a.time-b.time});
     mp.setMarkers(mk);
-    if(d.kutu){var n=ts.length,last=ts[n-1],st=n>1?last-ts[n-2]:3600,K2=d.kutu;
-      var en=K2.t1?Math.min(K2.t1,last):last;
-      var fr=Math.max(ts[0],K2.t0-Math.max(40*3600,2*(en-K2.t0)));
-      try{chart.timeScale().setVisibleRange({from:fr,to:last+st*3})}catch(e){chart.timeScale().fitContent()}
+    if(d.kutu){var n=ts.length,K2=d.kutu,to;
+      if(K2.t1){var sn=ts[0];for(var q=0;q<n;q++){if(ts[q]<=K2.t1)sn=ts[q]}to=Math.min(ts.indexOf(sn)+10,n-1+3)}
+      else to=n-1+14;
+      try{chart.timeScale().setVisibleLogicalRange({from:-1,to:to})}catch(e){chart.timeScale().fitContent()}
     }else chart.timeScale().fitContent();if(d._prim)d._prim.up();
   }
   goster('4s');
@@ -369,7 +370,7 @@ def main():
             f'<meta name="viewport" content="width=device-width,initial-scale=1"><title>Trader ofisi işlemleri</title>'
             f'<style>{CSS}</style></head><body><h1>Trader ofisi: sahte para işlemleri</h1>'
             f'<div class="ozet">{ozet(liste, sonuclar)}</div><div class="son">Son güncelleme: {gun} (TR saati). '
-            f'Turuncu çizgi giriş, kırmızı stop, yeşil H1/H2 hedef. R: riske göre kazanç (1 R = riske edilen tutar).</div>'
+            f'Turuncu çizgi giriş, kırmızı stop, yeşil H1/H2 hedef. Noktalar: mavi emir, turuncu dolum, mor çıkış. R: riske göre kazanç (1 R = riske edilen tutar).</div>'
             f'{bos}<div class="izgara">{"".join(kartlar)}</div>'
             f'<script src="{LIB}"></script><script>{JS.replace("__DATA__", data)}</script></body></html>')
     tmp = OUT.with_suffix(".html.tmp")

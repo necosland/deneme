@@ -1,0 +1,204 @@
+{
+ "asof_shifted": "2031-07-13 00:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-13 00:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; watch a 4h/1h rejection candle (wick above 64,700-65,600, close back inside) for range_edge_fade, or a 4h close above 66,160 with volume of at least 240...",
+    "confidence": 62,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 64,834 is at the top of the 61,825-65,600 range (PWH 64,700, 4h LH 64,693, HH 65,600, R1 day 65,171). The last 4h candle closed on its high with 1h RSI 78: no rejection candle, first touch wi...",
+     "Fade would need stop above 65,600+169 = 65,769 against entry near 65,100, so risk is about 670; T1 at the 64,063 POC is only about 1.5R and a long-term downtrend (below SMA200 1d) already limits fa...",
+     "Breakout not confirmed: no 4h close above 65,600 + 0.5xATR (about 65,881) and no volume of at least 1.5x160 = 240 musd (last 4h 106 musd)."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/0 cut 216->200",
+    "rationale/1 cut 217->200",
+    "invalidation cut"
+   ],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-13 00:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; reassess at a 4h close below 1,803 (HL) or a rejection wick at 1,946 (HH) / 1d vah zone 1,894-1,905 (4h bear FVG)",
+    "confidence": 62,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 1,862.6 is mid-range between the 1,803 HL and 1,946.5 HH, with the day pivot 1,855.9 and the 1,861.6 LVN (1d_180d) overlapping it. There is no zone edge and no rejection candle.",
+     "Long to the 1,894-1,905 bear FVG gives under 1.5R from here, and the stop would have to sit below the 1,803 HL (about 60 away, more than 2.5 ATR4h). Below SMA200 1d, so no trend alignment."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-13 00:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "long",
+    "timeframe": "4h",
+    "setup": "close_beyond",
+    "entry": {
+     "type": "limit",
+     "price": 64700
+    },
+    "stop": 64380,
+    "targets": [
+     65590,
+     65762
+    ],
+    "invalidation": "4h close back below 64,700 (old 4h HH / prev-week high) before fill, or 4h close below 64,380 after fill",
+    "confidence": 45,
+    "horizon_h": 48,
+    "rationale": [
+     "Bull: 4h close>64,700 (done, 64,834) → 65,590/65,762 | Bear: 4h close<64,380 → 63,884, then 62,538",
+     "Trigger close_beyond: 4h 20:00 close 64,834 > 64,700 (4h HH pivot 2031-06-30 and prev-week high). Retest limit at 64,700; stop 0.57 ATR4h below. T1 just under EQH 65,623; T2 low_400d b2 65,762. RR ...",
+     "Counter-trend: below SMA200 1d, price under EMA50 1d 65,045, 1h RSI 78 so a pullback entry is preferred over chasing. OI 7d +0.9%, no crowding. Close is only 134 above the level, so conf is capped."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT=none: break rule not checkable"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 201->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-13 00:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 24,
+    "rationale": [
+     "Bull: 4h close>1,905 (above 4h bear FVG 1,894-1,905) → 1,946.5 | Bear: 4h close<1,803 (4h HL) → 1,750 / 1,713",
+     "Price 1,862.6 sits mid-range between 1,803 and 1,946.5, on the 1d LVN 1,861.6. The last closed 4h has no trigger; the close above PWH 1,833 is stale and 4h candles are narrow with no acceptance setup.",
+     "A long to 1,946.5 would be only ~3.8 ATR4h away but has no fresh trigger, and the 1d trend is still below SMA200 2,190. Wait for a close beyond one of the edges."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT=none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-13 00:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "1d last 4 pivots HH 82,850 / LL 59,131 / LH 67,292 / LL 57,800 are mixed, so there is no 1d direction.",
+     "No sweep in the last 6 4h or 12 1h candles. The 1h 62,538 low (07-11 13:00) was a wick sweep but is outside the window, so no CHoCH setup.",
+     "Price 64,834 sits just under PWH 64,700 / 4h EQH 65,623 and above POC 64,063. It is mid-range, so there is no edge."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-13 00:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "1d last 4 pivots HH 2,464.9 / LL 1,505.7 / LH 1,849.5 / HL 1,512 are mixed, so there is no 1d direction.",
+     "The 1h 1,803 low (07-11 13:00) has no wick-sweep time and no CHoCH confirmed. The 1h LH 1,856.2 close-beyond at 07-12 18:00 follows no sweep of a pre-existing pool.",
+     "Price 1,862.6 sits between 4h EQL 1,748.8 and 4h bear FVG 1,894.4-1,905. It is mid-range, so there is no setup."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

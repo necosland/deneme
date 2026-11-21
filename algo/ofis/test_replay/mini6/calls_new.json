@@ -1,0 +1,290 @@
+[
+ {
+  "round": "R17",
+  "agent": "trader-likidite",
+  "cost_usd": 0.16255740000000002,
+  "secs": 68,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R19",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.16007960000000002,
+  "secs": 68,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R19",
+  "agent": "trader-likidite",
+  "cost_usd": 0.1716356,
+  "secs": 69,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R06",
+  "agent": "trader-likidite",
+  "cost_usd": 0.1603674,
+  "secs": 72,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R19",
+  "agent": "trader-seviye",
+  "cost_usd": 0.1613396,
+  "secs": 73,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R06",
+  "agent": "trader-seviye",
+  "cost_usd": 0.1617616,
+  "secs": 73,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R17",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.1624788,
+  "secs": 74,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R06",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.166081,
+  "secs": 76,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R33",
+  "agent": "trader-likidite",
+  "cost_usd": 0.16718660000000002,
+  "secs": 77,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R17",
+  "agent": "trader-seviye",
+  "cost_usd": 0.17005900000000002,
+  "secs": 79,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R33",
+  "agent": "trader-seviye",
+  "cost_usd": 0.17169059999999997,
+  "secs": 82,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R33",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.1766898,
+  "secs": 82,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:55"
+ },
+ {
+  "round": "R40",
+  "agent": "trader-seviye",
+  "cost_usd": 0.15151920000000002,
+  "secs": 72,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R40",
+  "agent": "trader-likidite",
+  "cost_usd": 0.16927779999999998,
+  "secs": 74,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R04",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.1653524,
+  "secs": 75,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R12",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.16749340000000001,
+  "secs": 76,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R12",
+  "agent": "trader-seviye",
+  "cost_usd": 0.1613406,
+  "secs": 76,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R12",
+  "agent": "trader-likidite",
+  "cost_usd": 0.16281439999999997,
+  "secs": 76,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R35",
+  "agent": "trader-likidite",
+  "cost_usd": 0.16104000000000002,
+  "secs": 76,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R04",
+  "agent": "trader-seviye",
+  "cost_usd": 0.1553778,
+  "secs": 77,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R40",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.1759106,
+  "secs": 86,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R35",
+  "agent": "trader-senaryo",
+  "cost_usd": 0.1816758,
+  "secs": 89,
+  "turns": 10,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R04",
+  "agent": "trader-likidite",
+  "cost_usd": 0.1799498,
+  "secs": 90,
+  "turns": 11,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ },
+ {
+  "round": "R35",
+  "agent": "trader-seviye",
+  "cost_usd": 0.1837242,
+  "secs": 96,
+  "turns": 9,
+  "models": [
+   "claude-sonnet-5-5"
+  ],
+  "error": null,
+  "utc": "2026-11-21 08:56"
+ }
+]

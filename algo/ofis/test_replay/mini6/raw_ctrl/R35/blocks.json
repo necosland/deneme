@@ -1,0 +1,196 @@
+{
+ "asof_shifted": "2031-10-08 20:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: long only after 4h/1h rejection candle at 81,034-80,394 support; short only after 4h close below 80,394 with volume above 202.6 musd",
+    "confidence": 60,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 81,841 sits between support 81,034/80,394 (prev-day low, prev-week low, week S1 80,445) and resistance 82,790-82,874 (day P, 4h VAH). Lower edge is 807 away with no rejection candle yet.",
+     "Range lower side has only one touch inside the last 30 candles (81,034), so the range definition fails. A break below 81,034 is not a 4h close, so there is no breakout_retest."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: long fade only after a 4h/1h wick below 2,409 that closes back above it; short only after a 4h close below 2,380 with volume above 113.8 musd",
+    "confidence": 58,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 2,431 is 22 above the range low 2,409-2,406 (EQL x3, prev-week low). The 4h wick low was 2,413.5, which did not pierce the edge, so there is no rejection candle. The 1d trend is down (below E...",
+     "Range lower edge is fadeable only with a rejection candle. Equal lows at 2,406 are a liquidity pool and a target only, not a basis for entry. The breakdown has no 4h close beyond 0.5 ATR, so no bre..."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/0 cut 239->200",
+    "rationale/1 cut 210->200"
+   ],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: flat until a 4h close beyond 84,168 (bull) or below 80,394 (bear)",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>84,168 (LH, FVG 84,379-85,347) → 85,925 (day R2) / 87,050 | Bear: 4h close<80,394 (PWL, 1d leg low) → 77,116 (week S2) / 74,968 (1d HL)",
+     "Last closed 4h 81,841 is inside 80,394-84,168: no close_beyond, no sweep_reclaim (low 81,514 did not reach 80,394), no acceptance (the 12:00 bar was a 591M-vol drop). A short from here sits only ~1...",
+     "CPI printed 12:30, inside event_blackout_h of 12 → no new opens. 1d still above SMA200 72,167; OI 7d -4.6%, 24h -2.6%, funding slightly negative: no OI filter hit but no setup either."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable",
+     "CPI forecast/previous absent"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 231->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: flat until a 4h close beyond 2,538.5 (bull) or below 2,405.8 (bear)",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>2,538.5 (4h LH; also above 1h_30d VAL 2,529) → 2,580 (LH) / 2,623-2,690 (FVG) | Bear: 4h close<2,405.8 (EQL/PWL 2,406.1) → 2,356 (prev month low) / 2,352 (day S2)",
+     "Last closed 4h 2,431 is 25 pts (<1 ATR 38.7) above the EQL 2,405.8: the wick low 2,413.5 did not sweep it and there is no close beyond. A short would have T1 at under 1 ATR from the entry.",
+     "CPI printed 12:30, inside the 12h blackout → no new opens. 4h RSI 34.6, below 4h POC 2,482 and ath_400d/rolling_365d AVWAPs; 1d still above SMA200 2,139. OI 24h +0.5%, 7d -6.3%: filter not hit."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable",
+     "CPI forecast/previous absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "1d up (HL/HH/HL/HH), but no sweep: 4h leg low 81,514 (17:00) is above the 80,394 PWL/4h LL pool; no wick sweep, no 1h CHoCH close.",
+     "Price 81,841 sits between PWL 80,394 and 1h LH 84,147; open bear FVGs 82,092-82,324 and 83,103-83,338 overhead; bos_continuation not met."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "1d up (HL/HH/HL/HH), but the EQL pool 2,406.1 is untaken: leg low 2,413.5 (14:00) stopped 7 above it; no sweep, no 1h CHoCH close.",
+     "Price 2,431 is between EQL 2,406 and 1h LH 2,530.4; bear FVGs 2,453.4-2,479.3 open above; no setup condition is complete."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

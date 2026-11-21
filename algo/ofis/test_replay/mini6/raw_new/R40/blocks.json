@@ -1,0 +1,196 @@
+{
+ "asof_shifted": "2031-10-23 16:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-23 16:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "Price 81,778 is mid-range (79,221-84,898 weekly span). Short-term range 79,369-81,900 is 2.9x ATR4h, under the 3x rule, so no range_edge_fade. 4h EMA20 80,708 < EMA50 81,011: no trend, no market se...",
+     "Resistance cluster 81,823 (prev day high) / 81,979 (R1) / 81,701 (1h POC) is not a confirmed rejection. The last 4h close is bullish at 81,778 and no breakout close above 81,823+0.5xATR (82,258) ex...",
+     "Break-and-retest of 82,258 would be next. Support: 79,221 prev week low; 80,186 HVN."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/0 cut 201->200",
+    "rationale/1 cut 206->200"
+   ],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-23 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "Price 2,369 sits just under EQH 2,391.6 / prev day high. Range 2,293-2,392 is 98 wide = 2.8x ATR4h (35.2), under the 3x rule, so no range_edge_fade.",
+     "4h EMA20 2,343 < EMA50 2,363.8 and last 4h pivots LL/HH mix: no trend, no market setup. 4h close 2,369 is below the avwap 1d pivot-H b1 lower band 2,417.",
+     "No breakout close yet. A 4h close above 2,391.6+17.6=2,409 would be a retest candidate; first obstacle is the 4h bear FVG 2,417.8-2,426.2."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-23 16:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 62,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>81,900 (wick high above 81,823 HH) → 83,346 (AVWAP pivot-H) then 84,898 PWH | Bear: 4h close<79,710 (4h HL) → 79,221 PWL then 77,951 wk S1",
+     "Last 4h (12:00) wicked 81,900 past 81,823 and closed 81,778: a marginal sweep_reclaim. Stop needs >=435 (0.5 ATR), ~82,215. Net R:R to 80,397 is ~3, but P(T1 first) ~28% minus cost gives EV ~0. Skip.",
+     "Close is at the bar high after +1.9%, price above 4h EMA20/50 and 1d AVWAP ath_400d 80,024; a short is counter-momentum. FOMC was 22h ago, no blackout. Mid-range 79,221-84,898: wait for a clean tri..."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule unchecked"
+    ]
+   },
+   "normalized": [
+    "rationale/2 cut 202->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-23 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>2,391.6 (EQH, 4h/1h) → 2,476.8 (wk R1) then 2,526.6 PWH | Bear: 4h close<2,293.4 (4h LL, EQL 2,293.1) → 2,282.5 PWL then 2,232.7 wk S1",
+     "Last 4h close 2,369.1 sits between EQL 2,293 and EQH 2,391.6; neither was swept or closed beyond. No close_beyond, sweep_reclaim or acceptance trigger (the last 4h bar was wide).",
+     "1d RSI 38.9, below EMA20/50 1d (2,425/2,451), below AVWAP rolling_365d 2,447; 4h above EMA20/50 2,343/2,364. Mixed regime, mid-range: no edge. FOMC passed 22h ago."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule unchecked"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-23 16:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: after a 1h close below 80,397 (HL 10-22 13:00), re-evaluate a counter-trend short sweep_choch",
+    "confidence": 62,
+    "horizon_h": 8,
+    "rationale": [
+     "1h 15:00 wicked 81,900 above PDH/HH 81,823 and closed 81,778 inside, but no 1h close below the last opposing pivot 80,397 yet: no CHoCH, setup not ready.",
+     "Trend market setup absent: EMA20 4h 80,708 < EMA50 81,011, last 4h pivot HL 79,710 while price is above EMA50. 1d up (HH/HL/HH) so a short is counter-trend, conf ≤58."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-23 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: a 1h wick above EQH 2,391.6 that closes back inside would open a short sweep_choch watch",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Price 2,369.1 sits between EQL 2,293.1/2,293.4 and EQH 2,391.6. Neither pool was swept in the last 6 4h candles (4h high 2,373.0 < 2,391.6; 1h LL 2,293.4 wick sweep reads null).",
+     "Trend market setup absent: 4h EMA20 2,343.0 < EMA50 2,363.8 and no 4h BOS. 1d up but price is mid-range with no sweep or CHoCH."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

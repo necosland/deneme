@@ -1,0 +1,7 @@
+REPLAY TEST (paper research): this is a past market moment. All dates are shifted by a whole number of weeks (weekday and hour kept); prices and symbols are real. Use only the files given, not any memory of market history. Data that cannot be rebuilt for a past moment is absent (order book, our recorded liquidations/depth, options, Bybit, quarterly basis, crypto_global, gundem, headline check): write 'replay: live-only data absent' once in data_gaps instead of listing each.
+SNAPSHOT=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\view_fiyat.json
+CHARTS=BTCUSDT: 1d=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\charts\BTCUSDT_1d.png 4h=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\charts\BTCUSDT_4h.png 1h=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\charts\BTCUSDT_1h.png | ETHUSDT: 1d=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\charts\ETHUSDT_1d.png 4h=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\charts\ETHUSDT_4h.png 1h=C:\Users\pc\algo-deneme\algo\ofis\test_replay\rounds\R33\charts\ETHUSDT_1h.png
+PREV=none
+OPEN=none
+LIMITS=min_rr_t1=1.5 min_stop_atr4h=0.5 max_confidence=80 event_blackout_h=12
+ASSETS=BTCUSDT,ETHUSDT. Follow your agent instructions. Your final message must be only the ```json array (one block per asset). Every field is required (horizon_h too when flat); each rationale item <= 200 chars.

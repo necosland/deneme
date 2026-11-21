@@ -1,0 +1,198 @@
+{
+ "asof_shifted": "2031-07-07 16:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: flat until a 4h/1h rejection candle at the 61,307-61,545 zone, or a 4h close above 64,700 with volume >= 250 musd (1.5x avg20)",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 62,618 sits between the 61,307-61,545 lows and the POC 63,061 / 64,700 PWH; a long from here has no ret candle and a short faces the below-SMA200 regime. No edge in the middle.",
+     "Range definition fails: only one lower touch in the last 30 4h candles (61,545; 61,307 is older), so no range_edge_fade. No breakout: 4h closes are still inside 61,307-64,700.",
+     "CPI m/m 2031-07-08 12:30 is about 20.5h after asof; the low-RSI 4h bounce toward 63,061 is not a tradable edge before the event."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: flat until a rejection candle at 1,713-1,745 (PWL / 4h_all VAL 1,744), or a 4h close above 1,833 with volume >= 92 musd (1.5x avg20)",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 1,777 is mid-structure between the 1,713 PWL / 1,744 VAL support and the 1,830-1,833 highs; the HVN at 1,772 and the 1h_30d POC at 1,765 sit at price, so there is no edge.",
+     "No range: 4h pivot touches in the last 30 candles are only one low (1,713) and one high (1,830), below the two-per-side minimum; no 4h close beyond 1,833, so no breakout_retest.",
+     "CPI m/m 2031-07-08 12:30 is about 20.5h after asof; BTC is below its 1d SMA200, so a long dip-buy would go against the regime."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; flat until a 4h close beyond 64,700 or below 61,307",
+    "confidence": 70,
+    "horizon_h": 24,
+    "rationale": [
+     "Bull: 4h close>64,700 (EQH 64,764/PWH) → 66,067 HVN, then 67,292 | Bear: 4h close<61,307 (PWL/4h HL) → 59,103, then 57,800 LL",
+     "Last closed 4h (12:00) 62,618 is mid-range 61,307-64,700 (4 touches), below 1d SMA200 73,910; no close_beyond, sweep_reclaim or acceptance trigger. Bear FVG 63,070-63,668 overhead.",
+     "Bear 1d structure, low_400d AVWAP 62,545 pinned; OI 7d +1.2% clean; CPI 07-08 12:30 is ~20h out, outside 12h blackout. Range-middle short has no structural stop/T1 fit."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; flat until a 4h close beyond 1,833.4 or below 1,713.4",
+    "confidence": 70,
+    "horizon_h": 24,
+    "rationale": [
+     "Bull: 4h close>1,833.4 (PWH) → 1,849.5 1d LH, then 1,937 LVN | Bear: 4h close<1,713.4 (PWL/4h LL) → 1,685.9 low_400d AVWAP, then 1,606.8 b1",
+     "Last closed 4h 1,777 mid-range 1,713-1,833; the 00:00 spike to 1,846 closed back at 1,780 (a failed breakout, but 4h bear sweep close is below 1,833 with no entry room: stop above 1,846 vs T1 1,713).",
+     "OI 24h -5.95% but price not at a level; ATR4h 25 so short T1 1,713 is ~2.6 ATR away with stop ≥1,850 gives RR<1.5. Below SMA200 1d 2,223; CPI ~20h out."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "1h",
+    "setup": "sweep_choch",
+    "entry": {
+     "type": "limit",
+     "price": 63369
+    },
+    "stop": 64489,
+    "targets": [
+     61307
+    ],
+    "invalidation": "1h close above 64,425 (sweep high) before fill, or 4h close above 64,490",
+    "confidence": 42,
+    "horizon_h": 16,
+    "rationale": [
+     "Pool: prev-day high 64,290. 07-07 00:00 candle wicked to 64,425 (vol 72.7M > 57.1M avg, <1 ATR beyond) and closed 64,072 inside; 4h swept within last 6 candles. UTC 00:00.",
+     "CHoCH: 1h close 63,412 at 07-07 01:00 below LL 63,641/63,702. Entry = mid of 4h bear FVG 63,070-63,668 (07-07 00:00), above 50% of the leg 64,425-62,101 (63,263).",
+     "Stop 64,425 + 0.1*636 = 64,489 (1.76 ATR4h). T1 = EQL/PWL 61,307; RR 1.84. 1d mixed (HH+LL) so counter-trend cap applies. No 1h displacement FVG, -5. CPI 07-08 12:30 is outside the 12h blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "Short sweep_choch exists: PWH 1,833.4 swept 07-07 00:00 (high 1,846, close 1,780.5), 1h CHoCH close below 1,779.5 at 07-07 04:00. 1d is mixed, so the counter-trend cap of 58 applies.",
+     "FVG mid 1,794.5 sits below 50% of the leg 1,846-1,762.4 (1,804.2), so it is on the wrong side for a short. Entry at 1,794.5 to T1 EQL 1,729: RR 1.2 < 1.5.",
+     "Deeper entry 1,804 gives RR ~1.7 but needs a 1.1 ATR4h rally above the 1h FVG and has no structural anchor, so the edge is too thin. Flat."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

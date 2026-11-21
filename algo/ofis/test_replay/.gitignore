@@ -7,3 +7,6 @@ __pycache__/
 raw/*/*.out.json
 raw/*/experts_res.json
 score.log
+mini6/raw_*/*/*.out.json
+mini6/raw_*/*/experts_res.json
+mini6/*.log

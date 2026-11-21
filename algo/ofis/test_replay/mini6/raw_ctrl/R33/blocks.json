@@ -1,0 +1,199 @@
+{
+ "asof_shifted": "2031-10-02 12:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; watch a 4h close below 82,170 (0.5 ATR under 82,563) with qvol >232 musd for a breakdown-retest, or a 4h rejection candle above 82,563",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "Price 82,506 is at the range low (PWL/4h pivot 82,563; range 82,563-87,220, width 4,657 > 3 ATR). The last 4h close is only 57 below it, short of the 0.5 ATR (394) breakout rule.",
+     "The 04:00 4h wick to 82,228 closed back inside, but 08:00 closed at 82,506, below the level again. No clean rejection candle for a fade.",
+     "First touch with strong momentum (4h RSI 29): break and rejection can't be told apart. Breakdown needs a 4h close below ~82,170, or 3 closes below, with volume >1.0x of 232 musd."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; watch a 4h rejection candle at 2,500-2,520 (1h_30d VAL 2,520, HVN 2,507, round 2,500, S1 day 2,508) or a 4h close below 2,475",
+    "confidence": 60,
+    "horizon_h": 8,
+    "rationale": [
+     "Price 2,537 is between the 2,635-2,777 range zone and the 2,476-2,520 support cluster (POC 4h 2,476, HVN 2,480/2,507, VAL 2,520). It is not at an edge and no rejection candle has formed.",
+     "The drop from 2,697 was an impulse with 4h RSI 22.7. A first touch of support in this momentum can't be told apart from a break. A fade long would also go against a 1d that is turning down.",
+     "A fade at the 2,500 cluster needs a 4h or 1h rejection candle; the 4h range is no longer valid because price left it. A break below 2,475 needs a 4h close under 2,455 and volume >136 musd."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "4h",
+    "setup": "close_beyond",
+    "entry": {
+     "type": "limit",
+     "price": 82750
+    },
+    "stop": 83480,
+    "targets": [
+     81091,
+     80097
+    ],
+    "invalidation": "4h close back above 83,283 (1h/4h lower-high) = PWL 82,563 reclaimed and failed breakdown",
+    "confidence": 42,
+    "horizon_h": 48,
+    "rationale": [
+     "Bull: 4h close>83,283 → 84,150 then 85,000 | Bear: 4h close<82,563 → 81,091 then 80,097 (bear already live)",
+     "close_beyond: 4h 08:00 closed 82,506 < prev-week low/4h LL 82,563; limit 82,750 = retest in 1h bear FVG 82,734-82,818. Stop 83,283+0.25*ATR4h(789). T1 day S2 81,091 RR~2.3; T2 AVWAP b1 80,097",
+     "Filters clear: OI 24h -2.5%, 7d -3.2%; no USD event; T1 >1 ATR away. Counter to 1d uptrend (price>SMA200, EMA20 83,508) and 4h RSI 29, so conf capped low"
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT=none, mola kuralı uygulanamadı",
+     "options_lite/orderbook/recorded null"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 24,
+    "rationale": [
+     "Bull: 4h close>2,564.3 (reclaim of 4h HL) → 2,625 then 2,635.7 | Bear: 4h close<2,520.3 (1h_30d VAL) → 2,508 (S1) then 2,475.9 (POC)",
+     "4h 08:00 closed 2,537.4 < 2,564.3 but price sits on VAL 2,520/S1 2,508; market short stop ~2,585 gives RR~1.3 < 1.5, and T1 is under 1 ATR(31) away",
+     "4h RSI 22.7 oversold, OI 24h -2.7%; chasing the low has poor RR. Wait for a retest of 2,564 or a 4h close<2,520"
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT=none, mola kuralı uygulanamadı",
+     "options_lite/orderbook/recorded null"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; long watch only after a 1h close back above 83,283 (LH 10-02 07:00) following a sweep that closes inside",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "1d up (HH 82,300 -> HL 74,968) but the 4h pivot low 82,563 was closed beyond at 10-02 08:00 (close 82,506). The sweep failed; this is a break, not a sweep with the close back inside.",
+     "No 1h CHoCH: last LH 83,283 (10-02 07:00) is unbroken and 1h makes LL, LL. No bull FVG left behind. 4h RSI 29: stretched, but no trigger."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; long watch only after a sweep of 2,538.1 that closes inside plus a 1h close above 2,577.4",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "1d is mixed (HH 2,807.3 after HL 2,358.9; current leg down to 2,538.1), so no 1d direction. A short counter-trend setup needs a sweep of a high plus a CHoCH, and none exists.",
+     "Price 2,537.4 sits under the 4h support and 1h LL 2,538.1 with no sweep-and-close-inside. Bear FVGs above are open, but chasing the fall is not a setup. No 1h CHoCH (LH 2,577.4 unbroken)."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

@@ -1,0 +1,202 @@
+{
+ "asof_shifted": "2031-07-07 16:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "long",
+    "timeframe": "4h",
+    "setup": "range_edge_fade",
+    "entry": {
+     "type": "limit",
+     "price": 61550
+    },
+    "stop": 61100,
+    "targets": [
+     62980,
+     64650
+    ],
+    "invalidation": "4h close below 61,100 (below PWL 61,307 and AVWAP b1 61,177): range low failed",
+    "confidence": 40,
+    "horizon_h": 48,
+    "rationale": [
+     "Range 4h: tops 64,700/64,693 (EQH), lows 61,545/61,307 (PWL), width ~5.2 ATR, EQ ~63,000; price 62,618 below EQ. Zone 61,307-61,545 = PWL + 4h HL + week S1 61,825 + AVWAP b1 61,177.",
+     "Stop 61,100 = PWL 61,307 minus 0.3 ATR(4h) and below AVWAP b1. Risk 450, T1 62,980 (just before POC 63,061/EQ) gives RR ~3.2, T2 64,650 (below EQH 64,700); entry 1,068 from close, within 2 ATR.",
+     "MOD: no 4h/1h rejection candle yet -10; fade vs 1d downtrend (below SMA200, EMA20<50<200) cap 55. Break-even 24. CPI 07-08 12:30 is 20.5h away, outside 12h blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 12,
+    "rationale": [
+     "Price 1,777 sits at range EQ (~1,773) between 4h high 1,830-1,833 and low 1,713-1,729; no edge mid-range.",
+     "Lower edge fade: entry ~1,732, stop ~1,705, T1 EQ 1,772 gives RR ~1.5 or less, below min_rr_t1 1.5; upper edge 1,830 is 53 away, beyond 2 ATR(4h) = 50. Watch 1,730-1,735 (week S1, 4h LL)."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 62,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>63,668 (bear FVG top, above POC 63,061) → 64,700 (PWH/EQH), then 66,655 | Bear: 4h close<61,177 (low_400d AVWAP b1 low) → 59,869 (week S2), then 58,115",
+     "Last 4h close 62,618 sits between AVWAP 62,545 and POC 63,061; no close_beyond, no sweep_reclaim (low 62,101 took no level), no 3-bar acceptance. Trend regime fails: close < EMA50 4h 63,221.",
+     "Weekly: below SMA200 1d 73,910 and ath/365d AVWAP; 1d range 57,800-64,700 intact. Next 4h CPI 07-08 12:30 is 20.5h away, outside the 12h blackout. OI +3.3% 24h, no OI modifier."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 62,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>1,797.6 (bear FVG top; then 1d VAL 1,809.2) → 1,833.4 (PWH), then 1,904.5 | Bear: 4h close<1,744.4 (4h VAL) → 1,713.4 (PWL), then 1,685.9 AVWAP",
+     "The PWH 1,833.4 sweep (high 1,846) reclaimed on the 07-07 00:00 4h bar, but it is 3 bars old and not the last closed candle. Short from 1,777 to T1 1,744 vs stop ~1,852 is R:R ~0.4, below 1.5.",
+     "Last 4h close 1,777 between 1,744.4 and 1,797.6, no new trigger; trend regime mixed (EMA20>EMA50, close>EMA50, but last 4h high is LH 1,830). OI -6% 24h = flushed, no edge in the middle."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "1h",
+    "setup": "sweep_choch",
+    "entry": {
+     "type": "limit",
+     "price": 63369
+    },
+    "stop": 64489,
+    "targets": [
+     61307
+    ],
+    "invalidation": "1h close above 64,425 (sweep high) before fill or after; or 4h close above 64,700 (PWH)",
+    "confidence": 42,
+    "horizon_h": 24,
+    "rationale": [
+     "Pool: prev-day high 64,290 swept by 64,425 wick 07-07 00:00 UTC (closed 64,072 inside, vol 72.7 > avg 57.1). 1h CHoCH: close below LL 63,702 at 07-07 01:00.",
+     "Entry = mid of open 4h bear FVG 63,070-63,668 (07-07 00:00 displacement), above 50% of leg 64,425-62,101. Stop 64,425 + 0.1*ATR4h 636 = 64,489 (1.76 ATR).",
+     "T1 = PWL/EQL 61,307, RR 1.84. MOD: 1d mixed (HH+LL in last 4) -5; below SMA200. CPI 07-08 12:30 is 20.5h away, outside blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-07 16:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "1h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 12,
+    "rationale": [
+     "Short sweep_choch exists: PWH 1,833.4 swept by 1,846 wick 07-07 00:00, 1h CHoCH below 1,779.5 at 04:00. But stop 1,846 + 2.5 = 1,848.5 vs 1h FVG mid 1,792.1 = 56 risk.",
+     "Nearest pool below is EQL 1,729 (PDL 1,779.5 is too close): reward 63 gives RR ~1.1 < 1.5. With PWL 1,713.4 as T1 it is ~1.4. Fails min_rr_t1; flat."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

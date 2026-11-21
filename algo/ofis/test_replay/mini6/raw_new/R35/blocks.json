@@ -1,0 +1,213 @@
+{
+ "asof_shifted": "2031-10-08 20:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "4h",
+    "setup": "breakout_retest",
+    "entry": {
+     "type": "limit",
+     "price": 82750
+    },
+    "stop": 83250,
+    "targets": [
+     81450,
+     80450
+    ],
+    "invalidation": "4h close above 83,300 (back above broken VAH/day pivot zone) or 1h close above 83,000 after fill",
+    "confidence": 38,
+    "horizon_h": 48,
+    "rationale": [
+     "4h close 81,641 is 1,233 (1.4 ATR) below 82,874 (vp.4h_all VAH) / 82,790 (day pivot P); breakdown volume 591M = 2.9x the 4h avg of 202.6M, so no volume MOD.",
+     "Retest limit 82,750 sits inside the VAH/P/1h VAL 82,425 confluence. Stop 83,250 = level 82,800 + 0.5 ATR (440), risk 500 = 0.57 ATR. 1d trend is up (EMA20 above EMA50), so confidence is capped.",
+     "T1 81,450 stops short of the 81,412 S1 / 81,306 HVN. Gross R:R 2.6. T2 80,450 = week S1 / prev-week low 80,394. Break-even is 28. PPI is 16.5h away, outside the 12h blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": false,
+   "errors": [
+    "limit entry: T1 2438 not beyond last close 2431.0 for short"
+   ],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "ETHUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "4h",
+    "setup": "breakout_retest",
+    "entry": {
+     "type": "limit",
+     "price": 2480
+    },
+    "stop": 2504,
+    "targets": [
+     2438,
+     2412
+    ],
+    "invalidation": "4h close above 2,505 (reclaim of POC/round 2,500 zone); 1h close above 2,500 after fill",
+    "confidence": 40,
+    "horizon_h": 36,
+    "rationale": [
+     "4h close 2,429.8 is 52 (1.35 ATR) below the 2,482 zone (vp.4h_all POC 2,482.2 + vp.1d_180d POC 2,481.9 + round 2,500 + 4h bear FVG 2,487-2,500). Breakdown volume 326M = 2.9x the 4h avg, so no volum...",
+     "4h downtrend: EMA20 2,499 < EMA50 2,536, close below EMA50, last pivot LH 2,538.5. Stop 2,504 = level + 0.5 ATR, risk 24 = 0.62 ATR.",
+     "T1 2,438 stops at the 1h HVN 2,435, gross R:R 1.75; the 1d HVN 2,456 sits inside the path (LVN 2,462). T2 2,412 is just above the EQL cluster 2,406 (prev-week low). Break-even is 36. PPI is 16.5h a..."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/0 cut 203->200",
+    "rationale/2 cut 201->200"
+   ],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Bear: 4h close below 80,394 (PWL); Bull: 4h close above 83,136 (last_1d_pivot_H b1 low)",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>83,136 → 84,168/84,547 | Bear: 4h close<80,394 → 79,656 (S2)/80,000. Close 81,841 sits between; no 4h close beyond a key level at the last closed candle (16:00).",
+     "Trend is down (4h EMA20 83,037 < EMA50 83,335; last 4h pivot LH 84,168). The 12:00 close below VAL 82,425 qualifies as trend_hold_market. Short at 81,841, stop 82,645: T1 80,394 gives net R:R ~1.39...",
+     "Stretching T1 to 80,000 under PWL 80,394 just to pass R:R is not structural. S1 81,412 is only 0.5 ATR away. Wait for a 4h close<80,394 or a sweep_reclaim of it. PPI 10-09 12:30 is outside the 12h ..."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not testable"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 213->200",
+    "rationale/2 cut 206->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Bear: 4h close below 2,406 (EQL/PWL); Bull: 4h close above 2,482 (POC)",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>2,482 → 2,538.5/2,556 | Bear: 4h close<2,406 → 2,356 (prev month low)/2,374 (4h VAL). Close 2,431 sits between POC 2,482 and the triple EQL 2,405.8.",
+     "Downtrend (4h EMA20 2,499 < EMA50 2,536; last pivot LH 2,538.5). 12:00 close below POC 2,482 is already 51 pts (1.3 ATR) away, so trend_hold_market fails the 1 ATR limit.",
+     "A short limit on the retest at 2,466 (FVG 2,453-2,479, stop ~2,500) gives T1 2,409 with R:R below 1.5. Flat until 4h close<2,406 or a 2,482 reject."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not testable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: no setup. Re-evaluate on a 4h close below 81,034 (BOS) or a wick under 80,394 closing back inside plus a 1h CHoCH.",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "No sweep: leg low 81,514 (10-08 17:00) sits above unswept 4h HL 81,034 and PWL 80,394. No sweep, no CHoCH, so sweep_choch is not ready.",
+     "trend_bos_market: 4h downtrend (EMA20 83,037 < EMA50 83,335, last label LH 84,168) but no close below 81,034 yet. No BOS, so no market entry.",
+     "Price is between pools: 81,034/80,394 below and 82,083-83,029 bear FVG / 84,168 above. 1d is up (HH/HL), 4h is down, so mixed. CPI 12:30 already printed."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-08 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: no setup. Re-evaluate on a 4h close below 2,409.1 (BOS) or a wick under EQL 2,405.8/2,406.1 closing back inside plus a 1h CHoCH.",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "No sweep: leg low 2,413.5 (10-08 14:00) stopped above EQL 2,405.8/2,406.1 and 4h HL 2,409.1. The pool is untaken, so sweep_choch is not ready.",
+     "trend_bos_market: 4h downtrend (EMA20 2,499 < EMA50 2,536, last label LH 2,538.5) but close 2,431 is above 2,409.1. No BOS, so no market entry.",
+     "Price sits 22 points above the EQL pool with bear FVG 2,453-2,479 overhead. A short here would be chasing into support, and a long has no sweep or CHoCH."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

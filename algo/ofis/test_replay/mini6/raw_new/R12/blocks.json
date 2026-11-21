@@ -1,0 +1,199 @@
+{
+ "asof_shifted": "2031-07-31 00:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-31 00:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; re-evaluate on a 4h close above 65,745 with volume or a rejection wick at 65,450-65,745",
+    "confidence": 62,
+    "horizon_h": 8,
+    "rationale": [
+     "Close 64,665 is upper-middle of 62,275-65,745 (EQ 64,010); range definition fails (last 30 4h candles lack 2 upper pivot touches), so no range_edge_fade; 1.9 ATR below PWH.",
+     "Trend setup fails: 4h EMA20 63,996 > EMA50 63,898 but no trend level within 0.5 ATR; limit short at 65,450-65,745 (PWH, R1 wk 65,451) would be a counter-impulse fade without range proof.",
+     "NFP 2031-08-01 12:30 is 36.5h out (outside the 12h blackout); 1d below SMA200 70,698 gives no long edge."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-07-31 00:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; re-evaluate on a retest of 1,885-1,904 (4h FVG) holding or a 4h rejection at 1,937-1,981",
+    "confidence": 62,
+    "horizon_h": 8,
+    "rationale": [
+     "Close 1,908.9 after a 4h impulse from 1,873 to 1,928 sits between POC 1,871.8 and EQH 1,937/PWH 1,981; no fade edge and no confirmed breakout close.",
+     "Trend setup fails: 4h EMA20 1,877.3 < EMA50 1,879.3, so no up-trend regime and no trend_level_market.",
+     "Range 1,822-1,981 is wide, but the last 30 4h candles lack 2 upper touches; chasing the impulse mid-range has poor R:R."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-31 00:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: flat until a 4h close beyond 65,745 or below 62,275",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>65,745 (PWH/1h EQH) → 66,956 then 67,333 | Bear: 4h close<62,275 (EQL/PWL) → 60,966 (low_400d b2) then 59,131. Last 4h close 64,665.",
+     "No trigger: last closed 4h (20:00) 64,665 is inside 62,300-65,745. Nearest level 65,745 is about 1.9 ATR4h away, so acceptance does not apply. No 4h close_beyond or sweep_reclaim in the last 6 cand...",
+     "1d below SMA200 70,698 and below the ath/rolling AVWAP. Price is above low_400d AVWAP 63,708. Mid-range, no edge. NFP 2031-08-01 12:30 is about 36h away, outside the 12h blackout."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable",
+     "options_lite/orderbook/recorded null"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 201->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-07-31 00:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: flat until a 4h close beyond 1,937 or below 1,828.6",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>1,937 (4h EQH/HH) → 1,981.2 (PWH) then 2,002.6 (rolling b1) | Bear: 4h close<1,828.6 (4h HL) → 1,822.1 (PWL), then 1,748.8 (4h EQL). Last 4h close 1,908.9.",
+     "No trigger: 4h 16:00 wicked to 1,928, below EQH 1,937, and closed 1,917. No sweep_reclaim and no close beyond a key level. 4h EMA20 1,877.3 < EMA50 1,879.3, so no trend regime for a market entry.",
+     "1d below SMA200 2,075. Price is below the ath/rolling AVWAP and above low_400d. A long to 1,937 would be about 1.2 ATR4h with low R:R. NFP 2031-08-01 12:30 is about 36h away."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable",
+     "options_lite/orderbook/recorded null"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-31 00:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; re-evaluate on a 4h close above 65,745 (PWH) or a 1h wick sweep of 62,275 with a 1h CHoCH",
+    "confidence": 70,
+    "horizon_h": 8,
+    "rationale": [
+     "No sweep inside the last 6x4h or 12x1h candles. The 4h pivots have no fresh first_wick_sweep_time; the last one is 07-28 12:00 (LH 63,796), too old. No sweep, so no sweep_choch.",
+     "trend_bos_market fails: 4h EMA20 63,996 > EMA50 63,898 and last HL 62,300 are up, but the BOS above LH 63,796 closed 07-28 16:00, 11 candles back, outside the 6-candle window.",
+     "Price 64,665 sits between PWL/EQL 62,275 and PWH/EQH 65,745, near 4h POC 63,862. 1d is mixed (HH/LL/LH/LL), so no edge mid-range. NFP 08-01 12:30 is 36h out."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-07-31 00:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a; re-evaluate if the 1,937 / 1,928-1,929.7 EQH is wicked and closed back inside, then a 1h CHoCH",
+    "confidence": 68,
+    "horizon_h": 8,
+    "rationale": [
+     "The 1,928.0 spike (07-30 18:00 1h) stopped at the 1,928 EQH and never took 1,937 / 1,929.7. There is no sweep with an inside close, so no short sweep_choch. 1d is mixed, and a counter-trend short w...",
+     "No trend_bos_market: 4h EMA20 1,877.3 < EMA50 1,879.3, so there is no up regime. The close of 1,908.9 is also above the 4h POC of 1,871.8 but short of the 1,937 EQH.",
+     "The 1h bull FVG 1,897.3-1,913.9 is partial, with no CHoCH or sweep tied to it. Chasing it is skipped (rule 9). Price is mid-range between EQL 1,848.4 and EQH 1,937."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/0 cut 217->200"
+   ],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

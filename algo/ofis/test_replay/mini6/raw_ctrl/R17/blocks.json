@@ -1,0 +1,209 @@
+{
+ "asof_shifted": "2031-08-15 20:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": false,
+   "errors": [
+    "limit entry: T1 77000 not beyond last close 77029.0 for long"
+   ],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-08-15 20:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "long",
+    "timeframe": "4h",
+    "setup": "breakout_retest",
+    "entry": {
+     "type": "limit",
+     "price": 74834
+    },
+    "stop": 74100,
+    "targets": [
+     77000,
+     79400
+    ],
+    "invalidation": "4h close back below 74,157 (VAH 74,834 minus 0.5 ATR4h): the breakout failed",
+    "confidence": 40,
+    "horizon_h": 48,
+    "rationale": [
+     "Breakout: 4h close 76,722 (08:00) is 1,888 above 1d_180d VAH 74,834 (needs 677) on 974 musd vs 1.5x avg 598. Retest limit at VAH; entry is 2,195 below last close (2 ATR = 2,707).",
+     "Confluence at 74,834: 4h FVG 73,400-74,511, LVN 74,943, 1h FVG 73,990-74,385 and prev-day high 73,400 below. Stop 74,100 sits under the retest zone, risk 734 (0.54 ATR4h).",
+     "T1 77,000 just before 4h HVN 77,113 (R:R 2.95); T2 79,400 below the 79,500 wick high. RSI4h 92 means a fill needs a pullback and may never come. 1h close below 74,157 cancels."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": false,
+   "errors": [
+    "limit entry: T1 2385 not beyond last close 2413.6 for long"
+   ],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-08-15 20:00",
+    "asset": "ETHUSDT",
+    "action": "new",
+    "bias": "long",
+    "timeframe": "4h",
+    "setup": "breakout_retest",
+    "entry": {
+     "type": "limit",
+     "price": 2321
+    },
+    "stop": 2284,
+    "targets": [
+     2385,
+     2445
+    ],
+    "invalidation": "4h close below 2,296 (POC 2,321 minus 0.5 ATR4h): the breakout failed",
+    "confidence": 42,
+    "horizon_h": 48,
+    "rationale": [
+     "Breakout: 4h close 2,371.7 (08:00) is 50 above 1d_180d POC 2,321 (needs 25) on 417 musd vs 1.5x avg 352. Retest limit at 2,321, 93 below last close (2 ATR = 100).",
+     "Confluence at 2,321: 1h LVN 2,316.5, 1h FVG 2,289-2,314, floor pivot P 2,303, 4h LVN 2,288. Stop 2,284 is under that LVN, risk 37 (0.74 ATR4h).",
+     "T1 2,385 sits before VAH 2,388 and 1h HVN 2,392 (R:R 1.73); T2 2,445 is below the 2,448 high. RSI4h 95 is stretched, so a fill needs a pullback. 4h close below 2,296 cancels."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-08-15 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Flat view void if 4h closes above 79,500 (continuation) or below 76,243 (pullback) with a retest entry offering R:R>=1.5",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>79,500 → 80,000 round / ath_400d AVWAP 79,855, then b1 95,885 | Bear: 4h close<76,243 → 4h FVG 75,786-76,236, then 74,511 / 73,400 fill",
+     "No trigger: last closed 4h (16:00) closed 77,029 inside 76,243-79,500. Vertical move, 4h RSI 92, 1d RSI 80; price 7+ ATR(4h) above 4h VAH/POC, no level to anchor a tight stop.",
+     "OI filter: oi_chg_7d +16.1% (crowded leverage) after a +15% week; chasing or fading the top is not allowed. Wait for a close_beyond or a retest of 73,400-74,511."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-08-15 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Flat view void if 4h closes above 2,448 (continuation) or below 2,357 (pullback) with a retest entry offering R:R>=1.5",
+    "confidence": 65,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>2,448 → 2,500 round, then 2,464.9 1d HH/2,500 zone | Bear: 4h close<2,357 → 2,333.7 4h HH retest, then 4h FVG 2,108-2,221.5",
+     "No trigger: last closed 4h (16:00) closed 2,413.6 inside 2,357-2,448; no sweep_reclaim, no 3 narrow candles (acceptance). 4h RSI 94.8, 1d RSI 84; price far above 1d_180d VAH 2,388.",
+     "OI filter: oi_chg_7d +32.8% (very crowded) after a +23% week; no long chase or top short. ATR(4h) 50 vs 4h range makes a tight structural stop too far from T1."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checkable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-08-15 20:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: no setup. Short needs a 1h close below 76,243 after a sweep; a long needs a pullback into an open 4h FVG.",
+    "confidence": 70,
+    "horizon_h": 12,
+    "rationale": [
+     "1d last 4 pivots LH 67,292 / LL 57,800 / LH 66,956 / HL 62,275 are mixed: no 1d direction. Any short would be counter-trend (conf <=58) and needs sweep + 1h CHoCH.",
+     "4h HH 79,500 (08-15 08:00) has first_wick_sweep null and no earlier equal-high pool. The 1h CHoCH is missing: last 1h HL 74,247 is not broken and the last close is 77,029.",
+     "bos_continuation not ready: price is 77,029 vs open 4h FVG 75,786-76,236 (08-15 04:00) and the 4h RSI is 92. Chasing the move and a mid-air entry are both skipped."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-08-15 20:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: no setup. Short needs a 1h close below 2,357.2 after a sweep of 2,448; a long needs a pullback into an open 4h FVG.",
+    "confidence": 70,
+    "horizon_h": 12,
+    "rationale": [
+     "1d last 4 pivots LL 1,505.7 / LH 1,849.5 / HL 1,512.0 plus a 1d leg high of 2,360 are not a clean HH+HL sequence. 1d direction is unclear, so only a counter-trend short at conf <=58 would be possible.",
+     "The 4h HH 2,333.7 has first_wick_sweep 08-14 12:00, but that is older than the last 6 4h candles and there is no pre-existing pool. 1h HL 2,357.2 (08-15 11:00) is not broken; last close 2,413.6.",
+     "Nearest open 4h FVGs 2,108-2,221.5 are far below (>3.5 × ATR14(4h) 50.2), so a pullback long would be a chase. 4h RSI 94.8, extended: no edge."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

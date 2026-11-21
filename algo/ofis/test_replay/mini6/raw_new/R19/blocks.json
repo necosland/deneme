@@ -1,0 +1,195 @@
+{
+ "asof_shifted": "2031-08-21 04:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-08-21 04:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "Close 78,831 sits between HVN 78,803 and PWH 79,500/R1 79,639/80,000. A fade short is capped by EQ 78,970, giving RR ~0.3, and it would trade against a 1d uptrend.",
+     "Trend long: stop under 4h HL 75,546 is ~3,300 away, but T1 PWH 79,500 is only ~670 away. RR is far below 1.5. A 4h close above 80,000+0.5*ATR (80,540) with volume >290 musd would open breakout_retest."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-08-21 04:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a",
+    "confidence": 60,
+    "horizon_h": 12,
+    "rationale": [
+     "Close 2,492.9 is mid-range between 4h HL 2,414.6 and EQH 2,532.9/PWH 2,546.8. Range width ~2.7-3.0 ATR with only one clean top touch in the last 30 candles, so no valid range.",
+     "A fade short at ~2,530 (stop 2,560, T1 EQ ~2,473, RR ~1.9) fights the 1d uptrend, has no rejection candle, and would carry cap 55 minus 10. Confidence nets out below break-even, so no trade."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-08-21 04:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: Bull needs 4h close>79,810; Bear needs 4h close<77,633",
+    "confidence": 68,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>79,810 (ath_400d AVWAP; PWH 79,500, HH 81,273) → 83,906 (week R1) | Bear: 4h close<77,633 (4h leg low) → 75,546 (4h HL), then 73,400-74,511 FVG",
+     "No trigger: last closed 4h (00:00) 78,831 is inside 77,633-79,810, no close_beyond or sweep_reclaim. Acceptance fails (nearest level 979 away > 0.5×ATR 542). trend_hold_market fails (no beyond-clos...",
+     "Context: 1d RSI 80.6, 7d +14%, OI 7d +8.7% (below the +10 flag), funding mild. Calendar empty, no event ban. RECENT none."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not testable"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 215->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-08-21 04:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: Bull needs 4h close>2,546.8; Bear needs 4h close<2,414.6",
+    "confidence": 68,
+    "horizon_h": 8,
+    "rationale": [
+     "Bull: 4h close>2,546.8 (PWH/HH; 1h EQH 2,532.9) → 2,716 (week R1) | Bear: 4h close<2,414.6 (4h HL) → 2,355.7 (4h HL, 1h EQL), then 2,221.5",
+     "No trigger: last closed 4h 2,492.9 under 2,532.9/2,546.8, 40-54 away (>0.5×ATR4h 44 = 22). No close_beyond, no sweep_reclaim, no acceptance. trend_hold_market not met.",
+     "Context: 1d RSI 77.4, 7d +11%, OI 7d +15.5% (crowded, -10 MOD if a long appears), funding last 0.0001. Calendar empty, no event ban. RECENT none."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not testable"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-08-21 04:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: watch 1h sweep of EQH 79,564 or 4h PWH 79,500 with a 1h close back inside, then a 1h CHoCH",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "No sweep_choch: 4h pivot 79,500 was swept 08-18 12:00 (older than 6 candles) and then broken by a 4h close 08-19 00:00. The 81,273 high (08-19 00:00) is the last pivot and was not a sweep-and-reclaim.",
+     "No trend_bos_market: trend is up (EMA20 78,335 > EMA50 75,471, last 4h dip HL 75,546), but the BOS close was 08-19 00:00, older than 6 4h candles. The 1h EQH 79,564 is untaken and has no sweep or C...",
+     "Price 78,831 sits between PDL 77,633 and the 79,252-79,564 highs, a mid-range with no edge. 1d is mixed (LH/LL/LH/HL), so the 4h direction applies, with -5 if any setup appears."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 202->200"
+   ],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-08-21 04:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "n/a: watch a 1h wick above EQH 2,532.9 / PWH 2,546.8 that closes back inside, then a 1h CHoCH",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "No sweep: the 1h EQH 2,532.9 (08-18 15:00 and 08-19 02:00) and PWH 2,546.8 are untaken. The latest high is 2,515.4 (08-20 22:00) and fell short of them.",
+     "No trend_bos_market: trend is up (EMA20 2,460 > EMA50 2,355.7, last 4h dip HL 2,414.6), but no 4h close beyond 2,546.8 or 2,532.9 in the last 6 candles.",
+     "Price 2,492.9 sits between 2,432.3 (1h HL) and the EQH 2,532.9, a mid-range. The 1d structure is mixed, so no CHoCH or sweep trigger exists."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

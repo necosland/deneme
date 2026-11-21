@@ -1,0 +1,585 @@
+{
+ "orig": {
+  "all": {
+   "blocks": 48,
+   "schema_or_geom_ok": 48,
+   "dir_all": 9,
+   "dir_valid": 8,
+   "market": 0,
+   "limit": 8,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    36,
+    40.0,
+    42
+   ],
+   "ev_pass": 7,
+   "hit_n": [
+    6,
+    8
+   ],
+   "t1_first": 5,
+   "stop_first": 2,
+   "counter_regime": 5,
+   "shadow_orders": 8,
+   "shadow_filled": 4,
+   "shadow_closed": 4,
+   "shadow_R": [
+    -1.2,
+    -1.25,
+    -1.14,
+    -1.19
+   ],
+   "shadow_sum_R": -4.79,
+   "shadow_mean_R": -1.197,
+   "flag_invalid_dir": 1,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-seviye": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 4,
+   "dir_valid": 3,
+   "market": 0,
+   "limit": 3,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    36,
+    40,
+    42
+   ],
+   "ev_pass": 2,
+   "hit_n": [
+    2,
+    3
+   ],
+   "t1_first": 2,
+   "stop_first": 1,
+   "counter_regime": 1,
+   "shadow_orders": 3,
+   "shadow_filled": 2,
+   "shadow_closed": 2,
+   "shadow_R": [
+    -1.25,
+    -1.19
+   ],
+   "shadow_sum_R": -2.44,
+   "shadow_mean_R": -1.222,
+   "flag_invalid_dir": 1,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-senaryo": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 4,
+   "dir_valid": 4,
+   "market": 0,
+   "limit": 4,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    40,
+    40.0,
+    42
+   ],
+   "ev_pass": 4,
+   "hit_n": [
+    3,
+    4
+   ],
+   "t1_first": 3,
+   "stop_first": 1,
+   "counter_regime": 4,
+   "shadow_orders": 4,
+   "shadow_filled": 2,
+   "shadow_closed": 2,
+   "shadow_R": [
+    -1.2,
+    -1.14
+   ],
+   "shadow_sum_R": -2.34,
+   "shadow_mean_R": -1.172,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-likidite": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 1,
+   "dir_valid": 1,
+   "market": 0,
+   "limit": 1,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    42,
+    42
+   ],
+   "ev_pass": 1,
+   "hit_n": [
+    1,
+    1
+   ],
+   "t1_first": 0,
+   "stop_first": 0,
+   "counter_regime": 0,
+   "shadow_orders": 1,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_R": [],
+   "shadow_sum_R": 0,
+   "shadow_mean_R": null,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trend-up": {
+   "blocks": 24,
+   "schema_or_geom_ok": 24,
+   "dir_all": 6,
+   "dir_valid": 6,
+   "market": 0,
+   "limit": 6,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    36,
+    40.0,
+    42
+   ],
+   "ev_pass": 5,
+   "hit_n": [
+    5,
+    6
+   ],
+   "t1_first": 4,
+   "stop_first": 2,
+   "counter_regime": 4,
+   "shadow_orders": 6,
+   "shadow_filled": 3,
+   "shadow_closed": 3,
+   "shadow_R": [
+    -1.2,
+    -1.25,
+    -1.14
+   ],
+   "shadow_sum_R": -3.59,
+   "shadow_mean_R": -1.198,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "range": {
+   "blocks": 24,
+   "schema_or_geom_ok": 24,
+   "dir_all": 3,
+   "dir_valid": 2,
+   "market": 0,
+   "limit": 2,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    42.0,
+    42
+   ],
+   "ev_pass": 2,
+   "hit_n": [
+    1,
+    2
+   ],
+   "t1_first": 1,
+   "stop_first": 0,
+   "counter_regime": 1,
+   "shadow_orders": 2,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_R": [
+    -1.19
+   ],
+   "shadow_sum_R": -1.19,
+   "shadow_mean_R": -1.193,
+   "flag_invalid_dir": 1,
+   "flag_stop_no_struct_valid": 0
+  }
+ },
+ "ctrl": {
+  "all": {
+   "blocks": 48,
+   "schema_or_geom_ok": 46,
+   "dir_all": 5,
+   "dir_valid": 3,
+   "market": 0,
+   "limit": 3,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    42,
+    45
+   ],
+   "ev_pass": 3,
+   "hit_n": [
+    2,
+    3
+   ],
+   "t1_first": 1,
+   "stop_first": 1,
+   "counter_regime": 2,
+   "shadow_orders": 3,
+   "shadow_filled": 2,
+   "shadow_closed": 2,
+   "shadow_R": [
+    -1.26,
+    1.1
+   ],
+   "shadow_sum_R": -0.16,
+   "shadow_mean_R": -0.081,
+   "flag_invalid_dir": 2,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-seviye": {
+   "blocks": 16,
+   "schema_or_geom_ok": 14,
+   "dir_all": 2,
+   "dir_valid": 0,
+   "market": 0,
+   "limit": 0,
+   "stop_entry": 0,
+   "conf_min_med_max": null,
+   "ev_pass": 0,
+   "hit_n": [
+    0,
+    0
+   ],
+   "t1_first": 0,
+   "stop_first": 0,
+   "counter_regime": 0,
+   "shadow_orders": 0,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_R": [],
+   "shadow_sum_R": 0,
+   "shadow_mean_R": null,
+   "flag_invalid_dir": 2,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-senaryo": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 2,
+   "dir_valid": 2,
+   "market": 0,
+   "limit": 2,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    43.5,
+    45
+   ],
+   "ev_pass": 2,
+   "hit_n": [
+    1,
+    2
+   ],
+   "t1_first": 1,
+   "stop_first": 1,
+   "counter_regime": 2,
+   "shadow_orders": 2,
+   "shadow_filled": 2,
+   "shadow_closed": 2,
+   "shadow_R": [
+    -1.26,
+    1.1
+   ],
+   "shadow_sum_R": -0.16,
+   "shadow_mean_R": -0.081,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-likidite": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 1,
+   "dir_valid": 1,
+   "market": 0,
+   "limit": 1,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    42,
+    42
+   ],
+   "ev_pass": 1,
+   "hit_n": [
+    1,
+    1
+   ],
+   "t1_first": 0,
+   "stop_first": 0,
+   "counter_regime": 0,
+   "shadow_orders": 1,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_R": [],
+   "shadow_sum_R": 0,
+   "shadow_mean_R": null,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trend-up": {
+   "blocks": 24,
+   "schema_or_geom_ok": 22,
+   "dir_all": 4,
+   "dir_valid": 2,
+   "market": 0,
+   "limit": 2,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    43.5,
+    45
+   ],
+   "ev_pass": 2,
+   "hit_n": [
+    1,
+    2
+   ],
+   "t1_first": 1,
+   "stop_first": 1,
+   "counter_regime": 2,
+   "shadow_orders": 2,
+   "shadow_filled": 2,
+   "shadow_closed": 2,
+   "shadow_R": [
+    -1.26,
+    1.1
+   ],
+   "shadow_sum_R": -0.16,
+   "shadow_mean_R": -0.081,
+   "flag_invalid_dir": 2,
+   "flag_stop_no_struct_valid": 0
+  },
+  "range": {
+   "blocks": 24,
+   "schema_or_geom_ok": 24,
+   "dir_all": 1,
+   "dir_valid": 1,
+   "market": 0,
+   "limit": 1,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    42,
+    42
+   ],
+   "ev_pass": 1,
+   "hit_n": [
+    1,
+    1
+   ],
+   "t1_first": 0,
+   "stop_first": 0,
+   "counter_regime": 0,
+   "shadow_orders": 1,
+   "shadow_filled": 0,
+   "shadow_closed": 0,
+   "shadow_R": [],
+   "shadow_sum_R": 0,
+   "shadow_mean_R": null,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  }
+ },
+ "new": {
+  "all": {
+   "blocks": 48,
+   "schema_or_geom_ok": 47,
+   "dir_all": 8,
+   "dir_valid": 7,
+   "market": 0,
+   "limit": 7,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    33,
+    38,
+    42
+   ],
+   "ev_pass": 7,
+   "hit_n": [
+    5,
+    7
+   ],
+   "t1_first": 5,
+   "stop_first": 2,
+   "counter_regime": 5,
+   "shadow_orders": 7,
+   "shadow_filled": 3,
+   "shadow_closed": 3,
+   "shadow_R": [
+    -1.07,
+    -1.27,
+    -1.15
+   ],
+   "shadow_sum_R": -3.49,
+   "shadow_mean_R": -1.162,
+   "flag_invalid_dir": 1,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-seviye": {
+   "blocks": 16,
+   "schema_or_geom_ok": 15,
+   "dir_all": 5,
+   "dir_valid": 4,
+   "market": 0,
+   "limit": 4,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    33,
+    37.0,
+    40
+   ],
+   "ev_pass": 4,
+   "hit_n": [
+    4,
+    4
+   ],
+   "t1_first": 3,
+   "stop_first": 1,
+   "counter_regime": 3,
+   "shadow_orders": 4,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_R": [
+    -1.27
+   ],
+   "shadow_sum_R": -1.27,
+   "shadow_mean_R": -1.271,
+   "flag_invalid_dir": 1,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-senaryo": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 2,
+   "dir_valid": 2,
+   "market": 0,
+   "limit": 2,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    36,
+    37.0,
+    38
+   ],
+   "ev_pass": 2,
+   "hit_n": [
+    1,
+    2
+   ],
+   "t1_first": 2,
+   "stop_first": 0,
+   "counter_regime": 2,
+   "shadow_orders": 2,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_R": [
+    -1.15
+   ],
+   "shadow_sum_R": -1.15,
+   "shadow_mean_R": -1.147,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trader-likidite": {
+   "blocks": 16,
+   "schema_or_geom_ok": 16,
+   "dir_all": 1,
+   "dir_valid": 1,
+   "market": 0,
+   "limit": 1,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    42,
+    42,
+    42
+   ],
+   "ev_pass": 1,
+   "hit_n": [
+    0,
+    1
+   ],
+   "t1_first": 0,
+   "stop_first": 1,
+   "counter_regime": 0,
+   "shadow_orders": 1,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_R": [
+    -1.07
+   ],
+   "shadow_sum_R": -1.07,
+   "shadow_mean_R": -1.069,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "trend-up": {
+   "blocks": 24,
+   "schema_or_geom_ok": 24,
+   "dir_all": 4,
+   "dir_valid": 4,
+   "market": 0,
+   "limit": 4,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    33,
+    36.0,
+    38
+   ],
+   "ev_pass": 4,
+   "hit_n": [
+    3,
+    4
+   ],
+   "t1_first": 3,
+   "stop_first": 1,
+   "counter_regime": 3,
+   "shadow_orders": 4,
+   "shadow_filled": 2,
+   "shadow_closed": 2,
+   "shadow_R": [
+    -1.27,
+    -1.15
+   ],
+   "shadow_sum_R": -2.42,
+   "shadow_mean_R": -1.209,
+   "flag_invalid_dir": 0,
+   "flag_stop_no_struct_valid": 0
+  },
+  "range": {
+   "blocks": 24,
+   "schema_or_geom_ok": 23,
+   "dir_all": 4,
+   "dir_valid": 3,
+   "market": 0,
+   "limit": 3,
+   "stop_entry": 0,
+   "conf_min_med_max": [
+    38,
+    40,
+    42
+   ],
+   "ev_pass": 3,
+   "hit_n": [
+    2,
+    3
+   ],
+   "t1_first": 2,
+   "stop_first": 1,
+   "counter_regime": 2,
+   "shadow_orders": 3,
+   "shadow_filled": 1,
+   "shadow_closed": 1,
+   "shadow_R": [
+    -1.07
+   ],
+   "shadow_sum_R": -1.07,
+   "shadow_mean_R": -1.069,
+   "flag_invalid_dir": 1,
+   "flag_stop_no_struct_valid": 0
+  }
+ }
+}

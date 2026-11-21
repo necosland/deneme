@@ -1,0 +1,222 @@
+{
+ "asof_shifted": "2031-10-02 12:00",
+ "rows": [
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "long",
+    "timeframe": "4h",
+    "setup": "range_edge_fade",
+    "entry": {
+     "type": "limit",
+     "price": 82350
+    },
+    "stop": 81950,
+    "targets": [
+     84040,
+     84891
+    ],
+    "invalidation": "4h close below 82,000 (below 4h sweep low 82,228 and 4h LVN 82,120): range low failed, fast move toward 1h_30d VAL 80,436",
+    "confidence": 33,
+    "horizon_h": 36,
+    "rationale": [
+     "Range 82,563-87,220 (width 4,657 = 5.9 ATR4h). Zone 82,350 = PWL 82,563 + 4h LL pivot + sweep lows 82,228/82,318 + day S1 82,207; 4h 04:00 swept 82,228, closed 82,999.",
+     "Stop 81,950 = 82,228 - 0.3*ATR4h (788), risk 400 = 0.51 ATR. T1 84,040 = 1h_30d POC / 4h HVN 84,130 (first obstacle), RR 4.2; T2 EQ 84,891.",
+     "MOD: no 4h/1h rejection candle -10; 4h RSI 29, EMA20<EMA50 down-trend, 4h LVN 82,120 below: low-prob fade. Break-even 24%, 1d trend up (above SMA200) so cap does not apply."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-seviye",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "ETHUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "4h",
+    "setup": "breakout_retest",
+    "entry": {
+     "type": "limit",
+     "price": 2564
+    },
+    "stop": 2581,
+    "targets": [
+     2523,
+     2508,
+     2482
+    ],
+    "invalidation": "4h close above 2,585 (back above broken 4h HL 2,564.3 and FVG 2,584.7): false breakdown",
+    "confidence": 36,
+    "horizon_h": 24,
+    "rationale": [
+     "4h close 2,537.4 is 26.9 below HL 2,564.3 (>0.5*ATR4h 31.2 = 15.6); coincides with 1h_30d HVN 2,569.7. EMA20<EMA50, close<EMA50, last peak LH 2,739.5: down-trend regime.",
+     "Stop 2,581 = level + 0.5*ATR4h (risk 17). T1 2,523 just above 1h_30d VAL 2,520.3/HVN 2,506.9; T2 2,508; T3 2,482 (HVN 2,480/POC 2,475.9). RR T1 2.4, break-even 29%.",
+     "MOD: breakdown volume 135.6 = 0.99x avg20 (down, <=1.0x) -5. 4h RSI 22.7 oversold, retest may not come: limit, no chase. 1h close above 2,564 invalidates early."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-seviye"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "BTCUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "4h",
+    "setup": "close_beyond",
+    "entry": {
+     "type": "limit",
+     "price": 82800
+    },
+    "stop": 83480,
+    "targets": [
+     81091,
+     80436
+    ],
+    "invalidation": "4h close above 83,283 (1h LH / reclaim of broken 82,563 week low) cancels the retest short",
+    "confidence": 38,
+    "horizon_h": 48,
+    "rationale": [
+     "Bull: 4h close>83,283 → 84,150 (4h FVG 83,767-84,044/84,379) | Bear: 4h close<82,563 (done, 08:00 close 82,506) → 81,091 then 80,436",
+     "Trigger close_beyond: 4h 2031-10-02 08:00 closed 82,506 below prev_week_low/4h LL 82,563; 04:00 swept to 82,228 but reclaim failed. Bear trend: EMA20<EMA50, last 4h peak LH. Source: pivots+PWL",
+     "Limit 82,800 = retest into 1h bear FVG 82,734-82,818. Stop 83,480 = 1h LH 83,283+0.25 ATR (0.86 ATR). T1 day S2 81,091 (RR 2.5), T2 1h_30d VAL 80,436. MOD: against 1d uptrend; 4h RSI 29 stretched, ..."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checked"
+    ]
+   },
+   "normalized": [
+    "rationale/2 cut 212->200"
+   ],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-senaryo",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "ETHUSDT",
+    "action": "new",
+    "bias": "short",
+    "timeframe": "4h",
+    "setup": "close_beyond",
+    "entry": {
+     "type": "limit",
+     "price": 2554
+    },
+    "stop": 2585,
+    "targets": [
+     2475.9,
+     2442.3
+    ],
+    "invalidation": "4h close above 2,577.4 (1h LH) = retest accepted back above broken 2,564.3 4h HL",
+    "confidence": 36,
+    "horizon_h": 48,
+    "rationale": [
+     "Bull: 4h close>2,577.4 → 2,635.7 (prev week low, 4h FVG 2,584.7-2,605.2) | Bear: 4h close<2,564.3 (done, 08:00 close 2,537.4) → 2,475.9 POC then 2,442.3",
+     "Trigger close_beyond: 4h 08:00 closed below 4h HL 2,564.3 (first close beyond); downtrend: EMA20<EMA50, last 4h peak LH 2,739.5. 24h -1.6%, 4h RSI 22.7 stretched; limit awaits bounce.",
+     "Limit 2,554 = 1h bear FVG 2,551.8-2,556.1 retest. Stop 2,585 = 1h LH 2,577.4+0.25 ATR (1.0 ATR). T1 4h POC 2,475.9 (RR 2.5), T2 day S2 2,442.3. MOD: against 1d uptrend; fill not assured."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent",
+     "RECENT none: break rule not checked"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-senaryo"
+  },
+  {
+   "asset": "BTCUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "BTCUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Long watch: 1h close above 83,283 (last 1h LH) after the 82,228 sweep would give a CHoCH; until then no setup.",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "Sweep failed: 4h pivot 82,563 wick-swept 10-02 04:00 (low 82,228) but 10-02 08:00 closed 82,506 below it; 1h has no CHoCH (max high 83,170 < 83,283).",
+     "Short trend_bos_market is against the 1d-up structure (HL 09-09), so counter-trend: T1 only the first pool. Last close is 57 above the broken level, 4h RSI 29; stop must be ≥394 away, which means c...",
+     "No open downside pool near: PDL 82,787 and PWL 82,563 are taken, next is PML 74,968 (~9 ATR4h). EMA20<EMA50 4h downtrend, but entry is poor."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [
+    "rationale/1 cut 204->200"
+   ],
+   "expert": "trader-likidite"
+  },
+  {
+   "asset": "ETHUSDT",
+   "valid": true,
+   "errors": [],
+   "block": {
+    "expert": "trader-likidite",
+    "asof_utc": "2031-10-02 12:00",
+    "asset": "ETHUSDT",
+    "action": "none",
+    "bias": "flat",
+    "timeframe": "4h",
+    "setup": null,
+    "entry": null,
+    "stop": null,
+    "targets": [],
+    "invalidation": "Long watch: 1h close above 2,577.4 (last 1h LH) after a sweep of 2,527.6 and a close back above 2,538.1 would be a CHoCH; not present.",
+    "confidence": 65,
+    "horizon_h": 12,
+    "rationale": [
+     "4h pivot 2,564.3 (HL) first close beyond 10-02 08:00 after a wick sweep 10-01 12:00: a break, not a failed sweep. 1h pivot 2,538.1 also closed beyond 10-02 11:00, so no long reversal trigger.",
+     "Short BOS is counter to 1d (HH 2,807.3 on 09-15, HL 2,358.9 on 09-09). Counter-trend allows only the first pool, and the first downside pool is PML 2,356.4, ~5.8 ATR4h away.",
+     "Last close 2,537.4 is 4h RSI 22.7 and just under PDL 2,538.1; ATR4h 31, so stop ≥16 away gives a poor entry after a 160-point drop. No edge in the middle."
+    ],
+    "data_gaps": [
+     "replay: live-only data absent"
+    ]
+   },
+   "normalized": [],
+   "expert": "trader-likidite"
+  }
+ ],
+ "auto": [],
+ "called": [
+  "trader-seviye",
+  "trader-senaryo",
+  "trader-likidite"
+ ]
+}

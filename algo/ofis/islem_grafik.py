@@ -34,10 +34,19 @@ def uzman(x):
     return UZMAN.get(x, x.replace("trader-", "") or "?")
 
 
-def kitap(t, src):
+def grup(src, t):
+    """ofis = Riza'nin actigi gercek defter; gevsek = gevsek defter; golge = uzman golgesi (puanlama)."""
     if src == "gevsek":
-        return "Gevşek defter"
-    return "Gerçek defter" if t.get("book") == "ofis" else "Gerçek defter (uzman gölgesi)"
+        return "gevsek"
+    return "ofis" if t.get("book") == "ofis" else "golge"
+
+
+ADLAR = {"ofis": "Ofis defteri (Rıza)", "gevsek": "Gevşek defter", "golge": "Uzman gölgesi (puanlama)"}
+SIRA = {"ofis": 0, "gevsek": 1, "golge": 2}
+
+
+def kitap(t, src):
+    return ADLAR[grup(src, t)]
 
 
 def yukle(ad):
@@ -99,7 +108,8 @@ def topla(now_ms):
         for t in yukle(ad).get("trades", []):
             if t.get("status") in DURUM and (t.get("created_ms") or 0) >= esik:
                 liste.append((src, t))
-    liste.sort(key=lambda x: x[1]["created_ms"], reverse=True)
+    liste.sort(key=lambda x: -x[1]["created_ms"])
+    liste.sort(key=lambda x: SIRA[grup(*x)])
     return liste
 
 
@@ -179,7 +189,7 @@ def kart_html(src, t, d, x):
                f'<button data-c="{d["id"]}" data-i="1s">1 saatlik</button></div>')
     hata = '<p class="hata">Mum verisi alınamadı.</p>' if d["hata"] else ""
     uz = ", ".join(x["uzman"]) or "-"
-    neco = (f'<p class="not"><b>Rıza (o turda gerçek defterde):</b> {html.escape(x["neco"])}</p>' if x["neco"] else "")
+    neco = (f'<p class="not"><b>Rıza (o turdaki ofis kararı):</b> {html.escape(x["neco"])}</p>' if x["neco"] else "")
     sym = t["asset"].replace("USDT", "")
     return (f'<section class="kart"><div class="ust"><h2>{html.escape(sym)} <span class="y {t["side"]}">{yon}</span></h2>'
             f'<span class="durum d-{t["status"]}">{st}</span></div>'
@@ -190,17 +200,24 @@ def kart_html(src, t, d, x):
 
 
 def ozet(liste, sonuclar):
+    acik = {"ofis": "Rıza'nın açtığı işlemler.",
+            "gevsek": "Gevşek kurallı deneme: daha az oyla işlem açar.",
+            "golge": "Her uzmanın önerisi tek başına puanlansın diye açılır; ofisin gerçek işlemi değildir."}
     sat = []
-    for src, ad in (("gercek", "Gerçek defter"), ("gevsek", "Gevşek defter")):
+    for g in ("ofis", "gevsek", "golge"):
         n = {"pending": 0, "open": 0, "closed": 0}
         top = 0.0
         for (s, t), x in zip(liste, sonuclar):
-            if s == src:
+            if grup(s, t) == g:
                 n[t["status"]] += 1
                 if t["status"] == "closed" and x["r"] is not None:
                     top += x["r"]
-        sat.append(f'<div class="o"><b>{ad}</b>: {n["pending"]} bekliyor · {n["open"]} açık · {n["closed"]} kapandı'
-                   f' · kapananların toplamı <b>{top:+.2f} R</b></div>')
+        if not any(n.values()):
+            veri = "henüz işlem yok"
+        else:
+            veri = (f'{n["pending"]} bekliyor · {n["open"]} açık · {n["closed"]} kapandı'
+                    f' · kapananların toplamı <b>{top:+.2f} R</b>')
+        sat.append(f'<div class="o"><b>{ADLAR[g]}</b>: {veri}<div class="alt">{acik[g]}</div></div>')
     return "".join(sat)
 
 

@@ -338,6 +338,26 @@ def normalize_block(b):
     return fixes
 
 
+def wall_warnings(b, snap):
+    """Bora blogunun rationale'inde "wall" + sayi var ama o varlikta orderflow.walls fiyatlarindan hicbirine %0.1 yakin degilse uyari
+    (yalniz log; blok reddedilmez)."""
+    import re
+    out = []
+    try:
+        w = (((snap.get("assets") or {}).get(b.get("asset")) or {}).get("orderflow") or {}).get("walls") or {}
+        prices = [r[0] for side in ("bids", "asks") for r in (w.get(side) or []) if isinstance(r, list) and r]
+        for x in b.get("rationale") or []:
+            if not isinstance(x, str) or "wall" not in x.lower():
+                continue
+            for m in re.finditer(r"\d[\d,]*\.?\d*", x):
+                n = float(m.group().replace(",", ""))
+                if n >= 1000 and not any(abs(n - p) <= 0.001 * p for p in prices):
+                    out.append(f"{b.get('asset')}: wall {m.group()} not in orderflow.walls")
+    except Exception:  # noqa: BLE001
+        return []
+    return out
+
+
 def validate_blocks(expert, parsed, snap, cfg, v):
     R = cfg["risk"]
     rows, seen = [], set()
@@ -360,6 +380,9 @@ def validate_blocks(expert, parsed, snap, cfg, v):
                 ctx = ((snap["assets"].get(asset) or {}).get("ctx") or {})
                 errs += O.geometry_errors(b["bias"], b["entry"], b["stop"], b["targets"], ctx.get("last_close"),
                                           (ctx.get("atr14") or {}).get("4h"), R)
+        if expert == "trader-senaryo" and not errs:
+            for wmsg in wall_warnings(b, snap):
+                say(f"WARNING unlisted wall (Bora): {wmsg}")
         seen.add(asset)
         rows.append({"asset": asset, "valid": not errs, "errors": errs, "block": b, "normalized": fixes})
     for a in cfg["assets"]:

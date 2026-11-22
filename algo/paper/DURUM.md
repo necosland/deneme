@@ -1,12 +1,12 @@
 # Paper trading durumu
 
-Son guncelleme: 2026-11-22 16:14 UTC. Her sistem 1000 sahte USDT ile basladi. Gercek para yok.
+Son guncelleme: 2026-11-22 16:17 UTC. Her sistem 1000 sahte USDT ile basladi. Gercek para yok.
 
 | Sistem | Basladi | Paper | Golge (backtest) | Al-tut 6 coin | Al-tut BTC | Tepeden dusus | Olum siniri | Acik pozisyon |
 |---|---|---|---|---|---|---|---|---|
-| donchian_4h | 2026-11-17 | 1000 | 1000 | 955 | 947 | %0.0 | %-28 | - |
-| btc_filter_ema_4h | 2026-11-17 | 1000 | 1000 | 955 | 947 | %0.0 | %-73 | - |
-| ema_btcf_1d | 2026-11-17 | 1000 | 1000 | 955 | 947 | %0.0 | %-67 | - |
+| donchian_4h | 2026-11-17 | 1000 | 1000 | 954 | 946 | %0.0 | %-28 | - |
+| btc_filter_ema_4h | 2026-11-17 | 1000 | 1000 | 954 | 946 | %0.0 | %-73 | - |
+| ema_btcf_1d | 2026-11-17 | 1000 | 1000 | 954 | 946 | %0.0 | %-67 | - |
 | cekirdek_v1 | 2026-11-21 | 1000 | 1000 | 1034 | 1046 | %0.0 | %-46 | - |
 
 Sistemler:

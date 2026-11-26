@@ -1,13 +1,13 @@
 # Paper trading durumu
 
-Son guncelleme: 2026-11-26 08:17 UTC. Her sistem 1000 sahte USDT ile basladi. Gercek para yok.
+Son guncelleme: 2026-11-26 12:17 UTC. Her sistem 1000 sahte USDT ile basladi. Gercek para yok.
 
 | Sistem | Basladi | Paper | Golge (backtest) | Al-tut 6 coin | Al-tut BTC | Tepeden dusus | Olum siniri | Acik pozisyon |
 |---|---|---|---|---|---|---|---|---|
-| donchian_4h | 2026-11-17 | 1000 | 1000 | 959 | 940 | %0.0 | %-28 | - |
-| btc_filter_ema_4h | 2026-11-17 | 1000 | 1000 | 959 | 940 | %0.0 | %-73 | - |
-| ema_btcf_1d | 2026-11-17 | 1000 | 1000 | 959 | 940 | %0.0 | %-67 | - |
-| cekirdek_v1 | 2026-11-21 | 1000 | 1000 | 1038 | 1039 | %0.0 | %-46 | - |
+| donchian_4h | 2026-11-17 | 1000 | 1000 | 960 | 941 | %0.0 | %-28 | - |
+| btc_filter_ema_4h | 2026-11-17 | 1000 | 1000 | 960 | 941 | %0.0 | %-73 | - |
+| ema_btcf_1d | 2026-11-17 | 1000 | 1000 | 960 | 941 | %0.0 | %-67 | - |
+| cekirdek_v1 | 2026-11-21 | 1000 | 1000 | 1040 | 1040 | %0.0 | %-46 | - |
 
 Sistemler:
 - **donchian_4h**: 100 mum zirvesi kirilinca al, 10 mum dibi kirilinca sat
